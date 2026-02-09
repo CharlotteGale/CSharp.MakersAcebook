@@ -14,11 +14,11 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    [Route("/")]
+/*     [Route("/Feed")]
     public IActionResult Index()
     {
         return View();
-    }
+    } */
 
     public IActionResult Privacy()
     {

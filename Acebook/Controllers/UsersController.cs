@@ -26,7 +26,7 @@ public class UsersController : Controller
       AcebookDbContext dbContext = new AcebookDbContext();
       dbContext.Users.Add(user);
       dbContext.SaveChanges();
-      return new RedirectResult("/signin");
+      return new RedirectResult("/");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
