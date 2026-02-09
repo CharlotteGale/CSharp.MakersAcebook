@@ -1,3 +1,6 @@
+using acebook.Models;
+using Microsoft.EntityFrameworkCore;
+
 var configBuilder = new ConfigurationBuilder();
   configBuilder
     .AddEnvironmentVariables();
@@ -17,6 +20,9 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddScoped<acebook.ActionFilters.AuthenticationFilter>();
+
+builder.Services.AddDbContext<AcebookDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,5 +43,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseSession();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AcebookDbContext>();
+    context.Database.Migrate();
+    DbSeeder.Seed(context);
+}
 
 app.Run();
