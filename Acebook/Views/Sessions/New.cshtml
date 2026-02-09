@@ -1,5 +1,26 @@
-<form action="/signin" method="post">
-  <input type='text' id='email' name='email' placeholder='email' />
-  <input type='password' id='password' name='password'/>
-  <input type='submit' id='submit' value='Submit' />
-</form>
+<div class="login-wrapper">
+    <div class="login-page">
+        <div class="login-left">
+            <h1 class="brand-title">Acebook</h1>
+            <p class="brand-tagline">Connect with friends and the world around you.</p>
+        </div>
+
+        <form action="/" method="post" class="login-card">
+            <div class="mb-3">
+                <input type="text" id="email" name="email" placeholder="Email" class="form-field">
+            </div>
+
+            <div class="mb-3">
+                <input type="password" id="password" name="password" placeholder="Password" class="form-field">
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Log in" class="submit-btn">
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Create new account" class="new-acc-btn">
+            </div>
+        </form>
+    </div>
+</div>
