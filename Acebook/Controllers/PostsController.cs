@@ -8,10 +8,12 @@ namespace acebook.Controllers;
 [ServiceFilter(typeof(AuthenticationFilter))]
 public class PostsController : Controller
 {
+    private readonly AcebookDbContext _context;
     private readonly ILogger<PostsController> _logger;
 
-    public PostsController(ILogger<PostsController> logger)
+    public PostsController(AcebookDbContext context, ILogger<PostsController> logger)
     {
+        _context = context;
         _logger = logger;
     }
 
