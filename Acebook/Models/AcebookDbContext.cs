@@ -28,7 +28,7 @@ public class AcebookDbContext : DbContext
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql(@"Host=localhost;Username=postgres;Password=1234;Database=" + GetDatabaseName());
+        => optionsBuilder.UseNpgsql(@"Host=localhost;Username=charlottegale;Password=1234;Database=" + GetDatabaseName());
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
