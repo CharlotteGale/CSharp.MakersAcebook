@@ -38,11 +38,11 @@ public class SessionsController : Controller
     }
 
     [HttpPost]
-    public IActionResult Destroy()
+    [Route("logout")]
+    public IActionResult Logout()
     {
-        HttpContext.Session.Clear(); 
-        
-        return RedirectToAction(nameof(SessionsController.New), "Sessions");
+        HttpContext.Session.Remove("user_id"); 
+        return RedirectToAction("New","Sessions");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
