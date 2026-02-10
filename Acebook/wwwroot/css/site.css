@@ -2,11 +2,30 @@ html {
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
+/* MOBILE STYLING*/
+
+@media (max-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
+  }
+
+  .login-page {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+    padding: 2rem;
+  }
+
+  .login-left {
+    padding-right: 0;
+    max-width: 100%;
+  }
+
+  .brand-title {
+    font-size: 2.5rem;
   }
 }
+
 
 html {
   position: relative;
@@ -14,5 +33,82 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin: 0;
+  background: #F2F4F7;
+  font-family: verdana, sans-serif;
+}
+
+.login-wrapper {
+  min-height: 90vh; 
+  display: flex;
+  flex-direction: column;
+}
+
+.login-page {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  padding: 2rem;
+}
+
+.login-left {
+  max-width: 400px;
+  padding-right: 3rem;
+}
+
+.brand-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #023E8A;
+  margin-bottom: 0.5rem;
+}
+
+.brand-tagline {
+  font-size: 1.2rem;
+  color: #1c1e21;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 360px;
+}
+
+.form-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  font-size: 1rem;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 50px;
+  background: #023E8A;
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.new-acc-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 50px;
+  background: #0497e7;
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #042e65;
 }

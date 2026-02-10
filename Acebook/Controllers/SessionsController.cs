@@ -13,14 +13,14 @@ public class SessionsController : Controller
         _logger = logger;
     }
 
-    [Route("/signin")]
+    [Route("/")]
     [HttpGet]
     public IActionResult New()
     {
         return View();
     }
 
-    [Route("/signin")]
+    [Route("/")]
     [HttpPost]
     public RedirectResult Create(string email, string password) {
       AcebookDbContext dbContext = new AcebookDbContext();
@@ -32,7 +32,7 @@ public class SessionsController : Controller
       }
       else
       {
-        return new RedirectResult("/signin");
+        return new RedirectResult("/");
       }
     }
 

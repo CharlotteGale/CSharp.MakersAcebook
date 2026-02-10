@@ -7,7 +7,7 @@ namespace acebook.ActionFilters
     public void OnActionExecuting(ActionExecutingContext context) {
       int? user_id = context.HttpContext.Session.GetInt32("user_id");
       if(user_id == null) {
-        context.Result = new RedirectResult("/signin");
+        context.Result = new RedirectResult("/");
         return;
       }
       else
