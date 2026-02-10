@@ -2,7 +2,7 @@ using acebook.Models;
 using Microsoft.EntityFrameworkCore;
 
 var configBuilder = new ConfigurationBuilder();
-  configBuilder
+    configBuilder
     .AddEnvironmentVariables();
 
 var builder = WebApplication.CreateBuilder(args);
