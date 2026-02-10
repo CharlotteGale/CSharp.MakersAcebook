@@ -3,32 +3,26 @@ using Microsoft.EntityFrameworkCore;
 
 public class AcebookDbContext : DbContext
 {
+    private readonly IConfiguration _configuration;
+
     public DbSet<Post>? Posts { get; set; }
     public DbSet<User>? Users { get; set; }
 
     public string? DbPath { get; }
 
-    public string? GetDatabaseName() {
-      string? DatabaseNameArg = Environment.GetEnvironmentVariable("DATABASE_NAME");
-
-      if( DatabaseNameArg == null)
-      {
-        System.Console.WriteLine(
-          "DATABASE_NAME is null. Defaulting to test database."
-        );
-        return "acebook_csharp_test";
-      }
-      else
-      {
-        System.Console.WriteLine(
-          "Connecting to " + DatabaseNameArg
-        );
-        return DatabaseNameArg;
-      }
+    public AcebookDbContext(DbContextOptions<AcebookDbContext> options, IConfiguration configuration)
+      : base(options)
+    {
+      _configuration = configuration;
     }
 
+    public AcebookDbContext(){}
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql(@"Host=localhost;Username=postgres;Password=1234;Database=" + GetDatabaseName());
+  {
+    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+        optionsBuilder.UseNpgsql(connectionString);
+  }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

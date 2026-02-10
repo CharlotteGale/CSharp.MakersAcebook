@@ -6,10 +6,12 @@ namespace acebook.Controllers;
 
 public class UsersController : Controller
 {
+    private readonly AcebookDbContext _context;
     private readonly ILogger<UsersController> _logger;
 
-    public UsersController(ILogger<UsersController> logger)
+    public UsersController(AcebookDbContext context, ILogger<UsersController> logger)
     {
+        _context = context;
         _logger = logger;
     }
 
