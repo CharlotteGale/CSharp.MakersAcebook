@@ -29,7 +29,6 @@ public class PostsController : Controller
     [Route("/posts")]
     [HttpPost]
     public RedirectResult Create(Post post) {
-      // AcebookDbContext dbContext = new AcebookDbContext();
       int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
       post.UserId = currentUserId;
       _context.Posts.Add(post);

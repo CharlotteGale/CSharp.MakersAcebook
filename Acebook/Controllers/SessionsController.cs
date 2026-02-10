@@ -25,7 +25,6 @@ public class SessionsController : Controller
     [Route("/signin")]
     [HttpPost]
     public RedirectResult Create(string email, string password) {
-      // AcebookDbContext dbContext = new AcebookDbContext();
       User? user = _context.Users.FirstOrDefault(user => user.Email == email);
       if(user != null && user.Password == password)
       {
