@@ -27,7 +27,7 @@ public class UsersController : Controller
     public RedirectResult Create(User user) {
         _context.Users.Add(user);
         _context.SaveChanges();
-        return new RedirectResult("/");
+        return new RedirectResult("/posts");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
