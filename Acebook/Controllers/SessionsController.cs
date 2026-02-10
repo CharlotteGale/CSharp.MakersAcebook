@@ -37,6 +37,14 @@ public class SessionsController : Controller
       }
     }
 
+    [HttpPost]
+    [Route("logout")]
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Remove("user_id"); 
+        return RedirectToAction("New","Sessions");
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

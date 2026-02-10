@@ -33,15 +33,15 @@
                     </ul>
                 </div>
                 <div class="text-end">
-                            <ul class="navbar-nav flex-grow-1>"
-                            <li class="nav-item">
-                            @if (Context.Session.GetInt32("user_id") != null){
-                            <form asp-controller="Sessions" asp-action="Destroy" method = "Post" style="display: inline;">
-                            <button type = "Submit" title= "Log out and end your session on Acebook." class="btn btn-link nav-link text-dark">Log Me Out</button>
-                            </form>}
-                        </li>
-                        </ul>
-            </div>
+                    <ul class="navbar-nav flex-grow-1>"
+                    <li class="nav-item">
+                    @if (Context.Session.GetInt32("user_id") != null){
+                    <form action="/logout" method = "post" style="display: inline;">
+                    <button type = "Submit" title= "Log out and end your session on Acebook." class="btn btn-link nav-link text-dark">Log Me Out</button>
+                    </form>}
+                    </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
