@@ -37,6 +37,14 @@ public class SessionsController : Controller
       }
     }
 
+    [HttpPost]
+    public IActionResult Destroy()
+    {
+        HttpContext.Session.Clear(); 
+        
+        return RedirectToAction(nameof(SessionsController.New), "Sessions");
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
