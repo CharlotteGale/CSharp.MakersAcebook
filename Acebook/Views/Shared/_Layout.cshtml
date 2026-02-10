@@ -33,9 +33,12 @@
                     </ul>
                 </div>
                 <div class="text-end">
-                            <ul class="navbar-nav flex-grow-1>
+                            <ul class="navbar-nav flex-grow-1>"
                             <li class="nav-item">
-                            <a title= "Log out and end your session on Acebook." class="nav-link text-dark" asp-area="" asp-controller="Sessions" asp-action="New">Log Me Out</a>
+                            @if (Context.Session.GetInt32("user_id") != null){
+                            <form asp-controller="Sessions" asp-action="Destroy" method = "Post" style="display: inline;">
+                            <button type = "Submit" title= "Log out and end your session on Acebook." class="btn btn-link nav-link text-dark">Log Me Out</button>
+                            </form>}
                         </li>
                         </ul>
             </div>
