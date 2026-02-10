@@ -6,10 +6,12 @@ namespace acebook.Controllers;
 
 public class SessionsController : Controller
 {
+    private readonly AcebookDbContext _context;
     private readonly ILogger<SessionsController> _logger;
 
-    public SessionsController(ILogger<SessionsController> logger)
+    public SessionsController(AcebookDbContext context, ILogger<SessionsController> logger)
     {
+        _context = context;
         _logger = logger;
     }
 
@@ -23,8 +25,8 @@ public class SessionsController : Controller
     [Route("/signin")]
     [HttpPost]
     public RedirectResult Create(string email, string password) {
-      AcebookDbContext dbContext = new AcebookDbContext();
-      User? user = dbContext.Users.Where(user => user.Email == email).First();
+      // AcebookDbContext dbContext = new AcebookDbContext();
+      User? user = _context.Users.FirstOrDefault(user => user.Email == email);
       if(user != null && user.Password == password)
       {
         HttpContext.Session.SetInt32("user_id", user.Id);
