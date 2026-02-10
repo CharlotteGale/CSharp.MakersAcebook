@@ -15,14 +15,14 @@ public class SessionsController : Controller
         _logger = logger;
     }
 
-    [Route("/signin")]
+    [Route("/")]
     [HttpGet]
     public IActionResult New()
     {
         return View();
     }
 
-    [Route("/signin")]
+    [Route("/")]
     [HttpPost]
     public RedirectResult Create(string email, string password) {
       User? user = _context.Users.FirstOrDefault(user => user.Email == email);
@@ -33,7 +33,7 @@ public class SessionsController : Controller
       }
       else
       {
-        return new RedirectResult("/signin");
+        return new RedirectResult("/");
       }
     }
 
