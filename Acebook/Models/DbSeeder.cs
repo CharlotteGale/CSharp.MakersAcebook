@@ -9,17 +9,19 @@ public static class DbSeeder
     
         context.SaveChanges();
 
-        context.Users.AddRange(
-            new User { Name = "Admin", Email = "admin@email.com", Password = "password" },
-            new User { Name = "Testy McTesterson", Email = "test@email.com", Password = "password1"}
-        );
+        var admin = new User { Name = "Admin", Email = "admin@email.com", Password = "password" };
+        var testuser = new User { Name = "Testy McTesterson", Email = "test@email.com", Password = "password1"};
+
+        context.Users.AddRange( admin, testuser );
 
         context.Posts.AddRange(
-            new Post { Content = "apWEIFRGHOU", UserId = 1 },
-            new Post { Content = ";focwe hi", UserId = 1 },
-            new Post { Content = "SD;VOIUH", UserId = 1 },
-            new Post { Content = "soafeir;hjgo", UserId = 1 }
+            new Post { Content = "apWEIFRGHOU", User = admin },
+            new Post { Content = ";focwe hi", User = admin},
+            new Post { Content = "SD;VOIUH", User = admin},
+            new Post { Content = "soafeir;hjgo", User = testuser}
         );  
+
+        context.SaveChanges();
     }
 
 }
