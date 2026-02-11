@@ -33,7 +33,7 @@ public class PostsController : Controller
       post.UserId = currentUserId;
       _context.Posts.Add(post);
       _context.SaveChanges();
-      return new RedirectResult("Posts");
+      return new RedirectResult("/feed");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
