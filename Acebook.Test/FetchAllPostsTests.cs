@@ -37,21 +37,13 @@ public class FetchAllPostsTests
     }
 
 
-    // [Test]
-    // public void Test()
-    // {
-    //     List<Post> posts = _context.Posts.ToList();
-    //     List<Post> test = new List<Post>();
-    //     Post post1 = new Post(Id: 18, Content: "soafeir;hjgo", UserId: 11);
-    //     test.Add(post1);
-    //     Post post2 = new Post(Id: 17, Content: "SD;VOIUH", UserId: 10);
-    //     test.Add(post2);
-    //     Post post3 = new Post(Id: 15, Content: "apWEIFRGHOU", UserId: 10);
-    //     test.Add(post3);
-    //     Post post4 = new Post(Id: 16, Content: ";focwe hi", UserId: 10);
-    //     test.Add(post4);
-    //     Assert.That(posts, Is.EquivalentTo(test));
-    // }
 
+[Test]
+    public void Test()
+    {
+        List<Post> posts = _context.Posts.ToList();
+        Assert.That(posts[0].Content, Is.EquivalentTo("apWEIFRGHOU"));
+        Assert.That(posts[0].User.Name, Is.EquivalentTo("Admin"));
+    }
 }
 
