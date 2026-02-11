@@ -17,7 +17,7 @@ public class PostsController : Controller
         _logger = logger;
     }
 
-    [Route("/posts")]
+    [Route("/Posts")]
     [HttpGet]
     public IActionResult Index() {
       // AcebookDbContext dbContext = new AcebookDbContext();
@@ -26,14 +26,14 @@ public class PostsController : Controller
       return View();
     }
 
-    [Route("/posts")]
+    [Route("/Posts")]
     [HttpPost]
     public RedirectResult Create(Post post) {
       int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
       post.UserId = currentUserId;
       _context.Posts.Add(post);
       _context.SaveChanges();
-      return new RedirectResult("/posts");
+      return new RedirectResult("/feed");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

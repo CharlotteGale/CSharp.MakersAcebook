@@ -7,6 +7,6 @@ public class LandingPageTests : PageTest
   {
     await Page.GotoAsync("http://127.0.0.1:5287");
 
-    await Expect(Page).ToHaveTitleAsync("- acebook");
+    await Expect(Page).ToHaveTitleAsync("- Acebook");
   }
 }

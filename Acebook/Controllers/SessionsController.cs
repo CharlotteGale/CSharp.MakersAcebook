@@ -29,7 +29,7 @@ public class SessionsController : Controller
       if(user != null && user.Password == password)
       {
         HttpContext.Session.SetInt32("user_id", user.Id);
-        return new RedirectResult("/posts");
+        return new RedirectResult("/Feed");
       }
       else
       {
