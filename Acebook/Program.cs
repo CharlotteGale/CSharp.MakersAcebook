@@ -25,6 +25,8 @@ builder.Services.AddDbContext<AcebookDbContext>();
 
 var app = builder.Build();
 
+app.UseSession();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -40,9 +42,16 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
 app.MapControllers();
 
-app.UseSession();
+
 
 using (var scope = app.Services.CreateScope())
 {

@@ -26,8 +26,17 @@ public class AcebookDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Post>()
-          .Navigation(post => post.User)
-          .AutoInclude();
+      modelBuilder.Entity<Post>()
+        .Navigation(post => post.User)
+        .AutoInclude();
+
+      modelBuilder.Entity<User>()
+        .HasMany(u => u.Friends)
+        .WithMany()
+        .UsingEntity<Dictionary<string, object>>(
+          "UserFriends",
+          j => j.HasOne<User>().WithMany().HasForeignKey("FriendId"),
+          j => j.HasOne<User>().WithMany().HasForeignKey("UserId")
+          );
     }
 }
