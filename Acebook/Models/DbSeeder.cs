@@ -4,8 +4,9 @@ public static class DbSeeder
 {
     public static void Seed(AcebookDbContext context)
     {
-        context.Users.RemoveRange(context.Users);
+        context.FriendRequests.RemoveRange(context.FriendRequests);
         context.Posts.RemoveRange(context.Posts);
+        context.Users.RemoveRange(context.Users);
     
         context.SaveChanges();
 
@@ -13,6 +14,9 @@ public static class DbSeeder
         var testuser = new User { Name = "Testy McTesterson", Email = "test@email.com", Password = "password1"};
         var testuser2 = new User { Name = "test2", Email = "test2@email.com", Password = "password1"};
         var testuser3 = new User { Name = "test3", Email = "test3@email.com", Password = "password1"};
+
+        var request1 = new FriendRequest { User = testuser2, Friend = testuser };
+        var request2 = new FriendRequest { User = testuser3, Friend = testuser };
 
         admin.AddFriend(testuser);
         admin.AddFriend(testuser2);
@@ -22,11 +26,13 @@ public static class DbSeeder
         context.Users.AddRange( admin, testuser );
 
         context.Posts.AddRange(
-            new Post { Content = "apWEIFRGHOU", User = admin },
-            new Post { Content = ";focwe hi", User = admin},
-            new Post { Content = "SD;VOIUH", User = admin},
-            new Post { Content = "soafeir;hjgo", User = testuser}
+            new Post { Content = "This is a post", User = admin },
+            new Post { Content = "This is a funnier post", User = admin},
+            new Post { Content = "This is obviously AI Linkdin rubbish", User = admin},
+            new Post { Content = "This is a cute picture of a cat", User = testuser}
         );  
+
+        context.FriendRequests.AddRange( request1, request2);
 
         context.SaveChanges();
     }

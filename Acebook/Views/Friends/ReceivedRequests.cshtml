@@ -1,0 +1,11 @@
+<h2>Friend Requests</h2>
+@foreach (var req in (List<acebook.Models.FriendRequest>)ViewBag.Requests)
+{
+    <div class="request-box">
+        <p><strong>@req.User?.Name</strong> wants to be your friend!</p>
+        <form asp-action="Accept" method="post">
+            <input type="hidden" name="requestId" value="@req.Id" />
+            <button type="submit">Accept</button>
+        </form>
+    </div>
+}

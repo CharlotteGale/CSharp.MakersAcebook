@@ -18,16 +18,36 @@ public class FriendRequestController : Controller
         _logger = logger;
     }
 
-    [Route("/friends/request")]
+    [Route("/friends/requests")]
     [HttpGet]
 
-    public IActionResult Index() {
+    public IActionResult ReceivedRequests() {
         int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
         var requests = _context.FriendRequests
-            .Include(u => u.FriendId) 
-            .FirstOrDefault(u => u.FriendId == ActiveUserId);
+            .Include(fr => fr.User) 
+            .Where(fr => fr.FriendId == ActiveUserId && fr.Pending == true)
+            .ToList();
 
-        ViewBag.Requests = requests?.
-        return View();
+        ViewBag.Requests = requests;
+        return View("~/Views/Friends/ReceivedRequests.cshtml");
         }
+
+    [Route("/friends/requests")]
+    [HttpPost]
+    public IActionResult CreateRequests(int profileId) {
+        int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
+        FriendRequest request = new FriendRequest
+        {
+            UserId = ActiveUserId,
+            FriendId = profileId,
+        };
+        _context.FriendRequests.Add(request);
+        _context.SaveChanges();
+
+        return new RedirectResult("/friends");
+        }
+        //Need to build view of all users not friends
+        //need to request friendship
+        //need to be able to accept request
+        //need to reject.
 }

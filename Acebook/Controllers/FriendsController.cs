@@ -20,6 +20,7 @@ public class FriendsController : Controller
 
     [Route("/friends")]
     [HttpGet]
+    //GetAllFriends
     public IActionResult Index() {
         int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
         var user = _context.Users
@@ -28,5 +29,5 @@ public class FriendsController : Controller
 
         ViewBag.Friends = user?.Friends?.ToList() ?? new List<User>();
         return View();
-        }
+    }
 }
