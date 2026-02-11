@@ -21,7 +21,8 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddScoped<acebook.ActionFilters.AuthenticationFilter>();
 
-builder.Services.AddDbContext<AcebookDbContext>();
+builder.Services.AddDbContext<AcebookDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
