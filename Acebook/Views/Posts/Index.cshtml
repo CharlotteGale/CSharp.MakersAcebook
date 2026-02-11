@@ -4,36 +4,28 @@
 
 <div class="container mt-4">
 
-    <h1 class="mb-4">Posts</h1>
-
-    <div class="card mb-3 rounded-4">
-        <div class="card-body">
+    <h1 class="mb-4">My Posts</h1>
+    <div class="new-post-card mb-3">
             <h5 class="card-title">Write a Post</h5>
-
             <form action="/posts" method="post">
                 <div class="mb-3">
                     <input type="text"
                             name="content"
-                            class="form-control"
+                            class="form-field "
                             placeholder="What's on your mind?" />
                 </div>
-
                 <button type="submit" class="post-btn">
                     Submit
                 </button>
             </form>
-        </div>
     </div>
 
     <h3 class="mb-3">Recent Posts</h3>
-
     @foreach (Post post in ViewBag.Posts)
     {
-        <div class="card mb-3 rounded-4">
-            <div class="card-body">
-                <p class="card-text">@post.Content</p>
-            </div>
+        <div class="recent-post-card mb-3">
+            <p class="card-text">@post.Content</p>
         </div>
+        
     }
-
 </div>
