@@ -11,5 +11,18 @@ public class User
   public string Email {get; set;}
   [Required]
   public string Password {get; set;}
-  public ICollection<Post>? Posts {get; set;}
+  public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+  public virtual ICollection<User> Friends { get; set; } = new List<User>();
+
+  public void AddFriend(User friend)
+    {
+      if (!this.Friends.Contains(friend))
+      {
+        this.Friends.Add(friend);
+      }
+      if (!friend.Friends.Contains(this))
+      {
+        friend.Friends.Add(this);
+      }
+    }
 }

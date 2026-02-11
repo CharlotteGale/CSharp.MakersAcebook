@@ -1,66 +1,31 @@
-using NUnit.Framework;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
+namespace Acebook.Tests;
 
-namespace Acebook.Tests
+public class UserManagement : PageTest
 {
-  public class UserManagement
+  [Test]
+  public async Task SigningUpRedirectsToSignInForm()
   {
-    ChromeDriver driver;
+    await Page.GotoAsync("http://127.0.0.1:5287/");
+    await Page.GetByRole(AriaRole.Button, new() { Name = "Create new account" }).ClickAsync();
 
-    [SetUp]
-    public void Setup()
-    {
-      driver = new ChromeDriver();
-    }
+    await Page.GetByPlaceholder("Name").FillAsync("New User");
+    await Page.GetByPlaceholder("Email").FillAsync("new@user.com");
+    await Page.GetByPlaceholder("Password").FillAsync("password");
+    await Page.GetByRole(AriaRole.Button, new() { Name = "Create account" }).ClickAsync();
 
-    [TearDown]
-    public void TearDown() {
-      driver.Quit();
-      driver.Dispose();
-    }
-
-    [Test]
-    public void SignUp_ValidCredentials_RedirectToSignIn()
-    {
-      driver.Navigate().GoToUrl("http://127.0.0.1:5287");
-      IWebElement signUpButton = driver.FindElement(By.Id("signup"));
-      signUpButton.Click();
-      IWebElement nameField = driver.FindElement(By.Id("name"));
-      nameField.SendKeys("francine");
-      IWebElement emailField = driver.FindElement(By.Id("email"));
-      emailField.SendKeys("francine@email.com");
-      IWebElement passwordField = driver.FindElement(By.Id("password"));
-      passwordField.SendKeys("12345678");
-      IWebElement submitButton = driver.FindElement(By.Id("submit"));
-      submitButton.Click();
-      string currentUrl = driver.Url;
-      Assert.That(currentUrl, Is.EqualTo("http://127.0.0.1:5287/signin"));
-    }
-
-    [Test]
-    public void SignIn_ValidCredentials_RedirectToPosts() {
-      driver.Navigate().GoToUrl("http://127.0.0.1:5287");
-      IWebElement signUpButton = driver.FindElement(By.Id("signup"));
-      signUpButton.Click();
-      IWebElement nameField = driver.FindElement(By.Id("name"));
-      nameField.SendKeys("francine");
-      IWebElement emailField = driver.FindElement(By.Id("email"));
-      emailField.SendKeys("francine@email.com");
-      IWebElement passwordField = driver.FindElement(By.Id("password"));
-      passwordField.SendKeys("12345678");
-      IWebElement submitButton = driver.FindElement(By.Id("submit"));
-      submitButton.Click();
-
-      driver.Navigate().GoToUrl("http://127.0.0.1:5287/signin");
-      emailField = driver.FindElement(By.Id("email"));
-      emailField.SendKeys("francine@email.com");
-      passwordField = driver.FindElement(By.Id("password"));
-      passwordField.SendKeys("12345678");
-      submitButton = driver.FindElement(By.Id("submit"));
-      submitButton.Click();
-      string currentUrl = driver.Url;
-      Assert.That(currentUrl, Is.EqualTo("http://127.0.0.1:5287/posts"));
-    }
+    await Expect(Page).ToHaveURLAsync("http://127.0.0.1:5287/");
   }
+
+  [Test]
+  public async Task SigningInWithCorrectCredentialsRedirectsToPosts()
+  {
+    await Page.GotoAsync("http://127.0.0.1:5287/");
+    await Page.GetByPlaceholder("Email").FillAsync("new@user.com");
+    await Page.GetByPlaceholder("Password").FillAsync("password");
+    await Page.GetByRole(AriaRole.Button, new() { Name = "Log In" }).ClickAsync();
+
+    await Expect(Page.Locator("h1")).ToHaveTextAsync("Posts");
+  }
+
+  
 }

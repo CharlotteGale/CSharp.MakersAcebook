@@ -17,14 +17,14 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                @if(Context.Session.GetInt32("user_id") != null){
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                            <a title= "Takes you to your feed." class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">My Feed</a>
-                        </li>
+                                <a title= "Takes you to your feed." class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">My Feed</a>
+                            </li>
                             <li class="nav-item">
-                            <a  title= "Takes you to your Friends List." class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">My Friends</a>
-                        </li>
+                                <a  title= "Takes you to your Friends List." class="nav-link text-dark" asp-area="" asp-controller="Friends" asp-action="Index">My Friends</a>
                             </li>
 @*                             <li class="nav-item">
                             <a title= "Write a new Post." class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Write A Post</a>

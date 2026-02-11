@@ -1,0 +1,11 @@
+<h1>Friends</h1>
+
+<ul>
+    @if (ViewBag.Friends != null)
+    {
+        foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
+        {
+            <li>@friend.Name (@friend.Email)</li>
+        }
+    }
+</ul>
