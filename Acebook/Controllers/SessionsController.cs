@@ -33,7 +33,7 @@ public class SessionsController : Controller
       }
       else
       {
-        TempData["ErrorMessage"] = "Your email or password details are incorrect. Try again, bozo.";
+        TempData["ErrorMessage"] = "Your email or password details are incorrect.";
         return new RedirectResult("/");
       }
     }
