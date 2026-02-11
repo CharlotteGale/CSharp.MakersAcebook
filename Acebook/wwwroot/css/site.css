@@ -2,21 +2,20 @@ html {
   font-size: 14px;
 }
 
-/* MOBILE STYLING*/
-
+/* MOBILE STYLING */
 @media (max-width: 768px) {
   html {
     font-size: 14px;
   }
 
-  .login-page {
+  .auth-page {
     flex-direction: column;
     text-align: center;
     gap: 2rem;
     padding: 2rem;
   }
 
-  .login-left {
+  .auth-left {
     padding-right: 0;
     max-width: 100%;
   }
@@ -26,10 +25,8 @@ html {
   }
 }
 
-
 html {
   position: relative;
-  min-height: 100%;
 }
 
 body {
@@ -38,13 +35,14 @@ body {
   font-family: verdana, sans-serif;
 }
 
-.login-wrapper {
-  min-height: 90vh; 
+/* LOGIN PAGE (renamed + isolated) */
+.auth-wrapper {
+  min-height: 85vh;
   display: flex;
   flex-direction: column;
 }
 
-.login-page {
+.auth-page {
   flex: 1;
   display: flex;
   justify-content: center;
@@ -53,11 +51,12 @@ body {
   padding: 2rem;
 }
 
-.login-left {
+.auth-left {
   max-width: 400px;
   padding-right: 3rem;
 }
 
+/* BRANDING */
 .brand-title {
   font-size: 3rem;
   font-weight: 700;
@@ -70,6 +69,7 @@ body {
   color: #1c1e21;
 }
 
+/* LOGIN CARD */
 .login-card {
   background: #ffffff;
   padding: 2rem;
@@ -98,6 +98,10 @@ body {
   cursor: pointer;
 }
 
+.submit-btn:hover {
+  background: #042e65;
+}
+
 .new-acc-btn {
   width: 100%;
   padding: 0.75rem;
@@ -109,10 +113,7 @@ body {
   cursor: pointer;
 }
 
-.submit-btn:hover {
-  background: #042e65;
-}
-
+/* FEED + POSTS */
 .post-btn {
   padding: 0.5rem 1.25rem;
   border-radius: 50px;
@@ -125,19 +126,17 @@ body {
 }
 
 .new-post-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 1.75rem 2rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    border: 1px solid #e6e6e6;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid #e6e6e6;
 }
-
 
 .recent-post-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 0.75rem 1rem; /* much tighter */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    border: 1px solid #e6e6e6;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border: 1px solid #e6e6e6;
 }
-
