@@ -57,3 +57,12 @@ Quick and simple steps to rectify this one.
     * `Successfully created and trusted a new HTTPS certificate.`
 
 Now, when a server is started with `dotnet run` or `dotnet watch` the secure connection will be established and the tests will fail where they're meant to fail.
+
+## Adding Playwright
+NuGet packages are already in Acebook.Test/Acebook.Test.csproj.
+Run the following commands to build:
+```bash
+cd Acebook.Test
+dotnet build
+pwsh bin/Debug/net10.0/playwright.ps1 install
+```
