@@ -24,7 +24,7 @@ public class SessionsController : Controller
 
     [Route("/")]
     [HttpPost]
-    public RedirectResult Create(string email, string password) {
+    public IActionResult Create(string email, string password) {
       User? user = _context.Users.FirstOrDefault(user => user.Email == email);
       if(user != null && user.Password == password)
       {
@@ -33,6 +33,7 @@ public class SessionsController : Controller
       }
       else
       {
+        TempData["ErrorMessage"] = "Your email or password details are incorrect. Try again, bozo.";
         return new RedirectResult("/");
       }
     }
