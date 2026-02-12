@@ -1,3 +1,7 @@
+@using System.ComponentModel
+@using acebook.Controllers
+@model List<Post>
+
 @{
     ViewData["Title"] = "Feed";
 }
@@ -12,10 +16,10 @@
 
         <form action="/posts" method="post">
             <div class="mb-3">
-                <input type="text"
-                        name="content"
-                        class="form-field"
-                        placeholder="What's on your mind?" />
+                <input type="text"           
+                name="content"                 
+                class="form-field"      
+                placeholder="What's on your mind?" />
             </div>
 
             <button type="submit" class="post-btn">
@@ -27,11 +31,41 @@
     <!-- Recent Posts -->
     <h3 class="mb-3">Recent Posts</h3>
 
-    @foreach (Post post in ViewBag.Posts)
+    @foreach (Post post in Model)
     {
         <div class="recent-post-card mb-3">
             <p class="card-text mb-0">@post.Content</p>
+            <div class="mt-2">
+                @if (post.Comments != null && post.Comments.Any())
+                {
+                    @foreach (var comment in post.Comments)
+                    {
+                        <div class="comment-line">
+                            <strong>@comment.User?.Name</strong> @comment.Content
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-muted small">
+                        No comments yet.
+                    </div>
+                }
+            </div>
+            <form asp-controller="Comments"            
+            asp-action="Create"       
+            method="post" class="mt-2"> 
+            <input type="hidden"
+                name="postId" value="@post.Id" />
+                <input type="text" 
+                    name="content" 
+                    class="form-field" 
+                    placeholder="Write a comment..." /> 
+                <button
+                    type="submit" 
+                    class="post-btn"> Comment 
+                </button>
+            </form>
         </div>
     }
-
 </div>
