@@ -23,10 +23,10 @@ public class FeedController : Controller
         int? currentUserId = HttpContext.Session.GetInt32("user_id");
         if (currentUserId == null) return Redirect("/");
         var posts = _context.Posts
-        .Include(p => p.User)
-        .Include(p => p.Comments)
-            .ThenInclude(c => c.User)
-        .ToList();
+            .Include(p => p.User)
+            .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+            .ToList();
         return View(posts);
     }
 

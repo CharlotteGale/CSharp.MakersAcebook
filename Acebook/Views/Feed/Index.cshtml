@@ -1,5 +1,4 @@
 @using System.ComponentModel
-@using acebook.Controllers
 @model List<Post>
 
 @{
@@ -16,56 +15,80 @@
 
         <form action="/posts" method="post">
             <div class="mb-3">
-                <input type="text"           
-                name="content"                 
-                class="form-field"      
-                placeholder="What's on your mind?" />
+                <input type="text"
+                        name="content"
+                        class="form-field"
+                        placeholder="What's on your mind?" />
             </div>
 
-            <button type="submit" class="post-btn">
-                Submit
-            </button>
+            <button type="submit" class="post-btn">Submit</button>
         </form>
     </div>
 
     <!-- Recent Posts -->
     <h3 class="mb-3">Recent Posts</h3>
 
-    @foreach (Post post in Model)
+    @foreach (var post in Model)
     {
         <div class="recent-post-card mb-3">
+
             <p class="card-text mb-0">@post.Content</p>
+
             <div class="mt-2">
+
                 @if (post.Comments != null && post.Comments.Any())
                 {
                     @foreach (var comment in post.Comments)
                     {
                         <div class="comment-line">
-                            <strong>@comment.User?.Name</strong> @comment.Content
+                            @if (Context.Session.GetInt32("user_id") == comment.UserId && 
+                                Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString())
+                            {
+                                <form action="/comments/edit" method="post" class="mt-2">
+                                    <input type="hidden" name="commentId" value="@comment.Id" />
+                                    <input type="text" name="content" value="@comment.Content" class="form-field" />
+                                    <button type="submit" class="post-btn">Save</button>
+                                    <a href="/feed" class="cancel-link">Cancel</a>
+                                </form>
+                            }
+                            else
+                            {
+                                <strong>@comment.User?.Name</strong> @comment.Content
+
+                                @if (Context.Session.GetInt32("user_id") == comment.UserId)
+                                {
+                                    <a href="/feed?editCommentId=@comment.Id"
+                                        class="small text-muted ms-2">
+                                        Edit
+                                    </a>
+                                }
+                            }
+
                         </div>
                     }
                 }
                 else
                 {
-                    <div class="text-muted small">
-                        No comments yet.
-                    </div>
+                    <div class="text-muted small">No comments yet.</div>
                 }
+
             </div>
-            <form asp-controller="Comments"            
-            asp-action="Create"       
-            method="post" class="mt-2"> 
-            <input type="hidden"
-                name="postId" value="@post.Id" />
-                <input type="text" 
-                    name="content" 
-                    class="form-field" 
-                    placeholder="Write a comment..." /> 
-                <button
-                    type="submit" 
-                    class="post-btn"> Comment 
-                </button>
+
+            <form asp-controller="Comments"
+                    asp-action="Create"
+                    method="post"
+                    class="mt-2">
+
+                <input type="hidden" name="postId" value="@post.Id" />
+
+                <input type="text"
+                        name="content"
+                        class="form-field"
+                        placeholder="Write a comment..." />
+
+                <button type="submit" class="post-btn">Comment</button>
             </form>
+
         </div>
     }
 </div>
