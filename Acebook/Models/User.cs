@@ -25,4 +25,9 @@ public class User
         friend.Friends.Add(this);
       }
     }
+  public void RemoveFriend(User friend)
+    {
+      this.Friends.Remove(friend);
+      friend.Friends.Remove(this);
+    }
 }

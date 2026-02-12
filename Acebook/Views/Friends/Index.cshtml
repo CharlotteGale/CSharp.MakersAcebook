@@ -8,7 +8,7 @@
     {
         foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
         {
-            <li>@friend.Name (@friend.Email)</li>
+            <li>@friend.Name (@friend.Email)<form asp-action="DeleteFriend" method="post"><input type="hidden" name="friendToDeleteId" value="@friend.Id"/> <button>DELETE FRIEND</button> </form></li>
         }
     }
 </ul>

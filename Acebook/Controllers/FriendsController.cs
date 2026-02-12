@@ -58,4 +58,24 @@ public class FriendsController : Controller
         ViewBag.Pending = requests;
         return View();
     }
+    [Route("/friends/delete")]
+    [HttpPost]
+    //Unfriend
+    public IActionResult DeleteFriend(int friendToDeleteId) {
+        int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
+        var user = _context.Users
+        .Include(u => u.Friends) 
+        .FirstOrDefault(u => u.Id == ActiveUserId);
+
+        var friendToDelete = _context.Users
+            .Include(u => u.Friends)
+            .FirstOrDefault(u => u.Id == friendToDeleteId);
+
+        if (user != null && friendToDelete != null) {
+            user.RemoveFriend(friendToDelete);
+            _context.SaveChanges();
+        }
+
+        return new RedirectResult("/friends");
+    }
 }

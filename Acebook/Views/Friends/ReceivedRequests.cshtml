@@ -8,5 +8,9 @@
             <input type="hidden" name="requestId" value="@req.Id" />
             <button type="submit">Accept</button>
         </form>
+        <form asp-action="RejectRequest" method="post">
+            <input type="hidden" name="requestId" value="@req.Id" />
+            <button type="submit">Reject</button>
+        </form>
     </div>
 }

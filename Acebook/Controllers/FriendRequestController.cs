@@ -47,27 +47,36 @@ public class FriendRequestController : Controller
         return new RedirectResult("/friends");
         }
 
-    [Route("/friends/requests")]
+    [Route("/friends/requests/accept")]
     [HttpPost]
     public IActionResult AcceptRequest(int requestSenderId, int requestId)
     {
-        Console.WriteLine($"else statement  {requestSenderId}");
         int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
         var user = _context.Users
-             .Where(u => u.Id == ActiveUserId)
-             .FirstOrDefault();
+            .Where(u => u.Id == ActiveUserId)
+            .FirstOrDefault();
         var requestSender = _context.Users
-             .Where(u => u.Id == requestSenderId)
-             .FirstOrDefault();
+            .Where(u => u.Id == requestSenderId)
+            .FirstOrDefault();
         user.AddFriend(requestSender);
-
-
         _context.SaveChanges();
+
+        _context.FriendRequests
+        .Where(fr => fr.Id == requestId)
+        .ExecuteDelete();
 
         return new RedirectResult("/friends");
     }
+    [Route("/friends/requests/reject")]
+    [HttpPost]
+    public IActionResult RejectRequest(int requestId)
+    {
+        _context.FriendRequests
+        .Where(fr => fr.Id == requestId)
+        .ExecuteDelete();
+        return new RedirectResult("/friends");
+    }
 
-        //need to request friendship
         //need to be able to accept request
         //need to reject.
         // 
