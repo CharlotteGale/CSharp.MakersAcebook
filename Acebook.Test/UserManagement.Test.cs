@@ -46,6 +46,19 @@ public class UserManagement : PlaywrightTestBase
     await Expect(Page).ToHaveURLAsync("http://127.0.0.1:5287/Feed");
   }
 
+  [Test]
+  [Category("fliesh")]
+  public async Task SigningInWithIncorrectCredentialsShowsErrorMessage()
+  {
+    await Page.GotoAsync("http://127.0.0.1:5287/");
+    await Page.GetByPlaceholder("Email").FillAsync("admin@email.com");
+    await Page.GetByPlaceholder("Password").FillAsync("wrongpassword");
+    await Page.GetByRole(AriaRole.Button, new() { Name = "Log In" }).ClickAsync();
+    await Expect(Page).ToHaveURLAsync("http://127.0.0.1:5287/");
+    var alert = Page.Locator(".alert-danger");
+    await Expect(alert).ToContainTextAsync("Your email or password details are incorrect."); 
+  }
+
 
   
 }
