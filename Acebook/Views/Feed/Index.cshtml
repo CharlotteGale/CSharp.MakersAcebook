@@ -1,8 +1,37 @@
-<h1>Feed</h1>
-
-<p>This is just holding all the posts until feed logic is in place.</p>
-
-@foreach (Post post in ViewBag.Posts)
-{
-    <p>@post.Content</p>
+@{
+    ViewData["Title"] = "Feed";
 }
+
+<div class="container mt-4">
+
+    <h1 class="mb-4">Feed</h1>
+
+    <!-- Write a Post -->
+    <div class="new-post-card mb-3">
+        <h5 class="card-title">Write a Post</h5>
+
+        <form action="/posts" method="post">
+            <div class="mb-3">
+                <input type="text"
+                        name="content"
+                        class="form-field"
+                        placeholder="What's on your mind?" />
+            </div>
+
+            <button type="submit" class="post-btn">
+                Submit
+            </button>
+        </form>
+    </div>
+
+    <!-- Recent Posts -->
+    <h3 class="mb-3">Recent Posts</h3>
+
+    @foreach (Post post in ViewBag.Posts)
+    {
+        <div class="recent-post-card mb-3">
+            <p class="card-text mb-0">@post.Content</p>
+        </div>
+    }
+
+</div>

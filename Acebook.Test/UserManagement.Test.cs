@@ -24,7 +24,7 @@ public class UserManagement : PageTest
     await Page.GetByPlaceholder("Password").FillAsync("password");
     await Page.GetByRole(AriaRole.Button, new() { Name = "Log In" }).ClickAsync();
 
-    await Expect(Page.Locator("h1")).ToHaveTextAsync("Posts");
+    await Expect(Page.Locator("h1")).ToHaveTextAsync("Feed");
   }
 
   
