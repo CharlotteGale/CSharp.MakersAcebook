@@ -41,8 +41,10 @@
                     @foreach (var comment in post.Comments)
                     {
                         <div class="comment-line">
-                            @if (Context.Session.GetInt32("user_id") == comment.UserId && 
-                                Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString())
+
+                            @* EDIT MODE *@
+                            @if (Context.Session.GetInt32("user_id") == comment.UserId &&
+                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString())
                             {
                                 <form action="/comments/edit" method="post" class="mt-2">
                                     <input type="hidden" name="commentId" value="@comment.Id" />
@@ -53,14 +55,20 @@
                             }
                             else
                             {
+                                @* NORMAL COMMENT *@
                                 <strong>@comment.User?.Name</strong> @comment.Content
 
                                 @if (Context.Session.GetInt32("user_id") == comment.UserId)
                                 {
                                     <a href="/feed?editCommentId=@comment.Id"
-                                        class="small text-muted ms-2">
-                                        Edit
-                                    </a>
+                                        class="small text-muted ms-2">Edit</a>
+
+                                    <form action="/comments/delete"
+                                            method="post"
+                                            class="d-inline ms-2">
+                                        <input type="hidden" name="commentId" value="@comment.Id" />
+                                        <button type="submit" class="delete-link">Delete</button>
+                                    </form>
                                 }
                             }
 
@@ -74,6 +82,7 @@
 
             </div>
 
+            <!-- Add a new comment -->
             <form asp-controller="Comments"
                     asp-action="Create"
                     method="post"
@@ -92,3 +101,15 @@
         </div>
     }
 </div>
+
+<style>
+    /* Makes delete look like a link */
+    .delete-link {
+        background: none;
+        border: none;
+        color: #dc3545;
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 0;
+    }
+</style>

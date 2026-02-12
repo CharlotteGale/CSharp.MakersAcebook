@@ -55,4 +55,22 @@ public class CommentsController : Controller
 
         return Redirect("/feed");
     }
+    [HttpPost]
+    [Route("comments/delete")]
+    public IActionResult Delete(int commentId)
+    {
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId == null) return Redirect("/");
+
+        var comment = _context.Comments.FirstOrDefault(c => c.Id == commentId);
+        if (comment == null) return Redirect("/feed");
+
+        // Only owner can delete
+        if (comment.UserId != userId) return Redirect("/feed");
+
+        _context.Comments.Remove(comment);
+        _context.SaveChanges();
+
+        return Redirect("/feed");
+    }
 }
