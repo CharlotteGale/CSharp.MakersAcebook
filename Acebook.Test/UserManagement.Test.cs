@@ -14,6 +14,21 @@ public class UserManagement : PageTest
     await Page.GetByRole(AriaRole.Button, new() { Name = "Create account" }).ClickAsync();
 
     await Expect(Page).ToHaveURLAsync("http://127.0.0.1:5287/");
+
+    var alert = Page.Locator(".alert-success");
+    await Expect(alert).ToContainTextAsync("Your profile has been created successfully. Log in to continue.");
+  }
+
+  [Test]
+  public async Task SigningUpWithMissingFieldsShowsErrorMessages()
+  {
+    await Page.GotoAsync("http://127.0.0.1:5287/");
+    await Page.GetByRole(AriaRole.Button, new() { Name = "Create new account" }).ClickAsync();
+
+    await Page.GetByPlaceholder("Name").FillAsync("");
+    await Page.GetByPlaceholder("Email").FillAsync("new@user.com");
+    await Page.GetByPlaceholder("Password").FillAsync("password");
+    await Page.GetByRole(AriaRole.Button, new() { Name = "Create account" }).ClickAsync();
   }
 
   [Test]
@@ -24,8 +39,9 @@ public class UserManagement : PageTest
     await Page.GetByPlaceholder("Password").FillAsync("password");
     await Page.GetByRole(AriaRole.Button, new() { Name = "Log In" }).ClickAsync();
 
-    await Expect(Page.Locator("h1")).ToHaveTextAsync("Feed");
+    await Expect(Page).ToHaveURLAsync("http://127.0.0.1:5287/Feed");
   }
+
 
   
 }
