@@ -19,12 +19,13 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
+                        @if (Context.Session.GetInt32("user_id") != null){
+                        <li class="nav-item">
                             <a title= "Takes you to your feed." class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">My Feed</a>
                         </li>
-                            <li class="nav-item">
+                        <li class="nav-item">
                             <a  title= "Takes you to your Friends List." class="nav-link text-dark" asp-area="" asp-controller="Friends" asp-action="Index">My Friends</a>
-                        </li>
+                        </li>}
                             </li>
                         </li>
                             </li>
@@ -33,10 +34,10 @@
                 <div class="text-end">
                     <ul class="navbar-nav flex-grow-1>"
                     <li class="nav-item">
-                    @if (Context.Session.GetInt32("user_id") != null){
-                    <form action="/logout" method = "post" style="display: inline;">
-                    <button type = "Submit" title= "Log out and end your session on Acebook." class="btn btn-link nav-link text-dark">Log Me Out</button>
-                    </form>}
+                        @if (Context.Session.GetInt32("user_id") != null){
+                            <form action="/logout" method = "post" style="display: inline;">
+                            <button type = "Submit" title= "Log out and end your session on Acebook." class="btn btn-link nav-link text-dark">Log Me Out</button>
+                        </form>}
                     </li>
                     </ul>
                 </div>
