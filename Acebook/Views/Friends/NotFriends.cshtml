@@ -5,7 +5,7 @@
     {
         foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
         {
-            <form action="/friends/requests" method="post">
+            <form action="/friends/not_friends_yet" method="post">
             <li>@newFriend.Name (@newFriend.Email) <input type="hidden" name="profileId" value="@newFriend.Id"/>
             @if(((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
                 {

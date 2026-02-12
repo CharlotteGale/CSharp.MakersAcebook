@@ -18,16 +18,6 @@ public class FriendRequestController : Controller
         _logger = logger;
     }
 
-    // internal List<FriendRequest> PendingRequests()
-    // {
-    //     int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
-    //     var requests = _context.FriendRequests
-    //         .Include(fr => fr.User) 
-    //         .Where(fr => fr.FriendId == ActiveUserId && fr.Pending == true || fr.UserId == ActiveUserId && fr.Pending == true)
-    //         .ToList();
-    //         return requests;
-    // }
-
     [Route("/friends/requests")]
     [HttpGet]
 
@@ -35,14 +25,14 @@ public class FriendRequestController : Controller
         int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
         var requests = _context.FriendRequests
             .Include(fr => fr.User) 
-            .Where(fr => fr.FriendId == ActiveUserId && fr.Pending == true)
+            .Where(fr => fr.FriendId == ActiveUserId)
             .ToList();
 
         ViewBag.Requests = requests;
         return View("~/Views/Friends/ReceivedRequests.cshtml");
         }
 
-    [Route("/friends/requests")]
+    [Route("/friends/not_friends_yet")]
     [HttpPost]
     public IActionResult CreateRequests(int profileId) {
         int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
@@ -56,8 +46,29 @@ public class FriendRequestController : Controller
 
         return new RedirectResult("/friends");
         }
-        
+
+    [Route("/friends/requests")]
+    [HttpPost]
+    public IActionResult AcceptRequest(int requestSenderId, int requestId)
+    {
+        Console.WriteLine($"else statement  {requestSenderId}");
+        int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
+        var user = _context.Users
+             .Where(u => u.Id == ActiveUserId)
+             .FirstOrDefault();
+        var requestSender = _context.Users
+             .Where(u => u.Id == requestSenderId)
+             .FirstOrDefault();
+        user.AddFriend(requestSender);
+
+
+        _context.SaveChanges();
+
+        return new RedirectResult("/friends");
+    }
+
         //need to request friendship
         //need to be able to accept request
         //need to reject.
+        // 
 }
