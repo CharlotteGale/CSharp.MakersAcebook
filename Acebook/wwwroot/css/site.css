@@ -38,6 +38,11 @@ body {
   font-family: verdana, sans-serif;
 }
 
+/* ========================================================================== */ 
+/* LOGIN */ 
+/* ========================================================================== */
+
+
 .login-wrapper {
   min-height: 90vh; 
   display: flex;
@@ -98,6 +103,10 @@ body {
   cursor: pointer;
 }
 
+/* ========================================================================== */ 
+/* SIGN UP */ 
+/* ========================================================================== */
+
 .new-acc-btn {
   width: 100%;
   padding: 0.75rem;
@@ -112,6 +121,11 @@ body {
 .submit-btn:hover {
   background: #042e65;
 }
+
+/* ========================================================================== */ 
+/* POSTS */ 
+/* ========================================================================== */
+
 
 .post-btn {
   padding: 0.5rem 1.25rem;
@@ -139,5 +153,90 @@ body {
     padding: 0.75rem 1rem; /* much tighter */
     box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     border: 1px solid #e6e6e6;
+}
+
+/* ========================================================================== */ 
+/* COMMENTS */ 
+/* ========================================================================== */
+
+    .profile-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        color: #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .comment-actions {
+        min-width: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .delete-form {
+        margin: 0;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .action-link {
+        background: none;
+        border: none;
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 0;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        line-height: 1;
+        color: #6c757d;
+    }
+
+    .action-link.delete {
+        color: #dc3545;
+    }
+
+    .action-link:hover {
+        text-decoration: underline;
+        color: #343a40;
+    }
+
+    .edit-comment-form .form-field {
+        width: 260px;
+        max-width: 100%;
+    }
+
+    .small-btn {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+    }
+
+    .comment-line {
+        padding: 4px 0;
+    }
+
+    .comment-form .form-field {
+        width: 100%;
+    }
+
+    .comment-form button {
+        margin-top: 6px;
+    }
+
+    .post-header {
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .comment-line span.small {
+    opacity: 0.7;
 }
 
