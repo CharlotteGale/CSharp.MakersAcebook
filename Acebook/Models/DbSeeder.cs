@@ -14,6 +14,7 @@ public static class DbSeeder
         var testuser = new User { Name = "Testy McTesterson", Email = "test@email.com", Password = "password1"};
         var testuser2 = new User { Name = "test2", Email = "test2@email.com", Password = "password1"};
         var testuser3 = new User { Name = "test3", Email = "test3@email.com", Password = "password1"};
+        //We need an extra test user for visability
 
         var request1 = new FriendRequest { User = testuser2, Friend = testuser };
         var request2 = new FriendRequest { User = testuser3, Friend = testuser };

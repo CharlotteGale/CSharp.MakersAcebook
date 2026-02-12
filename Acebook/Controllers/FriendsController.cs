@@ -30,4 +30,24 @@ public class FriendsController : Controller
         ViewBag.Friends = user?.Friends?.ToList() ?? new List<User>();
         return View();
     }
+    [Route("/friends/not_friends_yet")]
+    [HttpGet]
+    //GetAllUsers
+    public IActionResult NotFriends() {
+        int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
+
+        var existingFriendsIds = _context.Users
+            .Where(u => u.Id == ActiveUserId)
+            .SelectMany(u => u.Friends) //Puts everything in one big list
+            .Select(f => f.Id)
+            .ToList();
+        
+        var allOtherUsers = _context.Users
+            .Include(u => u.Friends) 
+            .Where(u => u.Id != ActiveUserId && !existingFriendsIds.Contains(u.Id))
+            .ToList();
+
+        ViewBag.NotFriends = allOtherUsers;
+        return View();
+    }
 }
