@@ -3,3 +3,6 @@ global using Microsoft.Playwright;
 global using Microsoft.Playwright.NUnit;
 global using OpenQA.Selenium.Chrome;
 global using OpenQA.Selenium;
+global using acebook.Models;
+global using Npgsql.EntityFrameworkCore.PostgreSQL;
+global using Microsoft.EntityFrameworkCore;

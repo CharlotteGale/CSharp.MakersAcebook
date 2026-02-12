@@ -1,7 +1,7 @@
 namespace Acebook.Test;
 using System.Text.RegularExpressions;
 
-public class LandingPageTests : PageTest
+public class LandingPageTests : PlaywrightTestBase
 {
   [Test]
   public async Task LandingPage_ShowsWelcomeMessage()
