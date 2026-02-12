@@ -31,6 +31,8 @@ public class UserManagement : PlaywrightTestBase
     await Page.GetByPlaceholder("Email").FillAsync("new@user.com");
     await Page.GetByPlaceholder("Password").FillAsync("password");
     await Page.GetByRole(AriaRole.Button, new() { Name = "Create account" }).ClickAsync();
+    var alert = Page.Locator(".alert-danger");
+    await Expect(alert).ToContainTextAsync("Missing Required Fields!");  
   }
 
   [Test]
