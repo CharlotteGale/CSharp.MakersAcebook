@@ -1,6 +1,6 @@
 namespace Acebook.Test;
 
-public class LandingPageTests : PageTest
+public class LandingPageTests : PlaywrightTestBase
 {
   [Test]
   public async Task LandingPage_ShowsWelcomeMessage()

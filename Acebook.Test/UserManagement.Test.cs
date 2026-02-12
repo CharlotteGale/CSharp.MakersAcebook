@@ -1,6 +1,8 @@
+using Acebook.Test;
+
 namespace Acebook.Tests;
 
-public class UserManagement : PageTest
+public class UserManagement : PlaywrightTestBase
 {
   [Test]
   public async Task SigningUpRedirectsToSignInForm()
@@ -35,7 +37,7 @@ public class UserManagement : PageTest
   public async Task SigningInWithCorrectCredentialsRedirectsToPosts()
   {
     await Page.GotoAsync("http://127.0.0.1:5287/");
-    await Page.GetByPlaceholder("Email").FillAsync("new@user.com");
+    await Page.GetByPlaceholder("Email").FillAsync("admin@email.com");
     await Page.GetByPlaceholder("Password").FillAsync("password");
     await Page.GetByRole(AriaRole.Button, new() { Name = "Log In" }).ClickAsync();
 
