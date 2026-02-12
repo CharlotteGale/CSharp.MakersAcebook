@@ -17,8 +17,7 @@ public static class DbSeeder
         //We need an extra test user for visability
 
         var request1 = new FriendRequest { User = testuser2, Friend = testuser };
-        var request2 = new FriendRequest { User = testuser3, Friend = testuser };
-
+        
         admin.AddFriend(testuser);
         admin.AddFriend(testuser2);
         admin.AddFriend(testuser3);
@@ -33,7 +32,7 @@ public static class DbSeeder
             new Post { Content = "This is a cute picture of a cat", User = testuser}
         );  
 
-        context.FriendRequests.AddRange( request1, request2);
+        context.FriendRequests.AddRange( request1);
 
         context.SaveChanges();
     }

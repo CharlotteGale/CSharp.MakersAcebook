@@ -18,6 +18,16 @@ public class FriendRequestController : Controller
         _logger = logger;
     }
 
+    // internal List<FriendRequest> PendingRequests()
+    // {
+    //     int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
+    //     var requests = _context.FriendRequests
+    //         .Include(fr => fr.User) 
+    //         .Where(fr => fr.FriendId == ActiveUserId && fr.Pending == true || fr.UserId == ActiveUserId && fr.Pending == true)
+    //         .ToList();
+    //         return requests;
+    // }
+
     [Route("/friends/requests")]
     [HttpGet]
 
@@ -46,7 +56,7 @@ public class FriendRequestController : Controller
 
         return new RedirectResult("/friends");
         }
-        //Need to build view of all users not friends
+        
         //need to request friendship
         //need to be able to accept request
         //need to reject.

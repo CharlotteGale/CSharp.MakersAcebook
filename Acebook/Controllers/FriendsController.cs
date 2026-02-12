@@ -4,6 +4,7 @@ using acebook.Models;
 using acebook.ActionFilters;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace acebook.Controllers;
 
 [ServiceFilter(typeof(AuthenticationFilter))]
@@ -47,7 +48,14 @@ public class FriendsController : Controller
             .Where(u => u.Id != ActiveUserId && !existingFriendsIds.Contains(u.Id))
             .ToList();
 
+        var requests = _context.FriendRequests
+            .Where(fr => fr.FriendId == ActiveUserId && fr.Pending == true || fr.UserId == ActiveUserId && fr.Pending == true)
+            .Select(fr => fr.UserId == ActiveUserId ? fr.FriendId : fr.UserId)
+            // This is saying that the fr.UserId is equal to the ActiveUserId, add the fr.FriendId. If it is not true, then add the fr.UserId, all into a List. 
+            .ToHashSet();
+
         ViewBag.NotFriends = allOtherUsers;
+        ViewBag.Pending = requests;
         return View();
     }
 }

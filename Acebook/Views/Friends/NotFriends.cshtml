@@ -5,7 +5,23 @@
     {
         foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
         {
-            <li>@newFriend.Name (@newFriend.Email)</li>
+            <form action="/friends/requests" method="post">
+            <li>@newFriend.Name (@newFriend.Email) <input type="hidden" name="profileId" value="@newFriend.Id"/>
+            @if(((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
+                {
+                    <p>
+                        Pending
+                    </p>
+                }
+            else
+                {
+                    <button type="submit"> Add Friend </button>
+                }
+            </li>
+            
+
+            </form>
+             // condtionally render pending request or request button depending on table
         }
     }
 </ul>

@@ -12,7 +12,7 @@ public class FriendRequest
     // This is the Id of the user that is receving the request
     public User? Friend {get;set;}
     public bool Pending {get; set;} = true;
-    // Starts as pending, if accepted or rejected, turns to false then deletes 
+    // Starts as pending(t), if accepted or rejected, turns to false then deletes 
     public DateTime CreatedAt {get; set;} = DateTime.UtcNow;
 
 
