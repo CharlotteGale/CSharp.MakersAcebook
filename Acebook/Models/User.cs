@@ -13,6 +13,7 @@ public class User
   public string Password {get; set;}
   public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
   public virtual ICollection<User> Friends { get; set; } = new List<User>();
+  public ICollection<Comment> Comments {get; set;} = new List<Comment>();
 
   public void AddFriend(User friend)
     {
