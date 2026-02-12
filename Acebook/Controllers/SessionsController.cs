@@ -25,17 +25,17 @@ public class SessionsController : Controller
     [Route("/")]
     [HttpPost]
     public IActionResult Create(string email, string password) {
-      User? user = _context.Users.FirstOrDefault(user => user.Email == email);
-      if(user != null && user.Password == password)
-      {
-        HttpContext.Session.SetInt32("user_id", user.Id);
-        return new RedirectResult("/Feed");
-      }
-      else
-      {
-        TempData["ErrorMessage"] = "Your email or password details are incorrect.";
-        return new RedirectResult("/");
-      }
+        User? user = _context.Users.FirstOrDefault(user => user.Email == email);
+        if(user != null && user.Password == password)
+        {
+            HttpContext.Session.SetInt32("user_id", user.Id);
+            return new RedirectResult("/Feed");
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Your email or password details are incorrect.";
+            return new RedirectResult("/");
+        }
     }
 
     [HttpPost]
