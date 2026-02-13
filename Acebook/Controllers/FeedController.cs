@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using acebook.Models;
 using acebook.ActionFilters;
+using Microsoft.EntityFrameworkCore;
 
 namespace acebook.Controllers;
 
@@ -19,9 +20,14 @@ public class FeedController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        List<Post> posts = _context.Posts.ToList();
-        ViewBag.Posts = posts;
-        return View();
+        int? currentUserId = HttpContext.Session.GetInt32("user_id");
+        if (currentUserId == null) return Redirect("/");
+        var posts = _context.Posts
+            .Include(p => p.User)
+            .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+            .ToList();
+        return View(posts);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
