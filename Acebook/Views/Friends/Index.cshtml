@@ -8,24 +8,28 @@
   {
     foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
     {
-    <div class="card mb-3" style="max-width: 540px;">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <div class="profile-icon d-flex justify-content-center align-items-center mx-5 my-3 fs-1 p-4 bg-primary text-white rounded-circle">@friend.Name[0]</div>
-          @* Replace above with img *@
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title mt-1">@friend.Name </h5>
-            <p class="card-text">@friend.Email</p>
-            <form asp-action="DeleteFriend" method="post">
-              <input type="hidden" name="friendToDeleteId" value="@friend.Id"/>
-              <button class="submit-btn">DELETE FRIEND</button>
-            </form>
+      <div class="friend-card">
+        <div class="row g-0">
+          <div class="col-md-3">
+            <div class="avatar-wrapper">
+              <div class="avatar-icon">@friend.Name[0]</div>
+              @* Replace above with img *@
+            </div>
+          </div>
+          <div class="col align-self-end">
+            <div class="friend-card-body">
+              <h5 class="card-title mt-1">@friend.Name </h5>
+              <p class="card-text">@friend.Email</p>
+              <div class="friend-card-footer">
+                <form asp-action="DeleteFriend" method="post">
+                  <input type="hidden" name="friendToDeleteId" value="@friend.Id" />
+                  <button class="friend-card-btn">DELETE FRIEND</button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     }
   }
 </ul>

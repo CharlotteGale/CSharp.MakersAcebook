@@ -1,52 +1,85 @@
-<h2>Friend Requests</h2>
-@if(((List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests) .Any()){
-    @foreach (var req in (List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests)
-    {<div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <div class="profile-icon d-flex justify-content-center align-items-center mx-5 my-3 fs-1 p-4 bg-primary text-white rounded-circle">@req.User?.Name[0]</div>
-            @* Replace above with img *@
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title mt-1">@req.User?.Name </h5>
-              <p><strong>@req.User?.Name</strong> wants to be your friend!</p>
-            <div class="row g-0">
-            <div class="col align-self-start mx-2">
-            <form asp-action="AcceptRequest" method="post">
-                <input type="hidden" name="requestSenderId" value="@req.User?.Id" />
-                <input type="hidden" name="requestId" value="@req.Id" />
-                <button class="submit-btn" type="submit">Accept</button>
-            </form>
-            </div>
-            <div class="col align-self-end mx-2">
-            <form asp-action="RejectRequest" method="post">
-                <input type="hidden" name="requestId" value="@req.Id" />
-                <button class="submit-btn" type="submit">Reject</button>
-            </form>
-            </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="row g-4">
+  <div class="col align-self-start">
 
-    } 
-}else
-    {<p>No Requests Received</p>}
-<br />
-
-<h2>Sent Requests</h2>
-@if(((List<acebook.Models.FriendRequest>)ViewBag.SentRequests).Any()){
-    @foreach (var sent in (List<acebook.Models.FriendRequest>)ViewBag.SentRequests)
+    <h2>Friend Requests</h2>
+    @if (((List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests).Any())
     {
-        <div class="request-box">
-            <p><strong>@sent.Friend?.Name</strong> has recieved your request.</p>
-            <form asp-action="RejectRequest" method="post">
-                <input type="hidden" name="requestId" value="@sent.Id" />
-                <button type="submit">Delete</button>
-            </form>
-        </div>
-    }
-}else
-    {<p>No Pending Friend Requests</p>}
+      @foreach (var req in (List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests)
+      {
+        <div class="friend-card">
+          <div class="row g-0">
+            <div class="col-md-3">
+              <div class="avatar-wrapper">
+                <div class="avatar-icon">
+                  @req.User?.Name[0]</div>
+                  @* Replace above with img *@
+                </div>
+              </div>
+              <div class="col align-self-end">
+                <div class="friend-card-body">
+                  <h5 class="card-title mt-1">@req.User?.Name </h5>
+                  <p><strong>@req.User?.Name</strong> wants to be your friend!</p>
+                  <div class="friend-card-footer">
+                    <div class="row g-0">
+                      <div class="col align-self-start ">
+                        <form asp-action="AcceptRequest" method="post">
+                          <input type="hidden" name="requestSenderId" value="@req.User?.Id" />
+                          <input type="hidden" name="requestId" value="@req.Id" />
+                          <button class="friend-card-btn" type="submit">Accept</button>
+                        </form>
+                      </div>
+                      <div class="col align-self-end mx-2">
+                        <form asp-action="RejectRequest" method="post">
+                          <input type="hidden" name="requestId" value="@req.Id" />
+                          <button class="friend-card-btn" type="submit">Reject</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }else
+      {
+        <p>No Requests Received</p>
+      }
+    </div>
+
+    <div class="col align-self-end">
+      <h2>Sent Requests</h2>
+      @if (((List<acebook.Models.FriendRequest>)ViewBag.SentRequests).Any())
+      {
+        @foreach (var sent in (List<acebook.Models.FriendRequest>)ViewBag.SentRequests)
+        {
+          <div class="friend-card">
+            <div class="row g-0">
+              <div class="col-md-3">
+                <div class="avatar-wrapper">
+                  <div class="avatar-icon">
+                    @sent.Friend?.Name[0]</div>
+                    @* Replace above with img *@
+                  </div>
+                </div>
+                <div class="col align-self-end">
+                  <div class="friend-card-body">
+                    <h5 class="card-title mt-1">@sent.Friend?.Name </h5>
+                    <p class="card-text">@sent.Friend?.Email</p>
+                    <div class="friend-card-footer">
+                      <form asp-action="RejectRequest" method="post">
+                        <input type="hidden" name="requestId" value="@sent.Id" />
+                        <button class="friend-card-btn">Delete Request</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        }else
+        {
+          <p>No Pending Friend Requests</p>
+        }
+      </div>
+    </div>

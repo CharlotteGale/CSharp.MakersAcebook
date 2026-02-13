@@ -79,6 +79,75 @@ body {
   max-width: 360px;
 }
 
+.friend-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  
+}
+
+.friend-card{
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  border-color: black;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 300px;
+  height: 115px;
+  flex: 0 0 600px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.friend-card-body{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+}
+
+.friend-card-footer{
+  margin-top: auto;
+  width: 100%;
+}
+
+.friend-card-btn{
+  width: 100%;
+  padding: 0.4rem;
+  border-radius: 50px;
+  background: #023E8A;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.avatar-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 15px;
+}
+
+.avatar-icon{
+  width: 60px;
+  height: 60px;
+  background-color: blue;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
 .form-field {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -140,4 +209,5 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     border: 1px solid #e6e6e6;
 }
+
 

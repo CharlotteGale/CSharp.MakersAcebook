@@ -1,27 +1,45 @@
 <h1>Not Friends</h1>
 
-@{bool hasFriendSuggestions = false;}
+@{
+    bool hasFriendSuggestions = false;
+}
 
 <ul>
     @if (ViewBag.NotFriends != null)
     {
         foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
-        {          
-            @if(!((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
+        {
+            @if (!((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
             {
-            hasFriendSuggestions = true;
-            
-            <li>@newFriend.Name (@newFriend.Email)
-            <form action="/friends/not_friends_yet" method="post">
-            <input type="hidden" name="profileId" value="@newFriend.Id"/>
-            <button type="submit"> Add Friend 
-            </button>
-            </form>
-            </li>
+                hasFriendSuggestions = true;
+                <div class="friend-card">
+                    <div class="row g-0">
+                        <div class="col-md-3">
+                            <div class="avatar-wrapper">
+                                <div class="avatar-icon">
+                                    @newFriend.Name[0]</div>
+                                    @* Replace above with img *@
+                                </div>
+                            </div>
+                            <div class="col align-self-end">
+                                <div class="friend-card-body">
+                                    <h5 class="card-title mt-1">@newFriend.Name </h5>
+                                    <p class="card-text">@newFriend.Email</p>
+                                    <div class="friend-card-footer">
+                                    <form action="/friends/not_friends_yet" method="post">
+                                        <input type="hidden" name="profileId" value="@newFriend.Id" />
+                                        <button class="friend-card-btn">Add Friend</button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
             }
         }
-    }
-    @if (!hasFriendSuggestions){
-        <p>You're friends with everyone, ain't you popular.</p>
-    }
-</ul>
+        @if (!hasFriendSuggestions)
+        {
+            <p>You're friends with everyone, ain't you popular.</p>
+        }
+    </ul>
