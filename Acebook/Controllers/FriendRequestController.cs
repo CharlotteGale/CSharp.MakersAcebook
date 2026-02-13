@@ -23,12 +23,17 @@ public class FriendRequestController : Controller
 
     public IActionResult ReceivedRequests() {
         int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
-        var requests = _context.FriendRequests
+        var receivedRequests = _context.FriendRequests
             .Include(fr => fr.User) 
             .Where(fr => fr.FriendId == ActiveUserId)
             .ToList();
+        var sentRequests = _context.FriendRequests
+            .Include(fr => fr.Friend) 
+            .Where(fr => fr.UserId == ActiveUserId)
+            .ToList();
 
-        ViewBag.Requests = requests;
+        ViewBag.SentRequests = sentRequests;
+        ViewBag.ReceivedRequests = receivedRequests;
         return View("~/Views/Friends/ReceivedRequests.cshtml");
         }
 

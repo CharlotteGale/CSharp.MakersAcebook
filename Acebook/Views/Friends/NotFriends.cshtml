@@ -1,25 +1,27 @@
 <h1>Not Friends</h1>
 
+@{bool hasFriendSuggestions = false;}
+
 <ul>
     @if (ViewBag.NotFriends != null)
     {
         foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
-        {
+        {          
+            @if(!((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
+            {
+            hasFriendSuggestions = true;
+            
+            <li>@newFriend.Name (@newFriend.Email)
             <form action="/friends/not_friends_yet" method="post">
-            <li>@newFriend.Name (@newFriend.Email) <input type="hidden" name="profileId" value="@newFriend.Id"/>
-            @if(((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
-                {
-                    <p>
-                        Pending
-                    </p>
-                }
-            else
-                {
-                    <button type="submit"> Add Friend </button>
-                }
-            </li>
+            <input type="hidden" name="profileId" value="@newFriend.Id"/>
+            <button type="submit"> Add Friend 
+            </button>
             </form>
-            // Render 2 different columns, 1 for pending outbound requests and another for all users, people we might know.
+            </li>
+            }
         }
+    }
+    @if (!hasFriendSuggestions){
+        <p>You're friends with everyone, ain't you popular.</p>
     }
 </ul>
