@@ -1,0 +1,25 @@
+<h1>Not Friends</h1>
+
+<ul>
+    @if (ViewBag.NotFriends != null)
+    {
+        foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
+        {
+            <form action="/friends/not_friends_yet" method="post">
+            <li>@newFriend.Name (@newFriend.Email) <input type="hidden" name="profileId" value="@newFriend.Id"/>
+            @if(((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
+                {
+                    <p>
+                        Pending
+                    </p>
+                }
+            else
+                {
+                    <button type="submit"> Add Friend </button>
+                }
+            </li>
+            </form>
+            // Render 2 different columns, 1 for pending outbound requests and another for all users, people we might know.
+        }
+    }
+</ul>
