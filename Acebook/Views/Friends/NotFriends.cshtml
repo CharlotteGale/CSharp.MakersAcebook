@@ -1,45 +1,52 @@
-<h1>Not Friends</h1>
+<div class="nav-button-container d-flex align-items-center">
+  <a class="friend-navigation-btn" asp-controller="Friends" asp-action="Index">Friends</a>
+  <a class="friend-navigation-btn" asp-controller="Friends" asp-action="requests">Friend Requests</a>
+</div>
 
+<h1 class="my-4">Potential Friends</h1>
 @{
-    bool hasFriendSuggestions = false;
+  bool hasFriendSuggestions = false;
+  var pendingIds = ViewBag.Pending as HashSet<int> ?? new HashSet<int>();
+}
+@if (ViewBag.NotFriends != null)
+{
+  <div class="container-fluid">
+    <div class="row g-4">
+      @foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
+      {
+        @if (!pendingIds.Contains(newFriend.Id))
+        {
+          hasFriendSuggestions = true;
+          <div class="col-12 col-md-6 col-xl-4">
+            <div class="friend-card w-100">
+              <div class="row g-0 align-items-center h-100">
+                <div class="col-4 d-flex justify-content-center">
+                  <div class="avatar-icon">@newFriend.Name[0]</div>
+                </div>
+                <div class="col-8 d-flex flex-column justify-content-between h-100 p-2">
+                  <div>
+                    <h5 class="mb-0 text-truncate">@newFriend.Name</h5>
+                    <p class="text-muted small text-truncate">@newFriend.Email</p>
+                  </div>
+                  <div class="friend-card-footer">
+                    <form action="/friends/not_friends_yet" method="post">
+                      <input type="hidden" name="profileId" value="@newFriend.Id" />
+                      <button class="friend-card-btn">ADD FRIEND</button>
+                    </form>
+                  </div>
+                </div> 
+              </div>
+            </div> 
+          </div> 
+        }
+      }
+    </div>
+  </div>
 }
 
-<ul>
-    @if (ViewBag.NotFriends != null)
-    {
-        foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
-        {
-            @if (!((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
-            {
-                hasFriendSuggestions = true;
-                <div class="friend-card">
-                    <div class="row g-0">
-                        <div class="col-md-3">
-                            <div class="avatar-wrapper">
-                                <div class="avatar-icon">
-                                    @newFriend.Name[0]</div>
-                                    @* Replace above with img *@
-                                </div>
-                            </div>
-                            <div class="col align-self-end">
-                                <div class="friend-card-body">
-                                    <h5 class="card-title mt-1">@newFriend.Name </h5>
-                                    <p class="card-text">@newFriend.Email</p>
-                                    <div class="friend-card-footer">
-                                    <form action="/friends/not_friends_yet" method="post">
-                                        <input type="hidden" name="profileId" value="@newFriend.Id" />
-                                        <button class="friend-card-btn">Add Friend</button>
-                                    </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-        }
-        @if (!hasFriendSuggestions)
-        {
-            <p>You're friends with everyone, ain't you popular.</p>
-        }
-    </ul>
+@if (!hasFriendSuggestions)
+{
+  <div class="text-center mt-5">
+    <p class="lead text-muted">You're friends with everyone, ain't you popular!</p>
+  </div>
+}

@@ -1,35 +1,38 @@
-<h1>Friends</h1>
+<div class="nav-button-container d-flex align-items-center">
+  <a class="friend-navigation-btn" asp-action="requests">Requests</a>
+<a class="friend-navigation-btn" asp-action="not_friends_yet">Potential Friends</a>
+</div>
 
-<a asp-action="requests">Requests</a>
-<br />
-<a asp-action="not_friends_yet">Potential Friends</a>
-<ul>
-  @if (ViewBag.Friends != null)
-  {
-    foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
-    {
-      <div class="friend-card">
-        <div class="row g-0">
-          <div class="col-md-3">
-            <div class="avatar-wrapper">
-              <div class="avatar-icon">@friend.Name[0]</div>
-              @* Replace above with img *@
-            </div>
-          </div>
-          <div class="col align-self-end">
-            <div class="friend-card-body">
-              <h5 class="card-title mt-1">@friend.Name </h5>
-              <p class="card-text">@friend.Email</p>
-              <div class="friend-card-footer">
-                <form asp-action="DeleteFriend" method="post">
-                  <input type="hidden" name="friendToDeleteId" value="@friend.Id" />
-                  <button class="friend-card-btn">DELETE FRIEND</button>
-                </form>
+<h1 class="my-4">Friends</h1>
+
+@if (ViewBag.Friends != null)
+{
+  <div class="container-fluid">
+    <div class="row g-4"> 
+      @foreach(var friend in (List<acebook.Models.User>)ViewBag.Friends)
+      {
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="friend-card w-100">
+            <div class="row g-0 align-items-center h-100">
+              <div class="col-4 d-flex justify-content-center">
+                <div class="avatar-icon">@friend.Name[0]</div>
+                @* Replace above with img *@
               </div>
-            </div>
+              <div class="col-8 d-flex flex-column justify-content-between h-100 p-2">
+                <div>
+                  <h5 class="mb-0 text-truncate">@friend.Name</h5>
+                  <p class="text-muted small text-truncate">@friend.Email</p>
+                </div>
+                <div class="friend-card-footer">
+                  <form asp-action="DeleteFriend" method="post">
+                    <input type="hidden" name="friendToDeleteId" value="@friend.Id" />
+                    <button class="friend-card-remove-btn">DELETE</button>
+                  </form>
+                </div>
+              </div> 
+            </div> 
           </div>
-        </div>
-      </div>
-    }
-  }
-</ul>
+        </div> }
+    </div>
+  </div>
+}
