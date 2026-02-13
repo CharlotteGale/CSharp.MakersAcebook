@@ -53,8 +53,12 @@ public class FeedController : Controller
             .Include(p => p.User)
             .Include(p => p.Comments)
                 .ThenInclude(c => c.User)
+            .Include(p => p.Likes)
+                .ThenInclude(l => l.User)
             .ToList();
+
         return View(posts);
+
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

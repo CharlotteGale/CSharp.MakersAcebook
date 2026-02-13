@@ -15,6 +15,8 @@ public class User
   public virtual ICollection<User> Friends { get; set; } = new List<User>();
   public ICollection<Comment> Comments {get; set;} = new List<Comment>();
 
+    public ICollection<Like> Likes {get; set;} = new List<Like>();
+
   public User(){}
 
   public void AddFriend(User friend)
