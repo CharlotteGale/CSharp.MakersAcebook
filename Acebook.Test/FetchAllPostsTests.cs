@@ -1,49 +1,15 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using acebook.Models;
-using acebook.ActionFilters;
-using NUnit.Framework;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-
-namespace acebook.Tests;
+namespace Acebook.Test;
 
 
-public class FetchAllPostsTests
+public class FetchAllPostsTests : NUnitTestBase
 {
-    private User _testuser;
-    private AcebookDbContext _context;
-
-    [SetUp]
-
-    public void SetUp()
+    [Test]
+    public void Test()
     {
-        IConfiguration configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.Development.json")
-            .Build();
-        var options = new DbContextOptionsBuilder<AcebookDbContext>()
-            .Options;
-        
-        _context = new AcebookDbContext(options, configuration);
-        _context.Database.EnsureCreated();
-        _context.SaveChanges();
+        List<Post> posts = _context.Posts.ToList();
 
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        _context.Dispose();
-    }
-
-
-
-[Test]
-    public void Test()
-    {
-        List<Post> posts = _context.Posts.ToList();
-        Assert.That(posts[0].Content, Is.EquivalentTo("apWEIFRGHOU"));
+        Assert.That(posts[0].Content, Is.EquivalentTo("apWEIFRGHOU"));
         Assert.That(posts[0].User.Name, Is.EquivalentTo("Admin"));
-    }
+    }
 }
 

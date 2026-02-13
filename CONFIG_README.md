@@ -66,3 +66,30 @@ cd Acebook.Test
 dotnet build
 pwsh bin/Debug/net10.0/playwright.ps1 install
 ```
+
+## BaseTest Classes & Test Configuration
+For the new configuration to work, you will need to create a `Acebook.Test/appsettings.Test.json` using the `appsettings.Test.example.json` as a guide.  
+```bash
+touch Acebook.Test/appsettings.Test.json
+```
+
+> Note: Ensure that the database is configured to the test db and reconfigure `appsettings.Development.json` to point to the development database.
+
+
+Some amendments were made to Acebook.Test.csproj, including a NuGet package, the following commands should be run:
+```bash
+cd Acebook.Test
+dotnet clean
+dotnet build
+dotnet test
+```
+
+For new tests the TestBase classes can be inherited.
+
+Playwright tests will inherit from `PlaywrightTestBase`, which is in turn inheriting from `PageTest`.
+
+NUnit tests will inherit from `NUnitTestBase`.
+
+Both TestBase classes are handling the setup and teardown for each and every test, ensuring the test database stays clean.
+
+The DbSeeder has been implement to seed the test db, but if this grows too much, a new TestDbSeeder will need to be done specifically to keep test data clean and minimal.
