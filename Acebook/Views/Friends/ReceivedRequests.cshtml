@@ -1,19 +1,36 @@
 <h2>Friend Requests</h2>
 @if(((List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests) .Any()){
     @foreach (var req in (List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests)
-    {
-        <div class="request-box">
-            <p><strong>@req.User?.Name</strong> wants to be your friend!</p>
+    {<div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <div class="profile-icon d-flex justify-content-center align-items-center mx-5 my-3 fs-1 p-4 bg-primary text-white rounded-circle">@req.User?.Name[0]</div>
+            @* Replace above with img *@
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title mt-1">@req.User?.Name </h5>
+              <p><strong>@req.User?.Name</strong> wants to be your friend!</p>
+            <div class="row g-0">
+            <div class="col align-self-start mx-2">
             <form asp-action="AcceptRequest" method="post">
                 <input type="hidden" name="requestSenderId" value="@req.User?.Id" />
                 <input type="hidden" name="requestId" value="@req.Id" />
-                <button type="submit">Accept</button>
+                <button class="submit-btn" type="submit">Accept</button>
             </form>
+            </div>
+            <div class="col align-self-end mx-2">
             <form asp-action="RejectRequest" method="post">
                 <input type="hidden" name="requestId" value="@req.Id" />
-                <button type="submit">Reject</button>
+                <button class="submit-btn" type="submit">Reject</button>
             </form>
+            </div>
+            </div>
+            </div>
+          </div>
         </div>
+      </div>
+
     } 
 }else
     {<p>No Requests Received</p>}
