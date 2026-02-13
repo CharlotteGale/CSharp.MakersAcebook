@@ -1,11 +1,14 @@
 <h1>Friends</h1>
 
+<a asp-action="requests">Requests</a>
+<br />
+<a asp-action="not_friends_yet">Potential Friends</a>
 <ul>
     @if (ViewBag.Friends != null)
     {
         foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
         {
-            <li>@friend.Name (@friend.Email)</li>
+            <li>@friend.Name (@friend.Email)<form asp-action="DeleteFriend" method="post"><input type="hidden" name="friendToDeleteId" value="@friend.Id"/> <button>DELETE FRIEND</button> </form></li>
         }
     }
 </ul>
