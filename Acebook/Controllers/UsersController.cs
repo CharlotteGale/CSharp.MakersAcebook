@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using acebook.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace acebook.Controllers;
 
@@ -30,6 +31,8 @@ public class UsersController : Controller
         {
             return View("New", user);
         }
+        var hasher = new PasswordHasher<User>();
+        user.Password = hasher.HashPassword(user, user.Password);
         _context.Users.Add(user);
         _context.SaveChanges();
         TempData["SuccessMessage"] = "Your profile has been created successfully. Log in to continue.";
