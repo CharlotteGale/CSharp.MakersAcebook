@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Acebook.Test;
 
-public class PasswordHashingTests
+public class PasswordHashingTests : NUnitTestBase
 {
     [Test]
     [Category("password")]
