@@ -38,7 +38,19 @@ public class SessionsController : Controller
         }
         
         var hasher = new PasswordHasher<User>();
-        var result = hasher.VerifyHashedPassword(user, user.Password, password);
+        // var result = hasher.VerifyHashedPassword(user, user.Password, password);
+        PasswordVerificationResult result; 
+        bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+        bool isPlainTextPassword = user.Password.Length < 20;
+        if(isDevelopment && isPlainTextPassword)
+        {
+            result = user.Password == password
+                ? PasswordVerificationResult.Success
+                :PasswordVerificationResult.Failed;
+        }
+        else {
+            result = hasher.VerifyHashedPassword(user, user.Password, password);
+             }
 
         if (result == PasswordVerificationResult.Success || result == PasswordVerificationResult.SuccessRehashNeeded)
         {
