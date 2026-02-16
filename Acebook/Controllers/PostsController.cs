@@ -93,6 +93,7 @@ public class PostsController : Controller
             return Redirect("/feed");
 
         post.Content = content;
+        post.UpdatedAt = DateTime.UtcNow;
         _context.SaveChanges();
 
         return Redirect("/feed");

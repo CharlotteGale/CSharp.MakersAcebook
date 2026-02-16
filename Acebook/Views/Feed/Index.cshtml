@@ -75,7 +75,15 @@
             {
                 <!-- NORMAL MODE -->
                 <p class="card-text mb-2">@post.Content</p>
-                <span class="text-muted small">@TimeAgo(post.CreatedAt)</span>
+                <span class="text-muted small">
+                @TimeAgo(post.CreatedAt)
+
+                @if (post.UpdatedAt != null)
+                {
+                    <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+                }
+            </span>
+
             }
 
 
@@ -119,9 +127,17 @@
                                 @if (!(Context.Session.GetInt32("user_id") == comment.UserId &&
                                         Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))
                                 {
-                                    <span class="ms-2">@comment.Content</span>
-                                    <span class="text-muted small ms-2">· @TimeAgo(comment.CreatedAt)</span>
+                                <div class="ms-2">
+                                <span class="ms-2">@comment.Content</span>
+                                <span class="text-muted small ms-2">
+                                    @TimeAgo(comment.CreatedAt)
+                                    @if (comment.UpdatedAt != null)
+                                    {
+                                        <span class="ms-2">(edited @TimeAgo(comment.UpdatedAt.Value))</span>
+                                    }
+                                </span>
 
+                                </div>
                                 }
                             </div>
 
