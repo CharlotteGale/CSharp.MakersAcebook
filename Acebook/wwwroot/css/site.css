@@ -117,7 +117,6 @@ body {
 }
 
 .friend-card{
-  aspect-ratio: 16/9;
   background: #ffffff;
   border-radius: 8px;
   border: 1px solid;
@@ -401,10 +400,6 @@ body {
     margin: 0;
 }
 
-.friends-nav {
-    display: flex;
-    gap: 15px;
-}
 
 .friends-link {
     text-decoration: none;
@@ -446,6 +441,7 @@ body {
 .friend-email {
     font-size: 0.9rem;
     color: #666;
+    margin-top: 10px;
 }
 
 /* DELETE FRIEND BUTTON */
@@ -502,8 +498,4 @@ body {
     font-size: 1rem;
     font-weight: 500;
     margin-top: 20px;
-}
-
-.friend-email {
-    margin-top: 10px; /* or 3–4px if you want a bit more space */
 }

@@ -10,37 +10,45 @@
         </div>
     </div>
 
+
     <!-- ========================= -->
-    <!-- FRIENDS LIST -->
+    <!-- SUGGESTED FRIENDS -->
     <!-- ========================= -->
-    <h2 class="section-title">Your Friends</h2>
+    <h2 class="section-title mt-5">Suggested Friends</h2>
 
     <ul class="friends-list">
-        @if ((ViewBag.Friends as List<acebook.Models.User>)?.Any() == true)
+        @{
+            var pending = ViewBag.Pending as HashSet<int> ?? new HashSet<int>();
+        }
+
+        @if ((ViewBag.NotFriends as List<acebook.Models.User>)?.Any() == true)
         {
-            foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
+            foreach (var nf in (List<acebook.Models.User>)ViewBag.NotFriends)
             {
-                <li class="friend-item">
+                if (!pending.Contains(nf.Id))
+                {
+                    <li class="friend-item">
 
-                    <div class="friend-info">
-                        <div class="friend-header d-flex align-items-center">
-                            <div class="profile-icon">@friend.Name?.FirstOrDefault()</div>
-                            <span class="friend-name ms-2">@friend.Name</span>
+                        <div class="friend-info">
+                            <div class="friend-header d-flex align-items-center">
+                                <div class="profile-icon">@nf.Name?.FirstOrDefault()</div>
+                                <span class="friend-name ms-2">@nf.Name</span>
+                            </div>
+                            <span class="friend-email friend-email-offset">@nf.Email</span>
                         </div>
-                        <span class="friend-email friend-email-offset">@friend.Email</span>
-                    </div>
 
-                    <form asp-action="DeleteFriend" method="post">
-                        <input type="hidden" name="friendToDeleteId" value="@friend.Id" />
-                        <button class="friend-delete-btn">Remove</button>
-                    </form>
+                        <form action="/friends/not_friends_yet" method="post">
+                            <input type="hidden" name="profileId" value="@nf.Id" />
+                            <button class="friend-add-btn">Add Friend</button>
+                        </form>
 
-                </li>
+                    </li>
+                }
             }
         }
         else
         {
-            <li class="no-friends-placeholder">You have no friends yet.</li>
+            <li class="no-friends-placeholder">No suggestions right now.</li>
         }
     </ul>
 
@@ -126,46 +134,42 @@
         }
     </ul>
 
-
     <!-- ========================= -->
-    <!-- SUGGESTED FRIENDS -->
+    <!-- FRIENDS LIST -->
     <!-- ========================= -->
-    <h2 class="section-title mt-5">Suggested Friends</h2>
+    <h2 class="section-title mt-5">Your Friends</h2>
 
     <ul class="friends-list">
-        @{
-            var pending = ViewBag.Pending as HashSet<int> ?? new HashSet<int>();
-        }
-
-        @if ((ViewBag.NotFriends as List<acebook.Models.User>)?.Any() == true)
+        @if ((ViewBag.Friends as List<acebook.Models.User>)?.Any() == true)
         {
-            foreach (var nf in (List<acebook.Models.User>)ViewBag.NotFriends)
+            foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
             {
-                if (!pending.Contains(nf.Id))
-                {
-                    <li class="friend-item">
+                <li class="friend-item">
 
-                        <div class="friend-info">
-                            <div class="friend-header d-flex align-items-center">
-                                <div class="profile-icon">@nf.Name?.FirstOrDefault()</div>
-                                <span class="friend-name ms-2">@nf.Name</span>
-                            </div>
-                            <span class="friend-email friend-email-offset">@nf.Email</span>
+                    <div class="friend-info">
+                        <div class="friend-header d-flex align-items-center">
+                            <div class="profile-icon">@friend.Name?.FirstOrDefault()</div>
+                            <span class="friend-name ms-2">@friend.Name</span>
                         </div>
+                        <span class="friend-email friend-email-offset">@friend.Email</span>
+                    </div>
 
-                        <form action="/friends/not_friends_yet" method="post">
-                            <input type="hidden" name="profileId" value="@nf.Id" />
-                            <button class="friend-add-btn">Add Friend</button>
-                        </form>
+                    <form asp-action="DeleteFriend" method="post">
+                        <input type="hidden" name="friendToDeleteId" value="@friend.Id" />
+                        <button class="friend-delete-btn">Remove</button>
+                    </form>
 
-                    </li>
-                }
+                </li>
             }
         }
         else
         {
-            <li class="no-friends-placeholder">No suggestions right now.</li>
+            <li class="no-friends-placeholder">You have no friends yet.</li>
         }
     </ul>
+
+
+
+
 
 </div>
