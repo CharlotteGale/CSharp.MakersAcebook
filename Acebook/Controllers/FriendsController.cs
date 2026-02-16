@@ -19,7 +19,7 @@ public class FriendsController : Controller
     }
 
     // ============================================================
-    //  UNIFIED FRIENDS PAGE (/friends)
+    //  CONSOLIDATED FRIENDS PAGE (/friends)
     // ============================================================
     [Route("/friends")]
     [HttpGet]
@@ -100,9 +100,61 @@ public class FriendsController : Controller
         return new RedirectResult("/friends");
     }
 
+    // ============================================================
+    //  ACCEPT FRIEND REQUEST
+    // ============================================================
+    [Route("/friends/accept")]
+    [HttpPost]
+    public IActionResult AcceptRequest(int requestId, int requestSenderId)
+    {
+        int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
+
+        var request = _context.FriendRequests
+            .FirstOrDefault(fr => fr.Id == requestId);
+
+        if (request != null)
+        {
+            var user = _context.Users
+                .Include(u => u.Friends)
+                .FirstOrDefault(u => u.Id == ActiveUserId);
+
+            var sender = _context.Users
+                .Include(u => u.Friends)
+                .FirstOrDefault(u => u.Id == requestSenderId);
+
+            if (user != null && sender != null)
+            {
+                user.AddFriend(sender);
+                sender.AddFriend(user);
+                _context.FriendRequests.Remove(request);
+                _context.SaveChanges();
+            }
+        }
+
+        return new RedirectResult("/friends");
+    }
 
     // ============================================================
-    //  OLD SUGGESTED FRIENDS PAGE - THIS CODE IS VOID!
+    //  REJECT FRIEND REQUEST
+    // ============================================================
+    [Route("/friends/reject")]
+    [HttpPost]
+    public IActionResult RejectRequest(int requestId)
+    {
+        var request = _context.FriendRequests
+            .FirstOrDefault(fr => fr.Id == requestId);
+
+        if (request != null)
+        {
+            _context.FriendRequests.Remove(request);
+            _context.SaveChanges();
+        }
+
+        return new RedirectResult("/friends");
+    }
+
+    // ============================================================
+    //  OLD SUGGESTED FRIENDS PAGE - now void
     // ============================================================
     [Route("/friends/not_friends_yet")]
     [HttpGet]
@@ -110,14 +162,12 @@ public class FriendsController : Controller
     {
         int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
 
-        // Get user + friends
         var user = _context.Users
             .Include(u => u.Friends)
             .FirstOrDefault(u => u.Id == ActiveUserId);
 
         var existingFriendsIds = user?.Friends?.Select(f => f.Id).ToList() ?? new List<int>();
 
-        // Pending requests (sent or received)
         var pending = _context.FriendRequests
             .Where(fr => fr.FriendId == ActiveUserId || fr.UserId == ActiveUserId)
             .Select(fr => fr.UserId == ActiveUserId ? fr.FriendId : fr.UserId)
@@ -125,7 +175,6 @@ public class FriendsController : Controller
 
         ViewBag.Pending = pending;
 
-        // Suggested friends (exclude friends + pending)
         var notFriends = _context.Users
             .Where(u => u.Id != ActiveUserId &&
                         !existingFriendsIds.Contains(u.Id) &&
@@ -136,6 +185,4 @@ public class FriendsController : Controller
 
         return View("NotFriends");
     }
-
-
 }
