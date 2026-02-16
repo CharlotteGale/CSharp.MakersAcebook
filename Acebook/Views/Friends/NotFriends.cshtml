@@ -10,38 +10,44 @@
     </div>
 
     <ul class="friends-list">
-        @if (ViewBag.NotFriends != null && ((List<acebook.Models.User>)ViewBag.NotFriends).Any())
+        @{
+            bool hasFriendSuggestions = false;
+            var pendingIds = ViewBag.Pending as HashSet<int> ?? new HashSet<int>();
+        }
+
+        @if (ViewBag.NotFriends != null)
         {
             foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
             {
-                <li class="friend-item">
+                if (!pendingIds.Contains(newFriend.Id))
+                {
+                    hasFriendSuggestions = true;
 
-                    <div class="friend-info">
-                        <span class="friend-name">@newFriend.Name</span>
-                        <span class="friend-email">@newFriend.Email</span>
-                    </div>
+                    <li class="friend-item">
 
-                    <div class="friend-actions">
-                        @if (((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
-                        {
-                            <span class="pending-label">Pending</span>
-                        }
-                        else
-                        {
-                            <form action="/friends/not_friends_yet" method="post">
-                                <input type="hidden" name="profileId" value="@newFriend.Id" />
-                                <button type="submit" class="friend-add-btn">Add Friend</button>
-                            </form>
-                        }
-                    </div>
+                        <div class="friend-info">
+                            <div class="friend-header d-flex align-items-center">
+                                <div class="profile-icon">@newFriend.Name?.FirstOrDefault()</div>
+                                <span class="friend-name ms-2">@newFriend.Name</span>
+                            </div>
 
-                </li>
+                            <span class="friend-email friend-email-offset">@newFriend.Email</span>
+                        </div>
+
+                        <form action="/friends/not_friends_yet" method="post">
+                            <input type="hidden" name="profileId" value="@newFriend.Id" />
+                            <button class="friend-add-btn">Add Friend</button>
+                        </form>
+
+                    </li>
+                }
             }
         }
-        else
+
+        @if (!hasFriendSuggestions)
         {
             <li class="no-friends-placeholder">
-                No suggested friends right now — check back later.
+                You're friends with everyone — look at you go.
             </li>
         }
     </ul>

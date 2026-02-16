@@ -1,7 +1,7 @@
 @using System.ComponentModel
 @model List<Post>
 
-    @functions {
+@functions {
     string TimeAgo(DateTime date)
     {
         var ts = DateTime.UtcNow - date;
@@ -22,7 +22,6 @@
     }
 }
 
-
 @{
     ViewData["Title"] = "Feed";
 }
@@ -38,9 +37,9 @@
         <form action="/posts" method="post">
             <div class="mb-3">
                 <input type="text"
-                        name="content"
-                        class="form-field"
-                        placeholder="What's on your mind?" />
+                       name="content"
+                       class="form-field"
+                       placeholder="What's on your mind?" />
             </div>
 
             <button type="submit" class="post-btn">Submit</button>
@@ -56,19 +55,61 @@
 
             <!-- POST HEADER -->
             <div class="post-header mb-2 d-flex align-items-center">
-                <div class="profile-icon">@post.User?.Name?[0]</div>
+                <div class="profile-icon">@post.User?.Name?.FirstOrDefault()</div>
                 <strong class="ms-2">@post.User?.Name</strong>
             </div>
 
-            <p class="card-text mb-2">@post.Content</p>
+            @if (Context.Session.GetInt32("user_id") == post.UserId &&
+                Context.Request.Query["editPostId"].ToString() == post.Id.ToString())
+            {
+                <!-- EDIT MODE -->
+                <form action="/posts/edit" method="post" class="edit-post-form mb-2">
+                    <input type="hidden" name="postId" value="@post.Id" />
+                    <textarea name="content" class="form-field mb-2">@post.Content</textarea>
+                    <button type="submit" class="post-btn small-btn me-2">Save</button>
+                    <a href="/feed" class="cancel-link">Cancel</a>
+                </form>
+            }
+            else
+            {
+                <!-- NORMAL MODE -->
+                <p class="card-text mb-2">@post.Content</p>
+                <span class="text-muted small">
+                    @TimeAgo(post.CreatedAt)
+
+                    @if (post.UpdatedAt != null)
+                    {
+                        <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+                    }
+                </span>
+            }
+
+            <!-- POST ACTIONS -->
+            @if (Context.Session.GetInt32("user_id") == post.UserId)
+            {
+                <div class="post-actions mt-1">
+                    <a href="/feed?editPostId=@post.Id" class="action-link me-2">Edit</a>
+                    <form action="/posts/delete" method="post" class="d-inline">
+                        <input type="hidden" name="postId" value="@post.Id" />
+                        <button type="submit" class="action-link delete">Delete</button>
+                    </form>
+                </div>
+            }
 
             <!-- LIKES -->
-            <div class="mt-2"> <span>@post.Likes.Count like(s)</span> </div>
+            <div class="mt-2">
+                <span>@post.Likes.Count like(s)</span>
+            </div>
+
             <form action="/likes/toggle" method="post" class="mt-1">
-            <input type="hidden" name="postId" value="@post.Id" /> 
-            @{ var userId = Context.Session.GetInt32("user_id"); 
-            var userHasLiked = post.Likes.Any(l => l.UserId == userId); } 
-            <button type="submit" class="post-btn"> @(userHasLiked ? "Unlike" : "Like") </button> 
+                <input type="hidden" name="postId" value="@post.Id" />
+                @{
+                    var userId = Context.Session.GetInt32("user_id");
+                    var userHasLiked = post.Likes.Any(l => l.UserId == userId);
+                }
+                <button type="submit" class="post-btn">
+                    @(userHasLiked ? "Unlike" : "Like")
+                </button>
             </form>
 
             <!-- COMMENTS -->
@@ -82,24 +123,30 @@
 
                             <!-- LEFT SIDE -->
                             <div class="d-flex align-items-center flex-wrap">
-                                <div class="profile-icon">@comment.User?.Name?[0]</div>
+                                <div class="profile-icon">@comment.User?.Name?.FirstOrDefault()</div>
                                 <strong class="ms-2">@comment.User?.Name</strong>
 
                                 @if (!(Context.Session.GetInt32("user_id") == comment.UserId &&
-                                        Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))
+                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))
                                 {
-                                    <span class="ms-2">@comment.Content</span>
-                                    <span class="text-muted small ms-2">· @TimeAgo(comment.CreatedAt)</span>
-
+                                    <div class="ms-2">
+                                        <span class="ms-2">@comment.Content</span>
+                                        <span class="text-muted small ms-2">
+                                            @TimeAgo(comment.CreatedAt)
+                                            @if (comment.UpdatedAt != null)
+                                            {
+                                                <span class="ms-2">(edited @TimeAgo(comment.UpdatedAt.Value))</span>
+                                            }
+                                        </span>
+                                    </div>
                                 }
                             </div>
 
                             <!-- RIGHT SIDE -->
                             <div class="comment-actions">
 
-                                @* EDIT MODE *@
                                 @if (Context.Session.GetInt32("user_id") == comment.UserId &&
-                                        Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString())
+                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString())
                                 {
                                     <form action="/comments/edit" method="post" class="edit-comment-form d-flex align-items-center">
                                         <input type="hidden" name="commentId" value="@comment.Id" />
@@ -112,12 +159,9 @@
                                 {
                                     @if (Context.Session.GetInt32("user_id") == comment.UserId)
                                     {
-                                        <a href="/feed?editCommentId=@comment.Id"
-                                            class="action-link">Edit</a>
+                                        <a href="/feed?editCommentId=@comment.Id" class="action-link">Edit</a>
 
-                                        <form action="/comments/delete"
-                                                method="post"
-                                                class="delete-form">
+                                        <form action="/comments/delete" method="post" class="delete-form">
                                             <input type="hidden" name="commentId" value="@comment.Id" />
                                             <button type="submit" class="action-link delete">Delete</button>
                                         </form>
@@ -136,20 +180,19 @@
 
             </div>
 
-
             <form asp-controller="Comments"
                     asp-action="Create"
                     method="post"
                     class="comment-form mt-3">
 
-                <input type="hidden" name="postId" value="@post.Id" />
+                    <input type="hidden" name="postId" value="@post.Id" />
 
-                <div class="comment-input-wrapper">
-                    <input type="text"
+                    <div class="comment-input-wrapper">
+                        <input type="text"
                             name="content"
                             class="form-field"
                             placeholder="Write a comment..." />
-                </div>
+                    </div>
 
                 <button type="submit" class="post-btn mt-2">Comment</button>
             </form>
@@ -157,4 +200,3 @@
         </div>
     }
 </div>
-
