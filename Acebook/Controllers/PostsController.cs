@@ -77,4 +77,44 @@ public class PostsController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+
+    [HttpPost]
+    [Route("/posts/edit")]
+    public IActionResult Edit(int postId, string content)
+    {
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId == null) return Redirect("/");
+
+        var post = _context.Posts.FirstOrDefault(p => p.Id == postId);
+        if (post == null) return Redirect("/feed");
+
+        if (post.UserId != userId)
+            return Redirect("/feed");
+
+        post.Content = content;
+        _context.SaveChanges();
+
+        return Redirect("/feed");
+    }
+    [HttpPost]
+    [Route("posts/delete")]
+    public IActionResult Delete(int postId)
+    {
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId == null) return Redirect("/");
+        var post = _context.Posts.FirstOrDefault(p => p.Id == postId);
+        if (post == null) return Redirect("/feed");
+
+        // Only owner can delete
+        if (post.UserId != userId) return Redirect("/feed");
+
+        _context.Posts.Remove(post);
+        _context.SaveChanges();
+
+        return Redirect("/feed");
+    }
+
+
+
 }
