@@ -45,7 +45,7 @@ public class PostsControllerTests : NUnitTestBase
     }
 
     [Test]
-    public void Create_ShouldSavePOst_WhenPostIsValid()
+    public void Create_ShouldSavePost_WhenPostIsValid()
     {
         var post = new Post
         {
@@ -59,7 +59,7 @@ public class PostsControllerTests : NUnitTestBase
                     "Posts should be saved to database");
         Assert.That(savedPost.UserId, Is.EqualTo(_testUser.Id),
                     "Post should be assigned to the logged in user");
-        Assert.That(result.Url, Is.EqualTo("/feed"));
+        Assert.That(result.Url, Is.EqualTo("/Feed"));
         Assert.That(_controller.TempData.ContainsKey("InvalidPost"), Is.False,
                     "Should not have any validation errors");  
     }

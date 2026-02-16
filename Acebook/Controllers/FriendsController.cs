@@ -58,6 +58,7 @@ public class FriendsController : Controller
         ViewBag.Pending = requests;
         return View();
     }
+    
     [Route("/friends/delete")]
     [HttpPost]
     //Unfriend
