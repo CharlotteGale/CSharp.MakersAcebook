@@ -60,8 +60,8 @@
                 <strong class="ms-2">@post.User?.Name</strong>
             </div>
 
-            <p class="card-text mb-2">@post.Content</p>
-            <span>@post.CreatedAt</span>
+            <p class="card-text mb-2">@post.Content</p> 
+            <span class="text-muted small">@TimeAgo(post.CreatedAt)</span>
 
 
             <!-- LIKES -->
