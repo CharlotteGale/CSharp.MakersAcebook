@@ -51,6 +51,7 @@ public class CommentsController : Controller
             return Redirect("/feed");
 
         comment.Content = content;
+        comment.UpdatedAt = DateTime.UtcNow;
         _context.SaveChanges();
 
         return Redirect("/feed");
