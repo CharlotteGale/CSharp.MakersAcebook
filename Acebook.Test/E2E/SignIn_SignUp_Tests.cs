@@ -1,4 +1,4 @@
-namespace Acebook.Test;
+namespace Acebook.Test.E2E;
 using System.Text.RegularExpressions;
 
 public class SignIn_SignUp_Tests : PageTest

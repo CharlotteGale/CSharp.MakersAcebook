@@ -6,3 +6,4 @@ global using OpenQA.Selenium;
 global using acebook.Models;
 global using Npgsql.EntityFrameworkCore.PostgreSQL;
 global using Microsoft.EntityFrameworkCore;
+global using Acebook.Test.Base;

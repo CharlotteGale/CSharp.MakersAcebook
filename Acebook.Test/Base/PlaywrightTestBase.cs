@@ -2,7 +2,7 @@ using acebook.Models;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 
-namespace Acebook.Test;
+namespace Acebook.Test.Base;
 
 
 public class PlaywrightTestBase : PageTest

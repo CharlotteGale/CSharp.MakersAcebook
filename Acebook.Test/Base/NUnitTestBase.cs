@@ -1,4 +1,4 @@
-namespace Acebook.Test;
+namespace Acebook.Test.Base;
 
 public class NUnitTestBase
 {
