@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using acebook.Models;
 using acebook.ActionFilters;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace acebook.Controllers;
 
@@ -18,13 +19,20 @@ public class PostsController : Controller
         _logger = logger;
     }
 
-    [Route("/Posts")]
-    [HttpGet]
-    public IActionResult Index() {
-      List<Post> posts = _context.Posts.ToList();
-      ViewBag.Posts = posts;
-      return View();
-    }
+// [Route("/Posts")]
+// [HttpGet]
+// public IActionResult Index()
+// {
+//     var posts = _context.Posts
+//         .Include(p => p.User)
+//         .Include(p => p.Comments).ThenInclude(c => c.User)
+//         .Include(p => p.Likes)
+//         .OrderByDescending(p => p.CreatedAt)
+//         .ToList();
+
+//     return View(posts);
+// }
+
 
     [Route("/Posts")]
     [HttpPost]
@@ -61,7 +69,7 @@ public class PostsController : Controller
       post.UserId = currentUserId;
       _context.Posts.Add(post);
       _context.SaveChanges();
-      return new RedirectResult("/feed");
+      return new RedirectResult("/Feed");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
