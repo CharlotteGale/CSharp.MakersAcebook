@@ -11,7 +11,7 @@ global using Microsoft.Extensions.Logging;
 global using Moq;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Mvc.ViewFeatures;
-
+global using System.Text.Json;
 
 global using Acebook.Test.Base;
 global using acebook.Models;
