@@ -85,6 +85,128 @@ body {
   max-width: 360px;
 }
 
+.friend-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  
+}
+
+.friend-navigation-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  background: #f8f9fa;
+  color: #023E8A; 
+  border: 2px solid #023E8A;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin: 10px 5px 30px 5px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.friend-navigation-btn:hover {
+  background: #023E8A;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.friend-card{
+  aspect-ratio: 16/9;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid;
+  border-color: rgba(189, 189, 189, 0.243);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  height: 140px;
+  flex: 1 1 100%;
+  min-width: 300px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.friend-card .row {
+  height: 100%;
+}
+
+.friend-card-body{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.friend-card-footer{
+  margin-top: auto;
+  width: 100%;
+}
+
+.friend-card-btn{
+  width: 100%;
+  padding: 0.3rem;
+  border-radius: 50px;
+  background: #023E8A;
+  color: white;
+  border: 1px solid #023E8A;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.friend-card-btn:hover {
+  background: transparent;
+  color: #023E8A;
+  transform: translateY(-2px);
+}
+
+.friend-card-remove-btn{
+  width: 100%;
+  padding: 0.3rem;
+  border-radius: 50px;
+  background: transparent;
+  color: #d90429;
+  border: 1px solid #dc3545;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.friend-card-remove-btn:hover {
+  background: #d90429;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.avatar-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 15px;
+}
+
+.avatar-icon{
+  width: 60px;
+  height: 60px;
+  background-color: blue;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
 .form-field {
   width: 100%;
   padding: 0.75rem 1rem;
