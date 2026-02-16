@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 
 namespace Acebook.Test.Unit;
 

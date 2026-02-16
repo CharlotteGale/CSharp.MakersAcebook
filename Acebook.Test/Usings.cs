@@ -8,7 +8,11 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Logging;
+global using Moq;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Mvc.ViewFeatures;
+
+
 global using Acebook.Test.Base;
 global using acebook.Models;
 global using acebook.Controllers;
-global using Moq;
