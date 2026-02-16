@@ -19,6 +19,7 @@
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="selenium.webdriver" Version="4.28.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="144.0.6367.7800" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="144.0.6367.7800" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,5 +31,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  
 
 </Project>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using acebook.Models;
 using acebook.ActionFilters;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace acebook.Controllers;
 
@@ -18,13 +19,6 @@ public class PostsController : Controller
         _logger = logger;
     }
 
-    [Route("/Posts")]
-    [HttpGet]
-    public IActionResult Index() {
-      List<Post> posts = _context.Posts.ToList();
-      ViewBag.Posts = posts;
-      return View();
-    }
 
     [Route("/Posts")]
     [HttpPost]
@@ -61,7 +55,7 @@ public class PostsController : Controller
       post.UserId = currentUserId;
       _context.Posts.Add(post);
       _context.SaveChanges();
-      return new RedirectResult("/feed");
+      return new RedirectResult("/Feed");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -69,4 +63,45 @@ public class PostsController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+
+    [HttpPost]
+    [Route("/posts/edit")]
+    public IActionResult Edit(int postId, string content)
+    {
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId == null) return Redirect("/");
+
+        var post = _context.Posts.FirstOrDefault(p => p.Id == postId);
+        if (post == null) return Redirect("/feed");
+
+        if (post.UserId != userId)
+            return Redirect("/feed");
+
+        post.Content = content;
+        post.UpdatedAt = DateTime.UtcNow;
+        _context.SaveChanges();
+
+        return Redirect("/feed");
+    }
+    [HttpPost]
+    [Route("posts/delete")]
+    public IActionResult Delete(int postId)
+    {
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId == null) return Redirect("/");
+        var post = _context.Posts.FirstOrDefault(p => p.Id == postId);
+        if (post == null) return Redirect("/feed");
+
+        // Only owner can delete
+        if (post.UserId != userId) return Redirect("/feed");
+
+        _context.Posts.Remove(post);
+        _context.SaveChanges();
+
+        return Redirect("/feed");
+    }
+
+
+
 }
