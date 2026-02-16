@@ -1,14 +1,37 @@
-<h1>Friends</h1>
+<div class="friends-container">
 
-<a asp-action="requests">Requests</a>
-<br />
-<a asp-action="not_friends_yet">Potential Friends</a>
-<ul>
-    @if (ViewBag.Friends != null)
-    {
-        foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
+    <div class="friends-header">
+        <h1 class="friends-title">Friends</h1>
+
+        <div class="friends-nav">
+            <a asp-action="requests" class="friends-link">Requests</a>
+            <a asp-action="not_friends_yet" class="friends-link">Potential Friends</a>
+        </div>
+    </div>
+
+    <ul class="friends-list">
+        @if (ViewBag.Friends != null)
         {
-            <li>@friend.Name (@friend.Email)<form asp-action="DeleteFriend" method="post"><input type="hidden" name="friendToDeleteId" value="@friend.Id"/> <button>DELETE FRIEND</button> </form></li>
+            foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
+            {
+                <li class="friend-item">
+
+                    <div class="friend-info">
+                        <div class="friend-header d-flex align-items-center">
+                            <div class="profile-icon">@friend.Name?[0]</div>
+                            <span class="friend-name ms-2">@friend.Name</span>
+                        </div>
+                        <span class="friend-email friend-email-offset">@friend.Email</span>
+                    </div>
+
+                    <form asp-action="DeleteFriend" method="post">
+                        <input type="hidden" name="friendToDeleteId" value="@friend.Id" />
+                        <button class="friend-delete-btn">Remove</button>
+                    </form>
+
+                </li>
+            }
         }
-    }
-</ul>
+    </ul>
+
+</div>

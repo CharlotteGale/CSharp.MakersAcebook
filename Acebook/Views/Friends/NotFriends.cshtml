@@ -1,25 +1,49 @@
-<h1>Not Friends</h1>
+<div class="friends-container">
 
-<ul>
-    @if (ViewBag.NotFriends != null)
-    {
-        foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
+    <div class="friends-header">
+        <h1 class="friends-title">Suggested Friends</h1>
+
+        <div class="friends-nav">
+            <a asp-action="Index" class="friends-link">Friends</a>
+            <a asp-action="requests" class="friends-link">Requests</a>
+        </div>
+    </div>
+
+    <ul class="friends-list">
+        @if (ViewBag.NotFriends != null && ((List<acebook.Models.User>)ViewBag.NotFriends).Any())
         {
-            <form action="/friends/not_friends_yet" method="post">
-            <li>@newFriend.Name (@newFriend.Email) <input type="hidden" name="profileId" value="@newFriend.Id"/>
-            @if(((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
-                {
-                    <p>
-                        Pending
-                    </p>
-                }
-            else
-                {
-                    <button type="submit"> Add Friend </button>
-                }
-            </li>
-            </form>
-            // Render 2 different columns, 1 for pending outbound requests and another for all users, people we might know.
+            foreach (var newFriend in (List<acebook.Models.User>)ViewBag.NotFriends)
+            {
+                <li class="friend-item">
+
+                    <div class="friend-info">
+                        <span class="friend-name">@newFriend.Name</span>
+                        <span class="friend-email">@newFriend.Email</span>
+                    </div>
+
+                    <div class="friend-actions">
+                        @if (((HashSet<int>)ViewBag.Pending).Contains(newFriend.Id))
+                        {
+                            <span class="pending-label">Pending</span>
+                        }
+                        else
+                        {
+                            <form action="/friends/not_friends_yet" method="post">
+                                <input type="hidden" name="profileId" value="@newFriend.Id" />
+                                <button type="submit" class="friend-add-btn">Add Friend</button>
+                            </form>
+                        }
+                    </div>
+
+                </li>
+            }
         }
-    }
-</ul>
+        else
+        {
+            <li class="no-friends-placeholder">
+                No suggested friends right now — check back later.
+            </li>
+        }
+    </ul>
+
+</div>
