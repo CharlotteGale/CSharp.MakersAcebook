@@ -6,9 +6,11 @@ public class Post
   [Key]
   public int Id {get; set;}
   [Required]
-  public required string Content {get; set;}
+  public string Content {get; set;} = null!;
   public int UserId {get; set;}
-  public User? User {get; set;}
+  public User User {get; set;} = null!;
+  public ICollection<Comment> Comments {get; set;} = new List<Comment>();
 
-  public Post(){}
-}
+  public ICollection<Like> Likes {get; set;} = new List<Like>();
+  
+  }

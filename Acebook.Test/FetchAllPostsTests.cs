@@ -8,7 +8,7 @@ public class FetchAllPostsTests : NUnitTestBase
     {
         List<Post> posts = _context.Posts.ToList();
 
-        Assert.That(posts[0].Content, Is.EquivalentTo("apWEIFRGHOU"));
+        Assert.That(posts[0].Content, Is.EquivalentTo("This is a post"));
         Assert.That(posts[0].User.Name, Is.EquivalentTo("Admin"));
     }
 }
