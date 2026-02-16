@@ -19,20 +19,6 @@ public class PostsController : Controller
         _logger = logger;
     }
 
-// [Route("/Posts")]
-// [HttpGet]
-// public IActionResult Index()
-// {
-//     var posts = _context.Posts
-//         .Include(p => p.User)
-//         .Include(p => p.Comments).ThenInclude(c => c.User)
-//         .Include(p => p.Likes)
-//         .OrderByDescending(p => p.CreatedAt)
-//         .ToList();
-
-//     return View(posts);
-// }
-
 
     [Route("/Posts")]
     [HttpPost]
