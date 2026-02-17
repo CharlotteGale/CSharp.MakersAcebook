@@ -93,8 +93,8 @@ public class FriendRequestControllerTests : NUnitTestBase
     Assert.That(((RedirectResult)result).Url, Is.EqualTo("/friends"));
   }
 
-    [Test]
-  public void AcceptRequests_CanAcceptFriend_WhenUserLoggedIn()
+  [Test]
+  public void AcceptRequest_CanAcceptFriend_WhenUserLoggedIn()
   {
     var incomingRequest = new FriendRequest
     {
@@ -108,5 +108,19 @@ public class FriendRequestControllerTests : NUnitTestBase
     Assert.That(((RedirectResult)result).Url, Is.EqualTo("/friends"));
   }
 
+  [Test]
+  public void RejectRequest_CanRejectRequest_WhenUserLoggedIn()
+  {
+    var incomingRequest = new FriendRequest
+    {
+      UserId = _testRequestUser.Id,
+      FriendId = _testUser.Id
+    };
+    _context.FriendRequests.Add(incomingRequest);
+    _context.SaveChanges();
+    var result = _controller.RejectRequest(incomingRequest.Id);
+
+    Assert.That(((RedirectResult)result).Url, Is.EqualTo("/friends"));
+  }
 
 }
