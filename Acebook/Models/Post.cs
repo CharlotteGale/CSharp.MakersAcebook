@@ -12,7 +12,6 @@ public class Post
   public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
   public DateTime? UpdatedAt { get; set; }
   public string? ImgLink { get; set; }
-  public string? Caption { get; set; }
   public ICollection<Comment> Comments {get; set;} = new List<Comment>();
   public ICollection<Like> Likes {get; set;} = new List<Like>();
   
