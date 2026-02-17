@@ -117,7 +117,6 @@ body {
 }
 
 .friend-card{
-  aspect-ratio: 16/9;
   background: #ffffff;
   border-radius: 8px;
   border: 1px solid;
@@ -378,4 +377,125 @@ body {
     margin: 0 auto;
 }
 
+/* ========================================================================== */
+/* FRIENDS */
+/* ========================================================================== */
 
+.friends-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.friends-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.friends-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+
+.friends-link {
+    text-decoration: none;
+    color: #1877f2;
+    font-weight: 600;
+}
+
+.friends-link:hover {
+    text-decoration: underline;
+}
+
+.friends-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.friend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.friend-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.friend-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.friend-email {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* DELETE FRIEND BUTTON */
+.friend-delete-btn {
+    background: #e63946;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.friend-delete-btn:hover {
+    background: #d62828;
+}
+
+/* ADD FRIEND BUTTON */
+.friend-add-btn {
+    background: #9A65C2;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.friend-add-btn:hover {
+    background: #0f5fcc;
+}
+
+/* PENDING LABEL */
+.pending-label {
+    background: #8328b0;
+    color: #fff;
+    padding: 8px 14px;       
+    border-radius: 6px;     
+    font-size: 0.9rem;      
+    
+    display: inline-block;   
+    text-align: center;
+    min-width: 90px;         
+}
+
+/* PLACEHOLDER WHEN NO SUGGESTED FRIENDS */
+.no-friends-placeholder {
+    text-align: center;
+    padding: 30px 20px;
+    background: #f5f6f7;
+    border-radius: 8px;
+    color: #555;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 20px;
+}
