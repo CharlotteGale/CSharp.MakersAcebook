@@ -49,12 +49,24 @@ public class FeedController : Controller
 
         int? currentUserId = HttpContext.Session.GetInt32("user_id");
         if (currentUserId == null) return Redirect("/");
+
+        var currentUser = _context.Users
+            .Include(u => u.Friends)
+            .FirstOrDefault(u => u.Id == currentUserId);
+
+        var allowedUserIds = currentUser.Friends
+            .Select(f => f.Id)
+            .Append(currentUser.Id) 
+            .ToList();
+
         var posts = _context.Posts
+            .Where(p => allowedUserIds.Contains(p.UserId))   
             .Include(p => p.User)
             .Include(p => p.Comments).ThenInclude(c => c.User)
             .Include(p => p.Likes)
             .OrderByDescending(p => p.CreatedAt)
             .ToList();
+
 
         // Sort comments newest-first
         foreach (var post in posts)
