@@ -36,6 +36,14 @@ public class SessionsControllerTests : NUnitTestBase
     }
 
     [Test]
+    public void New_ShouldReturnView()
+    {
+        var result = _controller.New();
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+    }
+
+    [Test]
     public void Create_ShouldVerifyHashedPassword_AndLoginUser()
     {
         var hasher = new PasswordHasher<User>();
@@ -103,6 +111,24 @@ public class SessionsControllerTests : NUnitTestBase
         var sessionUserId = _controller.HttpContext.Session.GetInt32("user_id");
         Assert.That(sessionUserId, Is.Null,
                     "Should not set session when login fails");
+    }
+
+        [Test]
+    public void Logout_ShouldClearSession_AndRedirectToHome()
+    {
+        _controller.HttpContext.Session.SetInt32("user_id", 1);
+
+        var result = _controller.Logout();
+
+        var sessionUserId = _controller.HttpContext.Session.GetInt32("user_id");
+        Assert.That(sessionUserId, Is.Null,
+                    "Session should be destroyed after logout");
+
+        Assert.That(result, Is.TypeOf<RedirectToActionResult>());
+
+        var redirect = (RedirectToActionResult)result;
+        Assert.That(redirect.ActionName, Is.EqualTo("New"));
+        Assert.That(redirect.ControllerName, Is.EqualTo("Sessions"));
     }
 
     /// DEVELOPMENT ENVIRON ONLY TESTS ///
