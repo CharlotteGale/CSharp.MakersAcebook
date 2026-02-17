@@ -60,7 +60,46 @@
                 <strong class="ms-2">@post.User?.Name</strong>
             </div>
 
-            <p class="card-text mb-2">@post.Content</p>
+            @if (Context.Session.GetInt32("user_id") == post.UserId &&
+                Context.Request.Query["editPostId"].ToString() == post.Id.ToString())
+            {
+                <!-- EDIT MODE -->
+                <form action="/posts/edit" method="post" class="edit-post-form mb-2">
+                    <input type="hidden" name="postId" value="@post.Id" />
+                    <textarea name="content" class="form-field mb-2">@post.Content</textarea>
+                    <button type="submit" class="post-btn small-btn me-2">Save</button>
+                    <a href="/feed" class="cancel-link">Cancel</a>
+                </form>
+            }
+            else
+            {
+                <!-- NORMAL MODE -->
+                <p class="card-text mb-2">@post.Content</p>
+                <span class="text-muted small">
+                @TimeAgo(post.CreatedAt)
+
+                @if (post.UpdatedAt != null)
+                {
+                    <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+                }
+            </span>
+
+            }
+
+
+            <!-- POST ACTIONS (Edit/Delete) -->
+            @if (Context.Session.GetInt32("user_id") == post.UserId)
+            {
+                <div class="post-actions mt-1">
+                <a href="/feed?editPostId=@post.Id" class="action-link me-2">Edit</a>
+                    <form action="/posts/delete" method="post" class="d-inline">
+                        <input type="hidden" name="postId" value="@post.Id" />
+                        <button type="submit" class="action-link delete">Delete</button>
+                    </form>
+                </div>
+            }
+
+
 
             <!-- LIKES -->
             <div class="mt-2"> <span>@post.Likes.Count like(s)</span> </div>
@@ -88,9 +127,17 @@
                                 @if (!(Context.Session.GetInt32("user_id") == comment.UserId &&
                                         Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))
                                 {
-                                    <span class="ms-2">@comment.Content</span>
-                                    <span class="text-muted small ms-2">· @TimeAgo(comment.CreatedAt)</span>
+                                <div class="ms-2">
+                                <span class="ms-2">@comment.Content</span>
+                                <span class="text-muted small ms-2">
+                                    @TimeAgo(comment.CreatedAt)
+                                    @if (comment.UpdatedAt != null)
+                                    {
+                                        <span class="ms-2">(edited @TimeAgo(comment.UpdatedAt.Value))</span>
+                                    }
+                                </span>
 
+                                </div>
                                 }
                             </div>
 

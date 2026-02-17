@@ -51,13 +51,21 @@ public class FeedController : Controller
         if (currentUserId == null) return Redirect("/");
         var posts = _context.Posts
             .Include(p => p.User)
-            .Include(p => p.Comments)
-                .ThenInclude(c => c.User)
+            .Include(p => p.Comments).ThenInclude(c => c.User)
             .Include(p => p.Likes)
-                .ThenInclude(l => l.User)
+            .OrderByDescending(p => p.CreatedAt)
             .ToList();
 
+        // Sort comments newest-first
+        foreach (var post in posts)
+        {
+            post.Comments = post.Comments
+                .OrderByDescending(c => c.CreatedAt)
+                .ToList();
+        }
+
         return View(posts);
+
 
     }
 
