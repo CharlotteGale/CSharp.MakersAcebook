@@ -14,12 +14,14 @@ public static class DbSeeder
         // -----------------------------
         // 1. USERS
         // -----------------------------
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var users = Enumerable.Range(1, 20)
             .Select(i => new User
             {
                 Name = $"test{i}",
                 Email = $"test{i}@email.com",
-                Password = "password"
+                Password = "password",
+                DateOfBirth = Dob(2000, 01, 01)
             })
             .ToList();
 
