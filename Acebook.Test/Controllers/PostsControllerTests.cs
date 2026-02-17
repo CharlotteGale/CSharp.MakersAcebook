@@ -90,4 +90,77 @@ public class PostsControllerTests : NUnitTestBase
         var deserializePost = JsonSerializer.Deserialize<Post>(invalidPostJson);
         Assert.That(deserializePost.Content, Is.EqualTo(""));
     }
+
+    [Test]
+    public void Edit_ShouldUpdatePostContent_WhenUserIsOwner()
+    {
+        var post = new Post
+        {
+            Content = "Original post",
+            UserId = _testUser.Id
+        };
+        _context.Posts.Add(post);
+        _context.SaveChanges();
+
+        var result = _controller.Edit(post.Id, "Updated post");
+
+        var updatedPost = _context.Posts.Find(post.Id);
+        Assert.That(updatedPost.Content, Is.EqualTo("Updated post"));
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"));
+    }
+
+    [Test]
+    public void Edit_ShouldNotUpdatePost_WhenUserIsNotOwner()
+    {
+        var otherUser = new User
+        {
+            Name = "Other user",
+            Email = "other@test.com",
+            Password = "HashPW1!"
+        };
+        _context.Users.Add(otherUser);
+        _context.SaveChanges();
+
+        var post = new Post
+        {
+            Content = "Don't touch this",
+            UserId = otherUser.Id
+        };
+        _context.Posts.Add(post);
+        _context.SaveChanges();
+
+        var result = _controller.Edit(post.Id, "Hacked!");
+
+        var refreshedPost = _context.Posts.Find(post.Id);
+        Assert.That(refreshedPost.Content, Is.EqualTo("Don't touch this"));
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"),
+                    "Should not update post - might need validation/error messages?");
+    }
+
+        [Test]
+    public void Delete_ShouldRemovePost_WhenUserIsOwner()
+    {
+        var post = new Post
+        {
+            UserId = _testUser.Id,
+            Content = "Delete this"
+        };
+        _context.Posts.Add(post);
+        _context.SaveChanges();
+
+        var result = _controller.Delete(post.Id);
+
+        var deletedPost = _context.Posts.Find(post.Id);
+        Assert.That(deletedPost, Is.Null);
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"));
+    }
+
+    [Test]
+    public void Delete_ShouldRedirectToFeed_IfPostDoesNotExist()
+    {
+        var result = _controller.Delete(999);
+
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"),
+                    "Should redirect to feed if comment doesn't exist - graceful UI/UX handling req?");
+    }
 }
