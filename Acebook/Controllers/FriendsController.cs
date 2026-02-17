@@ -31,6 +31,7 @@ public class FriendsController : Controller
         ViewBag.Friends = user?.Friends?.ToList() ?? new List<User>();
         return View();
     }
+    
     [Route("/friends/not_friends_yet")]
     [HttpGet]
     //GetAllUsers
