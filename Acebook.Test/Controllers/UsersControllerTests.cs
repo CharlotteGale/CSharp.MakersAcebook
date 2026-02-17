@@ -36,11 +36,13 @@ public class UsersControllerTests : NUnitTestBase
     [Test]
     public void Create_ShouldHashPassword_WhenModelStateIsValid()
     {
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var user = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = "plainPassword1!"
+            Password = "hashedPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
 
         var result = _controller.Create(user);
@@ -59,11 +61,13 @@ public class UsersControllerTests : NUnitTestBase
     [Test]
     public void Create_ShouldReturnView_WhenEmailIsInvalid()
     {
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var user = new User
         {
             Name = "Test User",
-            Email = "not-an-email",
-            Password = "validPassword1!"
+            Email = "test",
+            Password = "hashedPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
 
         _controller.ModelState.AddModelError("Email", "Invalid Email");
@@ -79,11 +83,13 @@ public class UsersControllerTests : NUnitTestBase
     [Test]
     public void Create_ShouldReturnView_WhenNameIsMissing()
     {
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var user = new User
         {
             Name = "",
             Email = "test@example.com",
-            Password = "validPassword1!"
+            Password = "hashedPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
 
         _controller.ModelState.AddModelError("Name", "Name is required");

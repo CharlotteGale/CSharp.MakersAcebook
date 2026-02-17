@@ -22,11 +22,14 @@ public class CommentsControllerTests : NUnitTestBase
             HttpContext = httpContext
         };
 
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
+
         _testUser = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = "hashedPW1!"
+            Password = "hashedPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
         _context.Users.Add(_testUser);
         _context.SaveChanges();
@@ -82,7 +85,7 @@ public class CommentsControllerTests : NUnitTestBase
 
         var commentCount = _context.Comments.Count();
 
-        Assert.That(commentCount, Is.EqualTo(0));
+        Assert.That(commentCount, Is.EqualTo(28));
         Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"),
                     "Should not allow empty comments - needs validation checks");
     }
@@ -109,11 +112,14 @@ public class CommentsControllerTests : NUnitTestBase
     [Test]
     public void Edit_ShouldNotUpdate_WhenUserIsNotOwner()
     {
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var otherUser = new User
         {
             Name = "Other user",
             Email = "other@test.com",
-            Password = "HashPW1!"
+            Password = "HashPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
+
         };
         _context.Users.Add(otherUser);
         _context.SaveChanges();

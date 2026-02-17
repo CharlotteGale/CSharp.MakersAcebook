@@ -47,11 +47,13 @@ public class SessionsControllerTests : NUnitTestBase
     public void Create_ShouldVerifyHashedPassword_AndLoginUser()
     {
         var hasher = new PasswordHasher<User>();
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var user = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = hasher.HashPassword(null, "Password1!")
+            Password = hasher.HashPassword(null, "Password1!"),
+            DateOfBirth = Dob(2000, 01, 01)
         };
 
         _context.Users.Add(user);
@@ -75,11 +77,13 @@ public class SessionsControllerTests : NUnitTestBase
         var hasherOptions = new PasswordHasherOptions { CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV2 };
         var v2Hasher = new PasswordHasher<User>(Options.Create(hasherOptions));
 
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var user = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = v2Hasher.HashPassword(null, "Password1!")
+            Password = v2Hasher.HashPassword(null, "Password1!"),
+            DateOfBirth = Dob(2000, 01, 01)
         };
         _context.Users.Add(user);
         _context.SaveChanges();
@@ -120,11 +124,14 @@ public class SessionsControllerTests : NUnitTestBase
     public void Create_ShouldShowError_WhenPasswordIsIncorrect()
     {
         var hasher = new PasswordHasher<User>();
+
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var user = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = hasher.HashPassword(null, "correctPassword1!")
+            Password = hasher.HashPassword(null, "correctPassword1!"),
+            DateOfBirth = Dob(2000, 01, 01)
         };
 
         _context.Users.Add(user);
@@ -167,11 +174,13 @@ public class SessionsControllerTests : NUnitTestBase
     [Test]
     public void Create_ShouldLoginWithPlainTextPassword_InDevelopmentMode()
     {
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var user = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = "plainPassword1!"
+            Password = "plainPassword1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
         _context.Users.Add(user);
         _context.SaveChanges();
@@ -193,11 +202,13 @@ public class SessionsControllerTests : NUnitTestBase
     [Test]
     public void Create_ShouldFailWithWrongPlainTextPassword_InDevelopmentMode()
     {
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var user = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = "correctPlainPW1!"
+            Password = "correctPlainPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
         _context.Users.Add(user);
         _context.SaveChanges();

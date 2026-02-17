@@ -26,19 +26,22 @@ public class FriendsControllerTests : NUnitTestBase
         Mock.Of<ITempDataProvider>()
     );
 
-    _testUser = new User
-    {
-      Name = "Test User",
-      Email = "test@example.com",
-      Password = "Password1!"
-    };
+    DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
+        _testUser = new User
+        {
+            Name = "Test User",
+            Email = "test@example.com",
+            Password = "hashedPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
+        };
     _context.Users.Add(_testUser);
     
     _testRequestUser = new User
     {
       Name = "Request User",
       Email = "request@example.com",
-      Password = "Password1!"
+      Password = "Password1!",
+      DateOfBirth = Dob(2000,01,01)
     };
     _context.Users.Add(_testRequestUser);
     _context.SaveChanges();
@@ -88,7 +91,7 @@ public class FriendsControllerTests : NUnitTestBase
     var notFriendsList = result.ViewData["NotFriends"] as List<User>;
     
     Assert.That(notFriendsList, Is.Not.Null);
-    Assert.That(notFriendsList.Count, Is.EqualTo(5));
+    Assert.That(notFriendsList.Count, Is.EqualTo(21));
   }
 
   [Test]

@@ -26,11 +26,13 @@ public class PostsControllerTests : NUnitTestBase
             Mock.Of<ITempDataProvider>()
         );
 
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         _testUser = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = "Password1!"
+            Password = "hashedPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
         _context.Users.Add(_testUser);
         _context.SaveChanges();
@@ -112,11 +114,13 @@ public class PostsControllerTests : NUnitTestBase
     [Test]
     public void Edit_ShouldNotUpdatePost_WhenUserIsNotOwner()
     {
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         var otherUser = new User
         {
             Name = "Other user",
             Email = "other@test.com",
-            Password = "HashPW1!"
+            Password = "HashPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
         _context.Users.Add(otherUser);
         _context.SaveChanges();

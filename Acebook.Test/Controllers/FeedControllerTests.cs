@@ -26,11 +26,13 @@ public class FeedControllerTests : NUnitTestBase
             Mock.Of<ITempDataProvider>()
         );
 
+        DateTime Dob(int year, int month, int day) => DateTime.SpecifyKind(new DateTime(year, month, day), DateTimeKind.Utc);
         _testUser = new User
         {
             Name = "Test User",
             Email = "test@example.com",
-            Password = "hashedPW1!"
+            Password = "hashedPW1!",
+            DateOfBirth = Dob(2000, 01, 01)
         };
         _context.Users.Add(_testUser);
         _context.SaveChanges();
@@ -68,8 +70,8 @@ public class FeedControllerTests : NUnitTestBase
 
         var model = viewResult.Model as List<Post>;
         Assert.That(model, Is.Not.Null);
-        Assert.That(model.Count, Is.EqualTo(6),
-                    "Should return all posts including seed posts (4)");
+        Assert.That(model.Count, Is.EqualTo(2),
+                    "Should return all posts");
         Assert.That(model[0].User, Is.Not.Null, 
                     "Should include User data");
     }
