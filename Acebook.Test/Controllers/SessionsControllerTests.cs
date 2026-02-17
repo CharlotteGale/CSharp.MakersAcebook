@@ -1,4 +1,4 @@
-
+using Microsoft.Extensions.Options;
 
 namespace Acebook.Test.Controllers;
 
@@ -66,7 +66,39 @@ public class SessionsControllerTests : NUnitTestBase
         Assert.That(sessionUserId, Is.EqualTo(user.Id));
     }
 
-        [Test]
+    [Test]
+    public void Create_ShouldRehashPassword_AndLoginUser_WhenRehashNeeded()
+    {
+        var hasher = new PasswordHasher<User>();
+
+        // set the hash to an older, weaker version
+        var hasherOptions = new PasswordHasherOptions { CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV2 };
+        var v2Hasher = new PasswordHasher<User>(Options.Create(hasherOptions));
+
+        var user = new User
+        {
+            Name = "Test User",
+            Email = "test@example.com",
+            Password = v2Hasher.HashPassword(null, "Password1!")
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var oldPasswordHash = user.Password;
+        var result = _controller.Create("test@example.com", "Password1!");
+
+        Assert.That(result, Is.TypeOf<RedirectResult>());
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/Feed"));
+
+        var sessionUserId = _controller.HttpContext.Session.GetInt32("user_id");
+        Assert.That(sessionUserId, Is.EqualTo(user.Id));
+
+        var updatedUser = _context.Users.Find(user.Id);
+        Assert.That(updatedUser.Password, Is.Not.EqualTo(oldPasswordHash),
+                    "Password should have been rehashed with v3 stronger algo");
+    }
+
+    [Test]
     public void Create_ShouldShowError_WhenUserDoesNotExist()
     {
         var result = _controller.Create("fake_user@example.com", "Password1!");
