@@ -31,6 +31,15 @@ public class UsersController : Controller
         {
             return View("New", user);
         }
+
+        user.DateOfBirth = DateTime.SpecifyKind(user.DateOfBirth!.Value, DateTimeKind.Utc);
+        int age = user.GetAge();
+        if (age < 13)
+        {
+            ModelState.AddModelError("DateOfBirth", "You must be at least 13 years old to sign up.");
+            return View("New", user);
+        }
+
         var hasher = new PasswordHasher<User>();
         user.Password = hasher.HashPassword(user, user.Password);
         _context.Users.Add(user);
