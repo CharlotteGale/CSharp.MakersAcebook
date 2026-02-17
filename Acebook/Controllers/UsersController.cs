@@ -32,7 +32,7 @@ public class UsersController : Controller
             return View("New", user);
         }
 
-        user.DateOfBirth = DateTime.SpecifyKind(user.DateOfBirth, DateTimeKind.Utc);
+        user.DateOfBirth = DateTime.SpecifyKind(user.DateOfBirth!.Value, DateTimeKind.Utc);
         int age = user.GetAge();
         if (age < 13)
         {

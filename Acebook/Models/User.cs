@@ -12,12 +12,11 @@ public class User
   public required string Email { get; set; }
   [Required]
   public required string Password { get; set; }
+  [Required (ErrorMessage = "The Date of Birth field is required.")]
+  public DateTime? DateOfBirth { get; set; }
   public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
   public virtual ICollection<User> Friends { get; set; } = new List<User>();
   public ICollection<Comment> Comments { get; set; } = new List<Comment>();
-  
-  public DateTime DateOfBirth { get; set; }
-
   public ICollection<Like> Likes { get; set; } = new List<Like>();
 
   public User() { }
@@ -42,10 +41,10 @@ public class User
   public int GetAge()
   {
     var today = DateTime.UtcNow;
-    int age = today.Year - DateOfBirth.Year;
+    int age = today.Year - DateOfBirth!.Value.Year;
 
-    // Subtract a year if birthday hasn't occurred yet this year
-    if (DateOfBirth.Date > today.AddYears(-age))
+    // Subtracts a year if birthday hasn't occurred yet this year
+    if (DateOfBirth!.Value.Date > today.AddYears(-age))
     {
       age--;
     }
