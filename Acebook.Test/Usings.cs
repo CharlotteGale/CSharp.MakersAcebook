@@ -21,3 +21,4 @@ global using acebook.Models;
 global using acebook.Controllers;
 global using acebook.ActionFilters;
 global using Acebook.Test.Controllers;
+global using Acebook.Test.Helpers;
