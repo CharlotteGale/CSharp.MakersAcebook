@@ -459,34 +459,36 @@ body {
     background: #d62828;
 }
 
-/* ADD FRIEND BUTTON */
-.friend-add-btn {
-    background: #9A65C2;
+.friend-pending-btn {
+    background: #9C4A8A;
     color: #fff;
     border: none;
     padding: 8px 14px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.9rem;
-    font-weight: 600;
+}
+
+.friend-pending-btn:hover {
+  background: #823D73;
+}
+
+
+/* ADD FRIEND BUTTON */
+.friend-add-btn {
+    background: #8328b0;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .friend-add-btn:hover {
-    background: #0f5fcc;
+    background: #6E1F94;
 }
 
-/* PENDING LABEL */
-.pending-label {
-    background: #8328b0;
-    color: #fff;
-    padding: 8px 14px;       
-    border-radius: 6px;     
-    font-size: 0.9rem;      
-    
-    display: inline-block;   
-    text-align: center;
-    min-width: 90px;         
-}
 
 /* PLACEHOLDER WHEN NO SUGGESTED FRIENDS */
 .no-friends-placeholder {
