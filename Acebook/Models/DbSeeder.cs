@@ -64,7 +64,7 @@ public static class DbSeeder
         // -----------------------------
         var friendRequests = new List<FriendRequest>
         {
-            new FriendRequest { User = u[1], Friend = u[0] },
+            new FriendRequest { User = u[16], Friend = u[0] },
             new FriendRequest { User = u[3], Friend = u[2] },
             new FriendRequest { User = u[5], Friend = u[4] },
             new FriendRequest { User = u[7], Friend = u[6] },
