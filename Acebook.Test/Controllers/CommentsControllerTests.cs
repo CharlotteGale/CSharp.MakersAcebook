@@ -86,4 +86,80 @@ public class CommentsControllerTests : NUnitTestBase
         Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"),
                     "Should not allow empty comments - needs validation checks");
     }
+
+    [Test]
+    public void Edit_ShouldUpdateContent_WhenUserIsOwner()
+    {
+        var comment = new Comment
+        {
+            PostId = _testPost.Id,
+            UserId = _testUser.Id,
+            Content = "Old comment"
+        };
+        _context.Comments.Add(comment);
+        _context.SaveChanges();
+
+        var result = _controller.Edit(comment.Id, "Updated comment");
+
+        var updatedComment = _context.Comments.Find(comment.Id);
+        Assert.That(updatedComment.Content, Is.EqualTo("Updated comment"));
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"));
+    }
+
+    [Test]
+    public void Edit_ShouldNotUpdate_WhenUserIsNotOwner()
+    {
+        var otherUser = new User
+        {
+            Name = "Other user",
+            Email = "other@test.com",
+            Password = "HashPW1!"
+        };
+        _context.Users.Add(otherUser);
+        _context.SaveChanges();
+
+        var comment = new Comment
+        {
+            PostId = _testPost.Id,
+            UserId = otherUser.Id,
+            Content = "Don't touch this"
+        };
+        _context.Comments.Add(comment);
+        _context.SaveChanges();
+
+        var result = _controller.Edit(comment.Id, "Hacked!");
+
+        var refreshedComment = _context.Comments.Find(comment.Id);
+        Assert.That(refreshedComment.Content, Is.EqualTo("Don't touch this"));
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"),
+                    "Should not update comment - might need validation/error messages?");
+    }
+
+    [Test]
+    public void Delete_ShouldRemoveComment_WhenUserIsOwner()
+    {
+        var comment = new Comment
+        {
+            PostId = _testPost.Id,
+            UserId = _testUser.Id,
+            Content = "Delete this"
+        };
+        _context.Comments.Add(comment);
+        _context.SaveChanges();
+
+        var result = _controller.Delete(comment.Id);
+
+        var deletedComment = _context.Comments.Find(comment.Id);
+        Assert.That(deletedComment, Is.Null);
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"));
+    }
+
+    [Test]
+    public void Delete_ShouldRedirectToFeed_IfCommentDoesNotExist()
+    {
+        var result = _controller.Delete(999);
+
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/feed"),
+                    "Should redirect to feed if comment doesn't exist - graceful UI/UX handling req?");
+    }
 }
