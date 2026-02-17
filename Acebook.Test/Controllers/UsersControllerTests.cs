@@ -26,6 +26,14 @@ public class UsersControllerTests : NUnitTestBase
     }
 
     [Test]
+    public void New_ShouldReturnView()
+    {
+        var result = _controller.New();
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+    }
+
+    [Test]
     public void Create_ShouldHashPassword_WhenModelStateIsValid()
     {
         var user = new User

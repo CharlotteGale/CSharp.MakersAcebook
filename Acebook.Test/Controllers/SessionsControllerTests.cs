@@ -1,4 +1,4 @@
-
+using Microsoft.Extensions.Options;
 
 namespace Acebook.Test.Controllers;
 
@@ -36,6 +36,14 @@ public class SessionsControllerTests : NUnitTestBase
     }
 
     [Test]
+    public void New_ShouldReturnView()
+    {
+        var result = _controller.New();
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+    }
+
+    [Test]
     public void Create_ShouldVerifyHashedPassword_AndLoginUser()
     {
         var hasher = new PasswordHasher<User>();
@@ -58,7 +66,39 @@ public class SessionsControllerTests : NUnitTestBase
         Assert.That(sessionUserId, Is.EqualTo(user.Id));
     }
 
-        [Test]
+    [Test]
+    public void Create_ShouldRehashPassword_AndLoginUser_WhenRehashNeeded()
+    {
+        var hasher = new PasswordHasher<User>();
+
+        // set the hash to an older, weaker version
+        var hasherOptions = new PasswordHasherOptions { CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV2 };
+        var v2Hasher = new PasswordHasher<User>(Options.Create(hasherOptions));
+
+        var user = new User
+        {
+            Name = "Test User",
+            Email = "test@example.com",
+            Password = v2Hasher.HashPassword(null, "Password1!")
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var oldPasswordHash = user.Password;
+        var result = _controller.Create("test@example.com", "Password1!");
+
+        Assert.That(result, Is.TypeOf<RedirectResult>());
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/Feed"));
+
+        var sessionUserId = _controller.HttpContext.Session.GetInt32("user_id");
+        Assert.That(sessionUserId, Is.EqualTo(user.Id));
+
+        var updatedUser = _context.Users.Find(user.Id);
+        Assert.That(updatedUser.Password, Is.Not.EqualTo(oldPasswordHash),
+                    "Password should have been rehashed with v3 stronger algo");
+    }
+
+    [Test]
     public void Create_ShouldShowError_WhenUserDoesNotExist()
     {
         var result = _controller.Create("fake_user@example.com", "Password1!");
@@ -103,6 +143,24 @@ public class SessionsControllerTests : NUnitTestBase
         var sessionUserId = _controller.HttpContext.Session.GetInt32("user_id");
         Assert.That(sessionUserId, Is.Null,
                     "Should not set session when login fails");
+    }
+
+        [Test]
+    public void Logout_ShouldClearSession_AndRedirectToHome()
+    {
+        _controller.HttpContext.Session.SetInt32("user_id", 1);
+
+        var result = _controller.Logout();
+
+        var sessionUserId = _controller.HttpContext.Session.GetInt32("user_id");
+        Assert.That(sessionUserId, Is.Null,
+                    "Session should be destroyed after logout");
+
+        Assert.That(result, Is.TypeOf<RedirectToActionResult>());
+
+        var redirect = (RedirectToActionResult)result;
+        Assert.That(redirect.ActionName, Is.EqualTo("New"));
+        Assert.That(redirect.ControllerName, Is.EqualTo("Sessions"));
     }
 
     /// DEVELOPMENT ENVIRON ONLY TESTS ///
@@ -156,20 +214,4 @@ public class SessionsControllerTests : NUnitTestBase
 
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", null);
     }
-}
-
-public class MockHttpSession : ISession
-{
-    private readonly Dictionary<string, byte[]> _sessionStorage = new Dictionary<string, byte[]>();
-
-    public bool IsAvailable => true;
-    public string Id => Guid.NewGuid().ToString();
-    public IEnumerable<string> Keys => _sessionStorage.Keys;
-
-    public void Clear() => _sessionStorage.Clear();
-    public Task CommitAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
-    public Task LoadAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
-    public void Remove(string key) => _sessionStorage.Remove(key);
-    public void Set(string key, byte[] value) => _sessionStorage[key] = value;
-    public bool TryGetValue(string key, out byte[] value) => _sessionStorage.TryGetValue(key, out value);
 }

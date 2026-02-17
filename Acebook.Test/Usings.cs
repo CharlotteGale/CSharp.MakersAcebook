@@ -12,7 +12,13 @@ global using Moq;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Mvc.ViewFeatures;
 global using System.Text.Json;
+global using Microsoft.AspNetCore.Mvc.Abstractions;
+global using Microsoft.AspNetCore.Mvc.Filters;
+global using Microsoft.AspNetCore.Routing;
 
 global using Acebook.Test.Base;
 global using acebook.Models;
 global using acebook.Controllers;
+global using acebook.ActionFilters;
+global using Acebook.Test.Controllers;
+global using Acebook.Test.Helpers;
