@@ -1,7 +1,13 @@
-<div class="nav-button-container d-flex align-items-center">
-  <a class="friend-navigation-btn" asp-controller="Friends" asp-action="Index">Friends</a>
-  <a class="friend-navigation-btn" asp-controller="Friends" asp-action="requests">Friend Requests</a>
-</div>
+<div class="friends-container">
+
+    <div class="friends-header">
+        <h1 class="friends-title">Suggested Friends</h1>
+
+        <div class="friends-nav">
+            <a asp-action="Index" class="friends-link">Friends</a>
+            <a asp-action="requests" class="friends-link">Requests</a>
+        </div>
+    </div>
 
     <ul class="friends-list">
         @{
