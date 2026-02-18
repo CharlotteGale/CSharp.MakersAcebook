@@ -10,22 +10,19 @@
 
   <!-- ========================= -->
   <!-- RECEIVED REQUESTS -->
-  @* 
-  Potentially only render if there are pending requests? *@
   <!-- ========================= -->
-  <h2 class="section-title mt-5">Friend Requests</h2>
-
-  <div class="friends-grid">
-    @if ((ViewBag.ReceivedRequests as List<acebook.Models.FriendRequest>)?.Any() == true)
-    {
-      foreach (var req in (List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests)
+  @if ((ViewBag.ReceivedRequests as List<acebook.Models.FriendRequest>)?.Any() == true)
+  {
+    <h2 class="section-title mt-5">Friend Requests</h2>
+    <div class="friends-grid">
+      @foreach (var req in (List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests)
       {
         var user = req.User;
 
         <div class="friend-card">
           <div class="friend-card-icon-sidebar">
             <div class="friend-card-profile-icon">
-              @user.Name?.FirstOrDefault()
+              @user?.Name?.FirstOrDefault()
             </div>
           </div>
 
@@ -50,23 +47,17 @@
           </div>
         </div>
       }
-    }
-    else
-    {
-      <div class="no-friends-placeholder">No incoming requests.</div>
-    }
-  </div>
+    </div>
+  }
 
   <!-- ========================= -->
   <!-- SUGGESTED FRIENDS -->
   <!-- ========================= -->
   <h2 class="section-title mt-5">Suggested Friends</h2>
-
   <div class="friends-grid">
     @{
       var pending = ViewBag.Pending as HashSet<int> ?? new HashSet<int>();
     }
-
     @if ((ViewBag.NotFriends as List<acebook.Models.User>)?.Any() == true)
     {
       foreach (var nf in (List<acebook.Models.User>)ViewBag.NotFriends)
@@ -75,17 +66,15 @@
         {
           <div class="friend-card">
             <div class="friend-card-icon-sidebar">
-            <div class="friend-card-profile-icon">
-              @nf.Name?.FirstOrDefault()
+              <div class="friend-card-profile-icon">
+                @nf.Name?.FirstOrDefault()
+              </div>
             </div>
-          </div>
-
             <div class="friend-card-content">
               <div class="friend-card-user-details">
                 <h5 class="friend-name">@nf.Name</h5>
                 <p class="friend-email">@nf.Email</p>
               </div>
-
               <div class="friend-card-action-row">
                 <form action="/friends/not_friends_yet" method="post">
                   <input type="hidden" name="profileId" value="@nf.Id" />
@@ -106,28 +95,24 @@
   <!-- ========================= -->
   <!-- SENT REQUESTS -->
   <!-- ========================= -->
-  <h2 class="section-title mt-5">Sent Requests</h2>
-
-  <div class="friends-grid">
-    @if ((ViewBag.SentRequests as List<acebook.Models.FriendRequest>)?.Any() == true)
-    {
-      foreach (var sent in (List<acebook.Models.FriendRequest>)ViewBag.SentRequests)
+  @if ((ViewBag.SentRequests as List<acebook.Models.FriendRequest>)?.Any() == true)
+  {
+    <h2 class="section-title mt-5">Sent Requests</h2>
+    <div class="friends-grid">
+      @foreach (var sent in (List<acebook.Models.FriendRequest>)ViewBag.SentRequests)
       {
         var friend = sent.Friend;
-
         <div class="friend-card">
           <div class="friend-card-icon-sidebar">
             <div class="friend-card-profile-icon">
-              @friend.Name?.FirstOrDefault()
+              @friend?.Name?.FirstOrDefault()
             </div>
           </div>
-
           <div class="friend-card-content">
             <div class="friend-card-user-details">
-              <h5 class="friend-name">@friend.Name</h5>
-              <p class="friend-email">@friend.Email</p>
+              <h5 class="friend-name">@friend?.Name</h5>
+              <p class="friend-email">@friend?.Email</p>
             </div>
-
             <div class="friend-card-action-row">
               <form asp-action="RejectRequest" method="post">
                 <input type="hidden" name="requestId" value="@sent.Id" />
@@ -137,18 +122,13 @@
           </div>
         </div>
       }
-    }
-    else
-    {
-      <p class="no-friends-placeholder">No pending sent requests.</p>
-    }
-  </div>
+    </div>
+  }
 
   <!-- ========================= -->
   <!-- FRIENDS LIST -->
   <!-- ========================= -->
   <h2 class="section-title mt-5">Your Friends</h2>
-
   <div class="friends-grid">
     @if ((ViewBag.Friends as List<acebook.Models.User>)?.Any() == true)
     {
@@ -168,7 +148,7 @@
             <div class="friend-card-action-row">
               <form asp-action="DeleteFriend" method="post">
                 <input type="hidden" name="friendToDeleteId" value="@friend.Id" />
-                <button class="friend-delete-btn">Remove</button>
+                <button class="friend-delete-btn">Unfriend</button>
               </form>
             </div>
           </div>
@@ -180,9 +160,4 @@
       <p class="no-friends-placeholder">You have no friends yet.</p>
     }
   </div>
-
-
-
-
-
 </div>

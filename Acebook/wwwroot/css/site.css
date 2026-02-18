@@ -287,29 +287,6 @@ body {
   margin-bottom: 40px;
 }
 
-.friend-navigation-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem 1.5rem;
-  border-radius: 50px;
-  background: #f8f9fa;
-  color: #023E8A;
-  border: 2px solid #023E8A;
-  font-size: 1rem;
-  font-weight: 600;
-  text-decoration: none;
-  margin: 10px 5px 30px 5px;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.friend-navigation-btn:hover {
-  background: #023E8A;
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
 .friend-card {
   display: flex;
   align-items: stretch; 
@@ -328,10 +305,8 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-right: 1px solid rgba(189, 189, 189, 0.2); /*maybe remove */
 }
 
-/*maybe sit a little higher */
 .friend-card-profile-icon {
   width: 55px;
   height: 55px;
@@ -375,22 +350,6 @@ body {
 .friends-title {
   font-size: 2rem;
   font-weight: 700;
-  margin: 0;
-}
-
-.friends-link {
-  text-decoration: none;
-  color: #1877f2;
-  font-weight: 600;
-}
-
-.friends-link:hover {
-  text-decoration: underline;
-}
-
-.friends-list {
-  list-style: none;
-  padding: 0;
   margin: 0;
 }
 
@@ -474,4 +433,28 @@ This might need to be flipped to transparent and then filled on hover?*/
   font-size: 1.1rem;
   font-weight: 700;
   margin-top: 20px;
+}
+
+/* Nav Buttons for Friends Page*/
+.friend-navigation-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  background: #f8f9fa;
+  color: #023E8A;
+  border: 2px solid #023E8A;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin: 10px 5px 30px 5px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.friend-navigation-btn:hover {
+  background: #023E8A;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }

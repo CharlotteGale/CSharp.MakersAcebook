@@ -2,9 +2,9 @@
 @model List<Post>
 
 @functions {
-    string TimeAgo(DateTime date)
-    {
-        var ts = DateTime.UtcNow - date;
+  string TimeAgo(DateTime date)
+  {
+    var ts = DateTime.UtcNow - date;
 
     if (ts.TotalSeconds < 60)
       return $"{ts.Seconds}s ago";
@@ -34,22 +34,19 @@
   <div class="new-post-card mb-3">
     <h5 class="card-title">Write a Post</h5>
 
-        <form action="/posts" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <input type="text"
-                    name="content"
-                    class="form-field"
-                    placeholder="What's on your mind?" />
-            </div>
+    <form action="/posts" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <input type="text"   name="content"      class="form-field"          placeholder="What's on your mind?" />
+      </div>
 
-            <div class="mb-3">
-                <input type="file" name="imageFile" class="form-field" />
-            </div>
+      <div class="mb-3">
+        <input type="file" name="imageFile" class="form-field" />
+      </div>
 
-            <button type="submit" class="post-btn">Submit</button>
-        </form>
+      <button type="submit" class="post-btn">Submit</button>
+    </form>
 
-    </div>
+  </div>
 
   <!-- Recent Posts -->
   <h3 class="mb-3">Recent Posts</h3>
@@ -58,67 +55,67 @@
   {
     <div class="recent-post-card mb-4 p-3">
 
-            <!-- POST HEADER -->
-            <div class="post-header mb-2 d-flex align-items-center">
-                <div class="profile-icon">@post.User?.Name?.FirstOrDefault()</div>
-                <strong class="ms-2">@post.User?.Name</strong>
-            </div>
+      <!-- POST HEADER -->
+      <div class="post-header mb-2 d-flex align-items-center">
+        <div class="profile-icon">@post.User?.Name?.FirstOrDefault()</div>
+        <strong class="ms-2">@post.User?.Name</strong>
+      </div>
 
-            @if (Context.Session.GetInt32("user_id") == post.UserId &&
-                Context.Request.Query["editPostId"].ToString() == post.Id.ToString())
-            {
-                <!-- EDIT MODE -->
-                <form action="/posts/edit" method="post" class="edit-post-form mb-2">
-                    <input type="hidden" name="postId" value="@post.Id" />
-                    <textarea name="content" class="form-field mb-2">@post.Content</textarea>
-                    <button type="submit" class="post-btn small-btn me-2">Save</button>
-                    <a href="/feed" class="cancel-link">Cancel</a>
-                </form>
-            }
-            else
-            {
-                <!-- NORMAL MODE -->
-                <p class="card-text mb-2">@post.Content</p>
-                @if (!string.IsNullOrEmpty(post.ImgLink))
-                {
-                    <img src="@post.ImgLink" alt="Post image" class="img-fluid mb-2" />
-                }
-                <span class="text-muted small">
-                    @TimeAgo(post.CreatedAt)
+      @if (Context.Session.GetInt32("user_id") == post.UserId &&
+                      Context.Request.Query["editPostId"].ToString() == post.Id.ToString())
+      {
+        <!-- EDIT MODE -->
+        <form action="/posts/edit" method="post" class="edit-post-form mb-2">
+          <input type="hidden" name="postId" value="@post.Id" />
+          <textarea name="content" class="form-field mb-2">@post.Content</textarea>
+          <button type="submit" class="post-btn small-btn me-2">Save</button>
+          <a href="/feed" class="cancel-link">Cancel</a>
+        </form>
+      }
+      else
+      {
+        <!-- NORMAL MODE -->
+        <p class="card-text mb-2">@post.Content</p>
+        @if (!string.IsNullOrEmpty(post.ImgLink))
+        {
+          <img src="@post.ImgLink" alt="Post image" class="img-fluid mb-2" />
+        }
+        <span class="text-muted small">
+          @TimeAgo(post.CreatedAt)
 
-                    @if (post.UpdatedAt != null)
-                    {
-                        <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
-                    }
-                </span>
-            }
+          @if (post.UpdatedAt != null)
+          {
+            <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+          }
+        </span>
+      }
 
-            <!-- POST ACTIONS -->
-            @if (Context.Session.GetInt32("user_id") == post.UserId)
-            {
-                <div class="post-actions mt-1">
-                    <a href="/feed?editPostId=@post.Id" class="action-link me-2">Edit</a>
-                    <form action="/posts/delete" method="post" class="d-inline">
-                        <input type="hidden" name="postId" value="@post.Id" />
-                        <button type="submit" class="action-link delete">Delete</button>
-                    </form>
-                </div>
-            }
+      <!-- POST ACTIONS -->
+      @if (Context.Session.GetInt32("user_id") == post.UserId)
+      {
+        <div class="post-actions mt-1">
+          <a href="/feed?editPostId=@post.Id" class="action-link me-2">Edit</a>
+          <form action="/posts/delete" method="post" class="d-inline">
+            <input type="hidden" name="postId" value="@post.Id" />
+            <button type="submit" class="action-link delete">Delete</button>
+          </form>
+        </div>
+      }
 
-            <!-- LIKES -->
-            <form action="/likes/toggle" method="post" class="mt-1 like-container">
-                <input type="hidden" name="postId" value="@post.Id" />
-                @{
-                    var userId = Context.Session.GetInt32("user_id");
-                    var userHasLiked = post.Likes.Any(l => l.UserId == userId);
-                }
+      <!-- LIKES -->
+      <form action="/likes/toggle" method="post" class="mt-1 like-container">
+        <input type="hidden" name="postId" value="@post.Id" />
+        @{
+          var userId = Context.Session.GetInt32("user_id");
+          var userHasLiked = post.Likes.Any(l => l.UserId == userId);
+        }
 
-                <button type="submit" class="like-btn">
-                    👍
-                </button>
+        <button type="submit" class="like-btn">
+          👍
+        </button>
 
-                <span>@post.Likes.Count</span>
-            </form>
+        <span>@post.Likes.Count</span>
+      </form>
 
 
       <!-- COMMENTS -->
@@ -130,52 +127,52 @@
           {
             <div class="comment-line d-flex justify-content-between align-items-center mb-2">
 
-                            <!-- LEFT SIDE -->
-                            <div class="d-flex align-items-center flex-wrap">
-                                <div class="profile-icon">@comment.User?.Name?.FirstOrDefault()</div>
-                                <strong class="ms-2">@comment.User?.Name</strong>
+              <!-- LEFT SIDE -->
+              <div class="d-flex align-items-center flex-wrap">
+                <div class="profile-icon">@comment.User?.Name?.FirstOrDefault()</div>
+                <strong class="ms-2">@comment.User?.Name</strong>
 
-                                @if (!(Context.Session.GetInt32("user_id") == comment.UserId &&
-                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))
-                                {
-                                    <div class="ms-2">
-                                        <span class="ms-2">@comment.Content</span>
-                                        <span class="text-muted small ms-2">
-                                            @TimeAgo(comment.CreatedAt)
-                                            @if (comment.UpdatedAt != null)
-                                            {
-                                                <span class="ms-2">(edited @TimeAgo(comment.UpdatedAt.Value))</span>
-                                            }
-                                        </span>
-                                    </div>
-                                }
-                            </div>
+                @if (!(Context.Session.GetInt32("user_id") == comment.UserId &&
+                                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))
+                {
+                  <div class="ms-2">
+                    <span class="ms-2">@comment.Content</span>
+                    <span class="text-muted small ms-2">
+                      @TimeAgo(comment.CreatedAt)
+                      @if (comment.UpdatedAt != null)
+                      {
+                        <span class="ms-2">(edited @TimeAgo(comment.UpdatedAt.Value))</span>
+                      }
+                    </span>
+                  </div>
+                }
+              </div>
 
               <!-- RIGHT SIDE -->
               <div class="comment-actions">
 
-                                @if (Context.Session.GetInt32("user_id") == comment.UserId &&
-                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString())
-                                {
-                                    <form action="/comments/edit" method="post" class="edit-comment-form d-flex align-items-center">
-                                        <input type="hidden" name="commentId" value="@comment.Id" />
-                                        <input type="text" name="content" value="@comment.Content" class="form-field me-2 edit-field" />
-                                        <button type="submit" class="post-btn small-btn me-2">Save</button>
-                                        <a href="/feed" class="cancel-link">Cancel</a>
-                                    </form>
-                                }
-                                else
-                                {
-                                    @if (Context.Session.GetInt32("user_id") == comment.UserId)
-                                    {
-                                        <a href="/feed?editCommentId=@comment.Id" class="action-link">Edit</a>
+                @if (Context.Session.GetInt32("user_id") == comment.UserId &&
+                                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString())
+                {
+                  <form action="/comments/edit" method="post" class="edit-comment-form d-flex align-items-center">
+                    <input type="hidden" name="commentId" value="@comment.Id" />
+                    <input type="text" name="content" value="@comment.Content" class="form-field me-2 edit-field" />
+                    <button type="submit" class="post-btn small-btn me-2">Save</button>
+                    <a href="/feed" class="cancel-link">Cancel</a>
+                  </form>
+                }
+                else
+                {
+                  @if (Context.Session.GetInt32("user_id") == comment.UserId)
+                  {
+                    <a href="/feed?editCommentId=@comment.Id" class="action-link">Edit</a>
 
-                                        <form action="/comments/delete" method="post" class="delete-form">
-                                            <input type="hidden" name="commentId" value="@comment.Id" />
-                                            <button type="submit" class="action-link delete">Delete</button>
-                                        </form>
-                                    }
-                                }
+                    <form action="/comments/delete" method="post" class="delete-form">
+                      <input type="hidden" name="commentId" value="@comment.Id" />
+                      <button type="submit" class="action-link delete">Delete</button>
+                    </form>
+                  }
+                }
 
               </div>
 
@@ -189,19 +186,13 @@
 
       </div>
 
-            <form asp-controller="Comments"
-                    asp-action="Create"
-                    method="post"
-                    class="comment-form mt-3">
+      <form asp-controller="Comments"          asp-action="Create"             method="post"                 class="comment-form mt-3">
 
-                    <input type="hidden" name="postId" value="@post.Id" />
+        <input type="hidden" name="postId" value="@post.Id" />
 
-                    <div class="comment-input-wrapper">
-                        <input type="text"
-                            name="content"
-                            class="form-field"
-                            placeholder="Write a comment..." />
-                    </div>
+        <div class="comment-input-wrapper">
+          <input type="text"                       name="content"                  class="form-field"             placeholder="Write a comment..." />
+        </div>
 
         <button type="submit" class="post-btn mt-2">Comment</button>
       </form>
