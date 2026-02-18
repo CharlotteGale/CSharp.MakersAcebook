@@ -10,6 +10,8 @@
 
   <!-- ========================= -->
   <!-- RECEIVED REQUESTS -->
+  @* 
+  Potentially only render if there are pending requests? *@
   <!-- ========================= -->
   <h2 class="section-title mt-5">Friend Requests</h2>
 
@@ -22,7 +24,9 @@
 
         <div class="friend-card">
           <div class="friend-card-icon-sidebar">
-            @user?.Name?.FirstOrDefault()
+            <div class="friend-card-profile-icon">
+              @user.Name?.FirstOrDefault()
+            </div>
           </div>
 
           <div class="friend-card-content">
@@ -71,8 +75,10 @@
         {
           <div class="friend-card">
             <div class="friend-card-icon-sidebar">
+            <div class="friend-card-profile-icon">
               @nf.Name?.FirstOrDefault()
             </div>
+          </div>
 
             <div class="friend-card-content">
               <div class="friend-card-user-details">
@@ -110,7 +116,10 @@
         var friend = sent.Friend;
 
         <div class="friend-card">
-          <div class="friend-card-icon-sidebar">@friend?.Name?.FirstOrDefault()
+          <div class="friend-card-icon-sidebar">
+            <div class="friend-card-profile-icon">
+              @friend.Name?.FirstOrDefault()
+            </div>
           </div>
 
           <div class="friend-card-content">
@@ -146,7 +155,11 @@
       foreach (var friend in (List<acebook.Models.User>)ViewBag.Friends)
       {
         <div class="friend-card">
-          <div class="friend-card-icon-sidebar">@friend.Name?.FirstOrDefault()</div>
+          <div class="friend-card-icon-sidebar">
+            <div class="friend-card-profile-icon">
+              @friend.Name?.FirstOrDefault()
+            </div>
+          </div>
           <div class="friend-card-content">
             <div class="friend-card-user-details">
               <h5 class="friend-name">@friend.Name</h5>
