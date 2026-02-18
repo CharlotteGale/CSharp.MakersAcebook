@@ -47,7 +47,7 @@ public class LandingPageTests : PlaywrightTestBase
 
         await Expect(Page).ToHaveURLAsync(new Regex(".*/privacy", RegexOptions.IgnoreCase));
 
-        await Expect(Page.GetByRole(AriaRole.Heading)).ToContainTextAsync("Privacy Policy");
+        await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Privacy Policy", Level = 1 })).ToBeVisibleAsync();
     }
 
 }
