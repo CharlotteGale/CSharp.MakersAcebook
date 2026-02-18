@@ -126,4 +126,59 @@ public class FriendsControllerTests : NUnitTestBase
     Assert.That(friendsList.Count, Is.EqualTo(0));
   }
 
+  [Test]
+  public void AcceptRequest_ShouldCreateBiDirectionalFriendship_AndRemoveRequest()
+  {
+    var request = new FriendRequest
+    {
+      UserId = _testRequestUser.Id,
+      FriendId = _testUser.Id
+    };
+    _context.FriendRequests.Add(request);
+    _context.SaveChanges();
+
+    var result = _controller.AcceptRequest(request.Id, _testRequestUser.Id);
+    var activeUserInDb = _context.Users
+                        .Include(u => u.Friends)
+                        .First(u => u.Id == _testUser.Id);
+    var otherUserInDb = _context.Users
+                        .Include(u => u.Friends)
+                        .First(u => u.Id == _testRequestUser.Id);
+
+    Assert.That(activeUserInDb.Friends.Any(f => f.Id == _testRequestUser.Id), 
+                Is.True, "Active user should have Friend in list");
+    Assert.That(otherUserInDb.Friends.Any(f => f.Id == _testUser.Id), 
+                Is.True, "Friend should have Active user in list");
+
+    var deletedRequest = _context.FriendRequests.Find(request.Id);
+    Assert.That(deletedRequest, Is.Null, "FriendRequest record should be removed");
+
+    Assert.That(result, Is.TypeOf<RedirectResult>());
+    Assert.That(((RedirectResult)result).Url, Is.EqualTo("/friends"));
+  }
+
+  [Test]
+  public void RejectRequest_ShouldDeleteRequest_WithoutAddingFriend()
+    {
+        var request = new FriendRequest
+        {
+            UserId = _testRequestUser.Id,
+            FriendId = _testUser.Id
+        };
+        _context.FriendRequests.Add(request);
+        _context.SaveChanges();
+
+        var result = _controller.RejectRequest(request.Id);
+
+        var deletedRequest = _context.FriendRequests.Find(request.Id);
+        Assert.That(deletedRequest, Is.Null);
+
+        var activeUserInDb = _context.Users
+                            .Include(u => u.Friends)
+                            .First(u => u.Id == _testRequestUser.Id);
+        Assert.That(activeUserInDb.Friends.Count, Is.EqualTo(0), 
+                    "No friendship should be created");
+        
+        Assert.That(((RedirectResult)result).Url, Is.EqualTo("/friends"));
+    }
 }
