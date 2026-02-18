@@ -22,7 +22,7 @@ public class PostsController : Controller
 
 [Route("/Posts")]
 [HttpPost]
-public RedirectResult Create(string content, IFormFile? imageFile)
+public RedirectResult Create(string content, IFormFile? imageFile=null)
 {
     int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
 
@@ -68,7 +68,7 @@ public RedirectResult Create(string content, IFormFile? imageFile)
     };
 
     // If validation failed, return errors
-    if (!TryValidateModel(post))
+    if (!ModelState.IsValid)
     {
         TempData["InvalidPost"] = JsonSerializer.Serialize(post);
 
