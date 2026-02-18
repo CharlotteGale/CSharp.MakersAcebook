@@ -101,6 +101,25 @@ public class PostsController : Controller
 
         return Redirect("/feed");
     }
+    
+    [Route("/posts/{id:int}")]
+    [HttpGet]
+    public IActionResult Show(int id)
+    {
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId == null) return Redirect("/");
+
+        var post = _context.Posts
+            .Include(p => p.User)
+            .Include(p => p.Likes)
+            .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+            .FirstOrDefault(p => p.Id == id);
+
+        if (post == null) return NotFound();
+
+        return View(post);
+    }
 
 
 

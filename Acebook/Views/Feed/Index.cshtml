@@ -77,15 +77,16 @@
             else
             {
                 <!-- NORMAL MODE -->
+                <a href="/posts/@post.Id" class="post-permalink">
                 <p class="card-text mb-2">@post.Content</p>
-                <span class="text-muted small">
+                <span class="text-muted small d-block">
                     @TimeAgo(post.CreatedAt)
-
                     @if (post.UpdatedAt != null)
                     {
-                        <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+                    <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
                     }
                 </span>
+                </a>
             }
 
             <!-- POST ACTIONS -->

@@ -1,49 +1,159 @@
 @model acebook.Models.UserProfileViewModel;
 
-@* @{
-  var photo = string.IsNullOrWhiteSpace(Model.ProfilePhotoUrl)
-    ? "/images/default-avatar.png"
-    : Model.ProfilePhotoUrl;
-} *@
+@{
+  var initial = (Model.Name?.Trim().FirstOrDefault() ?? '?').ToString().ToUpper();
+  var postsCount = Model.RecentPosts?.Count ?? 0;
+  var friendsCount = Model.Friends?.Count ?? 0;
+}
 
-<div class="container mt-3">
-  <div class="d-flex align-items-center gap-3">
-    @* <img src="@photo" alt="@Model.Name profile photo" style="width:72px;height:72px;border-radius:50%;object-fit:cover;" /> *@
-    <div class="profile-icon">@Model.Name?.FirstOrDefault()</div>
-    <h1 class="m-0">@Model.Name</h1>
+<div class="container mt-4">
+
+  <!-- Header Card -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="profile-icon profile-icon--lg" title="@Model.Name">
+          @initial
+        </div>
+
+        <div>
+          <h1 class="h3 m-0">@Model.Name</h1>
+          <div class="text-muted small mt-1">
+            <span class="me-3"><strong>@friendsCount</strong> friend@(friendsCount == 1 ? "" : "s")</span>
+            <span><strong>@postsCount</strong> recent post@(postsCount == 1 ? "" : "s")</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="/Feed" class="btn btn-outline-secondary btn-sm">Back to Feed</a>
+        <a href="/Friends" class="btn btn-outline-primary btn-sm">Friends List</a>
+      </div>
+    </div>
   </div>
 
-  <hr />
+  <div class="row g-4">
 
-  <h2>Recent posts</h2>
-  @if (!Model.RecentPosts.Any())
-  {
-    <p>No posts yet.</p>
-  }
-  else
-  {
-    <ul class="list-group mb-4">
-      @foreach (var post in Model.RecentPosts)
-      {
-        <li class="list-group-item">@post.Content</li>
-      }
-    </ul>
-  }
+    <!-- Recent Posts -->
+    <div class="col-12 col-lg-7">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h2 class="h5 m-0">Recent posts</h2>
+      </div>
 
-  <h2>Friends</h2>
-  @if (!Model.Friends.Any())
-  {
-    <p>No friends yet.</p>
-  }
-  else
-  {
-    <ul class="list-group">
-      @foreach (var friend in Model.Friends)
+      @if (Model.RecentPosts == null || !Model.RecentPosts.Any())
       {
-        <li class="list-group-item">
-          <a href="/users/@friend.Id">@friend.Name</a>
-        </li>
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-muted">
+            No posts yet.
+          </div>
+        </div>
       }
-    </ul>
-  }
+      else
+      {
+        <div class="vstack gap-3">
+          @foreach (var post in Model.RecentPosts)
+          {
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="profile-icon" title="@Model.Name">@initial</div>
+                    <div class="fw-semibold">@Model.Name</div>
+                  </div>
+
+                  @* If you have timestamps, uncomment:
+                  <div class="text-muted small">@post.CreatedAt.ToString("dd MMM yyyy")</div>
+                  *@
+                </div>
+
+                <div class="mt-2">
+                  <div class="text-body">@post.Content</div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Friends -->
+    <div class="col-12 col-lg-5">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h2 class="h5 m-0">Friends</h2>
+      </div>
+
+      @if (Model.Friends == null || !Model.Friends.Any())
+      {
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-muted">
+            No friends yet.
+          </div>
+        </div>
+      }
+      else
+      {
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <div class="friends-grid">
+              @foreach (var friend in Model.Friends)
+              {
+                var friendInitial = (friend.Name?.Trim().FirstOrDefault() ?? '?').ToString().ToUpper();
+
+                <a class="friend-chip" href="/users/@friend.Id" title="View @friend.Name's profile">
+                  <span class="profile-icon">@friendInitial</span>
+                  <span class="friend-name">@friend.Name</span>
+                </a>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
 </div>
+
+<style>
+  /* Uses your existing .profile-icon base, but adds sizes + nicer chips */
+  .profile-icon--lg{
+    width:72px;
+    height:72px;
+    font-size: 1.4rem;
+  }
+
+  .friends-grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  @@media (min-width: 576px){
+    .friends-grid{
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .friend-chip{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:12px;
+    text-decoration:none;
+    color: inherit;
+    background: rgba(0,0,0,0.03);
+    transition: transform 120ms ease, background 120ms ease;
+  }
+
+  .friend-chip:hover{
+    background: rgba(0,0,0,0.06);
+    transform: translateY(-1px);
+  }
+
+  .friend-name{
+    font-weight: 600;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
