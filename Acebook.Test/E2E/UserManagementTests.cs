@@ -1,6 +1,4 @@
-using Acebook.Test;
-
-namespace Acebook.Tests;
+namespace Acebook.Tests.E2E;
 
 public class UserManagement : PlaywrightTestBase
 {
@@ -155,12 +153,7 @@ public async Task InvalidEmailFormatIsRejectedWithInlineMessage()
   await Expect(emailError).ToContainTextAsync("Enter a valid email address.");
 }
 
-}
 
-namespace Acebook.Test.E2E;
-
-public class UserManagement : PlaywrightTestBase
-{
   [Test]
   public async Task SigningUp_RedirectsToSignInForm()
   {
