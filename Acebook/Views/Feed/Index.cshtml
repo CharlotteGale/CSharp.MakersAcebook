@@ -34,16 +34,21 @@
     <div class="new-post-card mb-3">
         <h5 class="card-title">Write a Post</h5>
 
-        <form action="/posts" method="post">
+        <form action="/posts" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <input type="text"
-                        name="content"
-                        class="form-field"
-                        placeholder="What's on your mind?" />
+                    name="content"
+                    class="form-field"
+                    placeholder="What's on your mind?" />
+            </div>
+
+            <div class="mb-3">
+                <input type="file" name="imageFile" class="form-field" />
             </div>
 
             <button type="submit" class="post-btn">Submit</button>
         </form>
+
     </div>
 
     <!-- Recent Posts -->
@@ -79,7 +84,11 @@
                 <!-- NORMAL MODE -->
                 <a href="/posts/@post.Id" class="post-permalink">
                 <p class="card-text mb-2">@post.Content</p>
-                <span class="text-muted small d-block">
+                @if (!string.IsNullOrEmpty(post.ImgLink))
+                {
+                    <img src="@post.ImgLink" alt="Post image" class="img-fluid mb-2" />
+                }
+                <span class="text-muted small">
                     @TimeAgo(post.CreatedAt)
                     @if (post.UpdatedAt != null)
                     {
@@ -102,20 +111,20 @@
             }
 
             <!-- LIKES -->
-            <div class="mt-2">
-                <span>@post.Likes.Count like(s)</span>
-            </div>
-
-            <form action="/likes/toggle" method="post" class="mt-1">
+            <form action="/likes/toggle" method="post" class="mt-1 like-container">
                 <input type="hidden" name="postId" value="@post.Id" />
                 @{
                     var userId = Context.Session.GetInt32("user_id");
                     var userHasLiked = post.Likes.Any(l => l.UserId == userId);
                 }
-                <button type="submit" class="post-btn">
-                    @(userHasLiked ? "Unlike" : "Like")
+
+                <button type="submit" class="like-btn">
+                    👍
                 </button>
+
+                <span>@post.Likes.Count</span>
             </form>
+
 
             <!-- COMMENTS -->
             <div class="mt-2">

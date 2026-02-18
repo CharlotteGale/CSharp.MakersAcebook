@@ -20,43 +20,78 @@ public class PostsController : Controller
     }
 
 
-    [Route("/Posts")]
-    [HttpPost]
-    public RedirectResult Create(Post post) {
-      
-      ModelState.Remove("UserId");
-      ModelState.Remove("User");
+[Route("/Posts")]
+[HttpPost]
+public RedirectResult Create(string content, IFormFile? imageFile)
+{
+    int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
 
-      if (!ModelState.IsValid)
-      {
-        // Post conversion
-        TempData["InvalidPost"] = JsonSerializer.Serialize(post);
-        /// <summary>
-        /// This takes a Post object and converts it to a JSON string.
-        /// Stores it into TempData, which survives one redirect.
-        /// </summary>
-        
-        // Validation error extraction and conversion
-        TempData["ModelStateErrors"] = JsonSerializer.Serialize(
-          ModelState.Where(x => x.Value.Errors.Count > 0)
-            .ToDictionary(
-              kvp => kvp.Key,
-              kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-            )
-        );
-        /// <summary>
-        /// Captures the errors found in ModelState, converts it to a dictionary.
-        /// Which is then converted to JSON and stored in TempData.
-        /// </summary>
-        return new RedirectResult("/Feed");
-      }
+    string? imagePath = null;
 
-      int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
-      post.UserId = currentUserId;
-      _context.Posts.Add(post);
-      _context.SaveChanges();
-      return new RedirectResult("/Feed");
+    // Save image if uploaded
+    if (imageFile != null && imageFile.Length > 0)
+    {
+        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+        if (!Directory.Exists(uploadsFolder))
+            Directory.CreateDirectory(uploadsFolder);
+
+        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+        var filePath = Path.Combine(uploadsFolder, fileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            imageFile.CopyTo(stream);
+        }
+
+        imagePath = "/uploads/" + fileName;
     }
+
+    // Validation 
+    bool hasContent = !string.IsNullOrWhiteSpace(content);
+    bool hasImage = imagePath != null;
+
+    if (!hasContent && !hasImage)
+    {
+        ModelState.AddModelError("Content", "You must provide content or an image.");
+    }
+
+    // Build the post
+    var user = _context.Users.First(u => u.Id == currentUserId);
+
+    var post = new Post
+    {
+        Content = content,
+        ImgLink = imagePath,
+        UserId = currentUserId,
+        User = user
+    };
+
+    // If validation failed, return errors
+    if (!TryValidateModel(post))
+    {
+        TempData["InvalidPost"] = JsonSerializer.Serialize(post);
+
+        TempData["ModelStateErrors"] = JsonSerializer.Serialize(
+            ModelState.Where(x => x.Value.Errors.Count > 0)
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                )
+        );
+
+        return new RedirectResult("/Feed");
+    }
+
+    // Save post
+    _context.Posts.Add(post);
+    _context.SaveChanges();
+
+    return new RedirectResult("/Feed");
+}
+
+
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

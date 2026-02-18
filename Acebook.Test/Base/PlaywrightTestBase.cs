@@ -1,11 +1,17 @@
-namespace Acebook.Test;
+using acebook.Models;
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
-public class NUnitTestBase
+namespace Acebook.Test.Base;
+
+
+public class PlaywrightTestBase : PageTest
 {
+    protected const string BaseUrl = "http://127.0.0.1:5287";
     protected AcebookDbContext _context;
 
     [SetUp]
-    public void BaseSetUp()
+    public async Task BaseSetUp()
     {
         var configuration = TestConfiguration.GetConfiguration();
         var connectionString = TestConfiguration.GetConnectionString();
@@ -13,7 +19,7 @@ public class NUnitTestBase
         var options = new DbContextOptionsBuilder<AcebookDbContext>()
             .UseNpgsql(connectionString)
             .Options;
-        
+
         _context = new AcebookDbContext(options, configuration);
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
@@ -21,12 +27,11 @@ public class NUnitTestBase
         DbSeeder.Seed(_context);
 
         _context.SaveChanges();
-
     }
 
     [TearDown]
-    public void TearDown()
+    public void BaseTearDown()
     {
-        _context.Dispose();
+        _context?.Dispose();
     }
 }
