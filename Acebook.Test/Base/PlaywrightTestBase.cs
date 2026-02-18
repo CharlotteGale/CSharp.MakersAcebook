@@ -7,6 +7,7 @@ namespace Acebook.Test.Base;
 
 public class PlaywrightTestBase : PageTest
 {
+    protected const string BaseUrl = "http://127.0.0.1:5287";
     protected AcebookDbContext _context;
 
     [SetUp]
