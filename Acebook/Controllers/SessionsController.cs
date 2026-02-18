@@ -50,7 +50,7 @@ public class SessionsController : Controller
         }
         else {
             result = hasher.VerifyHashedPassword(user, user.Password, password);
-             }
+            }
 
         if (result == PasswordVerificationResult.Success || result == PasswordVerificationResult.SuccessRehashNeeded)
         {

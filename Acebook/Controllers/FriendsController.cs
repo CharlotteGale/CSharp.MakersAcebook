@@ -153,36 +153,36 @@ public class FriendsController : Controller
         return new RedirectResult("/friends");
     }
 
-    // ============================================================
-    //  OLD SUGGESTED FRIENDS PAGE - now void
-    // ============================================================
-    [Route("/friends/not_friends_yet")]
-    [HttpGet]
-    public IActionResult NotFriends()
-    {
-        int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
+    // // ============================================================
+    // //  OLD SUGGESTED FRIENDS PAGE - now void
+    // // ============================================================
+    // [Route("/friends/not_friends_yet")]
+    // [HttpGet]
+    // public IActionResult NotFriends()
+    // {
+    //     int ActiveUserId = HttpContext.Session.GetInt32("user_id") ?? 0;
 
-        var user = _context.Users
-            .Include(u => u.Friends)
-            .FirstOrDefault(u => u.Id == ActiveUserId);
+    //     var user = _context.Users
+    //         .Include(u => u.Friends)
+    //         .FirstOrDefault(u => u.Id == ActiveUserId);
 
-        var existingFriendsIds = user?.Friends?.Select(f => f.Id).ToList() ?? new List<int>();
+    //     var existingFriendsIds = user?.Friends?.Select(f => f.Id).ToList() ?? new List<int>();
 
-        var pending = _context.FriendRequests
-            .Where(fr => fr.FriendId == ActiveUserId || fr.UserId == ActiveUserId)
-            .Select(fr => fr.UserId == ActiveUserId ? fr.FriendId : fr.UserId)
-            .ToHashSet();
+    //     var pending = _context.FriendRequests
+    //         .Where(fr => fr.FriendId == ActiveUserId || fr.UserId == ActiveUserId)
+    //         .Select(fr => fr.UserId == ActiveUserId ? fr.FriendId : fr.UserId)
+    //         .ToHashSet();
 
-        ViewBag.Pending = pending;
+    //     ViewBag.Pending = pending;
 
-        var notFriends = _context.Users
-            .Where(u => u.Id != ActiveUserId &&
-                        !existingFriendsIds.Contains(u.Id) &&
-                        !pending.Contains(u.Id))
-            .ToList();
+    //     var notFriends = _context.Users
+    //         .Where(u => u.Id != ActiveUserId &&
+    //                     !existingFriendsIds.Contains(u.Id) &&
+    //                     !pending.Contains(u.Id))
+    //         .ToList();
 
-        ViewBag.NotFriends = notFriends;
+    //     ViewBag.NotFriends = notFriends;
 
-        return View("NotFriends");
-    }
+    //     return View("NotFriends");
+    // }
 }

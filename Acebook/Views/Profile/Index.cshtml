@@ -1,0 +1,51 @@
+@model acebook.Models.User
+
+<div class="profile-header">
+    <div class="profile-left">
+        <div class="profile-pg-icon"></div>
+    </div>
+
+    <div class="profile-right">
+        <h1 class="profile-name">@Model.Name</h1>
+        <p class="profile-friends">123 friends</p>
+    </div>
+</div>
+
+<div class="profile-nav-strip">
+    <button class="profile-tab active">Posts</button>
+    <button class="profile-tab">About</button>
+    <button class="profile-tab">Friends</button>
+    <button class="profile-tab">Photos</button>
+</div>
+
+
+<div class="container">
+    <div class="profile-content-grid">
+
+        <div class="profile-card">
+            <h2>Personal Details</h2>
+            <p><strong>Location:</strong> London (placeholder)</p>
+            <p><strong>Date of Birth:</strong> @Model.DateOfBirth?.ToShortDateString()</p>
+        </div>
+
+        <div class="profile-card">
+            <h2>Highlights</h2>
+            <p>Nothing to show yet.</p>
+        </div>
+
+        <div class="profile-card profile-card--full">
+            <h2>Make a Post</h2>
+
+            <form action="/posts" method="post">
+                <div class="mb-3">
+                    <textarea 
+                        name="content"
+                        class="post-box"
+                        placeholder="What's on your mind?"></textarea>
+                </div>
+                <button type="submit" class="post-btn">Post</button>
+            </form>
+        </div>
+
+    </div>
+</div>
