@@ -1,6 +1,5 @@
-using Microsoft.AspNetCore.Identity;
 
-namespace Acebook.Test;
+namespace Acebook.Test.Unit;
 
 public class PasswordHashingTests : NUnitTestBase
 {

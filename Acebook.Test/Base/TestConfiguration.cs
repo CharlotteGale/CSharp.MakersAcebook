@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Acebook.Test;
+namespace Acebook.Test.Base;
 
 public static class TestConfiguration
 {
