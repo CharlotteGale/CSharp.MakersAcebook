@@ -6,34 +6,72 @@
             <p class="brand-tagline">Connect with friends and the world around you.</p>
         </div>
 
-        <form asp-controller="Users" asp-action="Create" method="post" class="login-card">
-    <div asp-validation-summary="All"></div>
+        <form asp-controller="Users" asp-action="Create" method="post" class="login-card" novalidate>
 
     <div class="mb-3">
         <input asp-for="Name" placeholder="Name" class="form-field" />
-        <span asp-validation-for="Name"></span>
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <input asp-for="Email" placeholder="Email" class="form-field" />
-        <span asp-validation-for="Email"></span>
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <input asp-for="Password" type="password" placeholder="Password" class="form-field" />
-        <span asp-validation-for="Password"></span>
+        <input asp-for="Password" id="Password" type="password" placeholder="Password" class="form-field" />
+        <div id="password-help" class="text-danger" style="margin-top: 6px;"></div>
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
         <input asp-for="DateOfBirth" class="form-control form-field" type="date" />
-        <span asp-validation-for="DateOfBirth"></span>
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <input type="submit" value="Create account" class="submit-btn">
+        <input id="signup-submit" type="submit" value="Create account" class="submit-btn">
     </div>
 </form>
 
     </div>
 </div>
+
+<script>
+  (function () {
+    const passwordInput = document.getElementById("Password");
+    const help = document.getElementById("password-help");
+    const submit = document.getElementById("signup-submit");
+
+    if (!passwordInput || !help || !submit) return;
+
+    function validate(pw) {
+      const minLen = pw.length >= 8;
+      const hasLower = /[a-z]/.test(pw);
+      const hasUpper = /[A-Z]/.test(pw);
+      const hasDigit = /[0-9]/.test(pw);
+      const hasSymbol = /[^a-zA-Z0-9]/.test(pw);
+
+      return minLen && hasLower && hasUpper && hasDigit && hasSymbol;
+    }
+
+    const msg = "Password must be at least 8 characters and include uppercase, lowercase, a number, and a symbol.";
+
+    function update() {
+      const pw = passwordInput.value || "";
+      const ok = validate(pw);
+
+      submit.disabled = !ok;
+
+      if (pw.length === 0) {
+        help.textContent = "";
+      } else {
+        help.textContent = ok ? "" : msg;
+      }
+    }
+
+    passwordInput.addEventListener("input", update);
+    update();
+  })();
+</script>

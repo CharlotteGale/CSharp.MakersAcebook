@@ -31,6 +31,15 @@ public class UsersController : Controller
         {
             return View("New", user);
         }
+        
+        var email = user.Email.Trim().ToLower();
+        if (_context.Users.Any(u => u.Email.ToLower() == email))
+        {
+            ModelState.AddModelError("Email", "An account with this email already exists.");
+            return View("New", user);
+        }
+        user.Email = email;
+
 
         user.DateOfBirth = DateTime.SpecifyKind(user.DateOfBirth!.Value, DateTimeKind.Utc);
         int age = user.GetAge();

@@ -1,6 +1,7 @@
 namespace acebook.Models;
 
 using System.ComponentModel.DataAnnotations;
+using Models.Validation;
 
 public class User
 {
@@ -8,10 +9,15 @@ public class User
   public int Id { get; set; }
   [Required]
   public required string Name { get; set; }
-  [Required]
+
+  [Required(ErrorMessage = "Email is required.")]
+  [EmailAddress(ErrorMessage = "Enter a valid email address.")]
   public required string Email { get; set; }
-  [Required]
+
+  [Required(ErrorMessage = "Password is required.")]
+  [StrongPassword(8)]
   public required string Password { get; set; }
+
   [Required (ErrorMessage = "The Date of Birth field is required.")]
   public DateTime? DateOfBirth { get; set; }
   public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
@@ -52,3 +58,4 @@ public class User
     return age;
   }
 }
+
