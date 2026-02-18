@@ -43,35 +43,60 @@
     const passwordInput = document.getElementById("Password");
     const help = document.getElementById("password-help");
     const submit = document.getElementById("signup-submit");
+    const form = passwordInput?.closest("form");
 
-    if (!passwordInput || !help || !submit) return;
+    if (!passwordInput || !help || !submit || !form) return;
 
-    function validate(pw) {
+    const msg = "Password must be at least 8 characters and include uppercase, lowercase, a number, and a symbol.";
+
+    function isStrong(pw) {
       const minLen = pw.length >= 8;
       const hasLower = /[a-z]/.test(pw);
       const hasUpper = /[A-Z]/.test(pw);
       const hasDigit = /[0-9]/.test(pw);
       const hasSymbol = /[^a-zA-Z0-9]/.test(pw);
-
       return minLen && hasLower && hasUpper && hasDigit && hasSymbol;
     }
 
-    const msg = "Password must be at least 8 characters and include uppercase, lowercase, a number, and a symbol.";
-
-    function update() {
-      const pw = passwordInput.value || "";
-      const ok = validate(pw);
-
-      submit.disabled = !ok;
-
-      if (pw.length === 0) {
+    function setPasswordMessage(pw, forceShow) {
+      if (!forceShow && pw.length === 0) {
         help.textContent = "";
-      } else {
-        help.textContent = ok ? "" : msg;
+        return;
       }
+      help.textContent = isStrong(pw) ? "" : msg;
     }
 
-    passwordInput.addEventListener("input", update);
-    update();
+    function update(forceShow = false) {
+      const pw = passwordInput.value || "";
+
+      if (pw.length === 0) {
+        submit.disabled = false;
+        setPasswordMessage(pw, forceShow);
+        return;
+      }
+
+      const ok = isStrong(pw);
+      submit.disabled = !ok;
+      setPasswordMessage(pw, forceShow);
+    }
+
+    passwordInput.addEventListener("input", () => update(false));
+
+    form.addEventListener("submit", (e) => {
+      const pw = passwordInput.value || "";
+
+      if (pw.length === 0) {
+          help.textContent = "";
+          return;
+      }
+
+
+      if (!isStrong(pw)) {
+        e.preventDefault();
+        update(true);
+      }
+    });
+
+    update(false);
   })();
 </script>
