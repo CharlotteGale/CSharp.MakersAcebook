@@ -106,15 +106,18 @@
             }
 
             <!-- LIKES -->
-            <form action="/likes/toggle" method="post" class="mt-1">
+            <form action="/likes/toggle" method="post" class="mt-1 like-container">
                 <input type="hidden" name="postId" value="@post.Id" />
                 @{
                     var userId = Context.Session.GetInt32("user_id");
                     var userHasLiked = post.Likes.Any(l => l.UserId == userId);
                 }
-                <button type="submit" class="post-btn">
-                    @(userHasLiked ? "👍" : "👍") @post.Likes.Count
-                </button>      
+
+                <button type="submit" class="like-btn">
+                    👍
+                </button>
+
+                <span>@post.Likes.Count</span>
             </form>
 
 
