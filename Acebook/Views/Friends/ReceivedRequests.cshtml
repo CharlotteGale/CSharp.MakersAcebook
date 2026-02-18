@@ -28,7 +28,8 @@
                     <div class="friend-info">
                         <div class="friend-header d-flex align-items-center">
                             <div class="profile-icon">@user?.Name?.FirstOrDefault()</div>
-                            <span class="friend-name ms-2">@user?.Name</span>
+                            <a href="/users/@user?.Id">@user?.Name</a>
+
                         </div>
 
                         <span class="friend-email friend-email-offset">Wants to be friends!</span>
@@ -75,7 +76,7 @@
                     <div class="friend-info">
                         <div class="friend-header d-flex align-items-center">
                             <div class="profile-icon">@friend?.Name?.FirstOrDefault()</div>
-                            <span class="friend-name ms-2">@friend?.Name</span>
+                            <a href="/users/@friend?.Id">@friend?.Name</a>
                         </div>
 
                         <span class="friend-email friend-email-offset">@friend?.Email</span>

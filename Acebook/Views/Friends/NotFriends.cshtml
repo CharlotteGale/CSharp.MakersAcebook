@@ -28,7 +28,8 @@
                         <div class="friend-info">
                             <div class="friend-header d-flex align-items-center">
                                 <div class="profile-icon">@newFriend.Name?.FirstOrDefault()</div>
-                                <span class="friend-name ms-2">@newFriend.Name</span>
+                                <a href="/users/@newFriend.Id">@newFriend.Name</a>
+
                             </div>
 
                             <span class="friend-email friend-email-offset">@newFriend.Email</span>

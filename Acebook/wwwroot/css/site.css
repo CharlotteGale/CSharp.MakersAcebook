@@ -499,3 +499,28 @@ body {
     font-weight: 500;
     margin-top: 20px;
 }
+
+/* profilecss */
+.profile-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.profile-link:hover .profile-name {
+  text-decoration: underline;
+}
+
+.profile-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  background: rgba(0,0,0,0.06);
+}
+
+.profile-name {
+  font-weight: 600;
+}

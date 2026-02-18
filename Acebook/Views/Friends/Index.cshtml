@@ -32,7 +32,7 @@
                         <div class="friend-info">
                             <div class="friend-header d-flex align-items-center">
                                 <div class="profile-icon">@nf.Name?.FirstOrDefault()</div>
-                                <span class="friend-name ms-2">@nf.Name</span>
+                                <a href="/users/@nf.Id">@nf.Name</a>
                             </div>
                             <span class="friend-email friend-email-offset">@nf.Email</span>
                         </div>
@@ -70,7 +70,8 @@
                     <div class="friend-info">
                         <div class="friend-header d-flex align-items-center">
                             <div class="profile-icon">@user?.Name?.FirstOrDefault()</div>
-                            <span class="friend-name ms-2">@user?.Name</span>
+                            <a href="/users/@user?.Id">@user?.Name</a>
+
                         </div>
                         <span class="friend-email friend-email-offset">Wants to be friends!</span>
                     </div>
@@ -115,7 +116,7 @@
                     <div class="friend-info">
                         <div class="friend-header d-flex align-items-center">
                             <div class="profile-icon">@friend?.Name?.FirstOrDefault()</div>
-                            <span class="friend-name ms-2">@friend?.Name</span>
+                                <a href="/users/@friend?.Id">@friend?.Name</a>
                         </div>
                         <span class="friend-email friend-email-offset">@friend?.Email</span>
                     </div>
@@ -149,7 +150,7 @@
                     <div class="friend-info">
                         <div class="friend-header d-flex align-items-center">
                             <div class="profile-icon">@friend.Name?.FirstOrDefault()</div>
-                            <span class="friend-name ms-2">@friend.Name</span>
+                            <a href="/users/@friend.Id">@friend.Name</a>
                         </div>
                         <span class="friend-email friend-email-offset">@friend.Email</span>
                     </div>
@@ -167,9 +168,4 @@
             <li class="no-friends-placeholder">You have no friends yet.</li>
         }
     </ul>
-
-
-
-
-
 </div>

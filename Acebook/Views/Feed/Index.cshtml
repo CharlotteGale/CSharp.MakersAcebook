@@ -54,13 +54,17 @@
         <div class="recent-post-card mb-4 p-3">
 
             <!-- POST HEADER -->
-            <div class="post-header mb-2 d-flex align-items-center">
-                <div class="profile-icon">@post.User?.Name?.FirstOrDefault()</div>
-                <strong class="ms-2">@post.User?.Name</strong>
+            <div class="post-header mb-2 d-flex align-items-center gap-2">
+                <a class="profile-link d-flex align-items-center gap-2" href="/users/@post.UserId">
+                    <div class="profile-icon" title="View profile">
+                        @(post.User?.Name?.FirstOrDefault() ?? '?')
+                    </div>
+                    <span class="profile-name">@post.User?.Name</span>
+                </a>
             </div>
 
-            @if (Context.Session.GetInt32("user_id") == post.UserId &&
-                Context.Request.Query["editPostId"].ToString() == post.Id.ToString())
+            @if (Context.Session.GetInt32("user_id") == post?.UserId &&
+                Context.Request.Query["editPostId"].ToString() == post?.Id.ToString())
             {
                 <!-- EDIT MODE -->
                 <form action="/posts/edit" method="post" class="edit-post-form mb-2">
@@ -123,8 +127,12 @@
 
                             <!-- LEFT SIDE -->
                             <div class="d-flex align-items-center flex-wrap">
-                                <div class="profile-icon">@comment.User?.Name?.FirstOrDefault()</div>
-                                <strong class="ms-2">@comment.User?.Name</strong>
+                                <a class="profile-link d-flex align-items-center gap-2" href="/users/@comment.UserId">
+                                    <div class="profile-icon" title="View profile">
+                                        @(comment.User?.Name?.FirstOrDefault() ?? '?')
+                                    </div>
+                                    <span class="profile-name">@comment.User?.Name</span>
+                                </a>
 
                                 @if (!(Context.Session.GetInt32("user_id") == comment.UserId &&
                                     Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))
