@@ -13,6 +13,7 @@ public class UserManagement : PlaywrightTestBase
     await Page.GetByPlaceholder("Name").FillAsync("New User");
     await Page.GetByPlaceholder("Email").FillAsync("new@user.com");
     await Page.GetByPlaceholder("Password").FillAsync("password");
+    await Page.GetByLabel("Date of Birth").FillAsync("2000-01-01");
     await Page.GetByRole(AriaRole.Button, new() { Name = "Create account" }).ClickAsync();
 
     await Expect(Page).ToHaveURLAsync("http://127.0.0.1:5287/");
@@ -39,7 +40,7 @@ public class UserManagement : PlaywrightTestBase
   public async Task SigningInWithCorrectCredentialsRedirectsToPosts()
   {
     await Page.GotoAsync("http://127.0.0.1:5287/");
-    await Page.GetByPlaceholder("Email").FillAsync("admin@email.com");
+    await Page.GetByPlaceholder("Email").FillAsync("test1@email.com");
     await Page.GetByPlaceholder("Password").FillAsync("password");
     await Page.GetByRole(AriaRole.Button, new() { Name = "Log In" }).ClickAsync();
 
@@ -58,7 +59,4 @@ public class UserManagement : PlaywrightTestBase
     var alert = Page.Locator(".alert-danger");
     await Expect(alert).ToContainTextAsync("Your email or password details are incorrect."); 
   }
-
-
-  
 }
