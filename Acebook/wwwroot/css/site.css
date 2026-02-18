@@ -425,7 +425,7 @@ body {
 .friend-add-btn, .friend-delete-btn {
   width: 100%;
   padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: 50px;
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 600;
