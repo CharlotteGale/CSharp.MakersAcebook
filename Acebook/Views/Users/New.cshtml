@@ -7,28 +7,33 @@
         </div>
 
         <form asp-controller="Users" asp-action="Create" method="post" class="login-card">
+    <div asp-validation-summary="All"></div>
 
-            <div class="mb-3">
-                <input type="text" id="name" name="name" placeholder="Name" class="form-field">
-            </div>
+    <div class="mb-3">
+        <input asp-for="Name" placeholder="Name" class="form-field" />
+        <span asp-validation-for="Name"></span>
+    </div>
 
-            <div class="mb-3">
-                <input type="text" id="email" name="email" placeholder="Email" class="form-field">
-            </div>
+    <div class="mb-3">
+        <input asp-for="Email" placeholder="Email" class="form-field" />
+        <span asp-validation-for="Email"></span>
+    </div>
 
-            <div class="mb-3">
-                <input type="password" id="password" name="password" placeholder="Password" class="form-field">
-            </div>
+    <div class="mb-3">
+        <input asp-for="Password" type="password" placeholder="Password" class="form-field" />
+        <span asp-validation-for="Password"></span>
+    </div>
 
-            <div class="mb-3">
-                <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
-                <input asp-for="DateOfBirth" class="form-control form-field" type="date"/>
-            </div>
+    <div class="mb-3">
+        <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
+        <input asp-for="DateOfBirth" class="form-control form-field" type="date" />
+        <span asp-validation-for="DateOfBirth"></span>
+    </div>
 
-            <div class="mb-3">
-                <input type="submit" value="Create account" class="submit-btn">
-            </div>
+    <div class="mb-3">
+        <input type="submit" value="Create account" class="submit-btn">
+    </div>
+</form>
 
-        </form>
     </div>
 </div>
