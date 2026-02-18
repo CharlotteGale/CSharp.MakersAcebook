@@ -514,3 +514,15 @@ body {
     outline: none;
     box-shadow: none;
 }
+
+.profile-icon-nav {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #1877f2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
