@@ -106,10 +106,6 @@
             }
 
             <!-- LIKES -->
-            <div class="mt-2">
-                <span>@post.Likes.Count like(s)</span>
-            </div>
-
             <form action="/likes/toggle" method="post" class="mt-1">
                 <input type="hidden" name="postId" value="@post.Id" />
                 @{
@@ -117,9 +113,10 @@
                     var userHasLiked = post.Likes.Any(l => l.UserId == userId);
                 }
                 <button type="submit" class="post-btn">
-                    @(userHasLiked ? "Unlike" : "Like")
-                </button>
+                    @(userHasLiked ? "👍" : "👍") @post.Likes.Count
+                </button>      
             </form>
+
 
             <!-- COMMENTS -->
             <div class="mt-2">
