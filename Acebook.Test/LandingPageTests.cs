@@ -32,9 +32,9 @@ public async Task User_Can_Navigate_To_SignUp_Page()
 
     await Expect(Page).ToHaveURLAsync(new Regex(".*/signup", RegexOptions.IgnoreCase));
 
-    await Expect(Page.Locator("#email")).ToBeVisibleAsync();
-    await Expect(Page.Locator("#password")).ToBeVisibleAsync();
-    await Expect(Page.Locator("#name")).ToBeVisibleAsync();
+    await Expect(Page.Locator("#Email")).ToBeVisibleAsync();
+    await Expect(Page.Locator("#Password")).ToBeVisibleAsync();
+    await Expect(Page.Locator("#Name")).ToBeVisibleAsync();
 }
 
 }
