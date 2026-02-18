@@ -83,9 +83,9 @@ public class FriendsControllerTests : NUnitTestBase
   }
 
   [Test]
-  public void NotFriends_ShouldSeePotentialFriends_WhenThereAreUsersNotFriendsWith()
+  public void Index_ShouldSeePotentialFriends_WhenThereAreUsersNotFriendsWith()
   {
-    var result = _controller.NotFriends() as ViewResult;
+    var result = _controller.Index() as ViewResult;
 
     Assert.That(result, Is.Not.Null);
     var notFriendsList = result.ViewData["NotFriends"] as List<User>;
@@ -95,7 +95,7 @@ public class FriendsControllerTests : NUnitTestBase
   }
 
   [Test]
-  public void NotFriends_ShouldSeePendingFriends_WhenUserHasPendingRequests()
+  public void Index_ShouldSeePendingFriends_WhenUserHasPendingRequests()
   {
     var incomingRequest = new FriendRequest
     {
@@ -105,7 +105,7 @@ public class FriendsControllerTests : NUnitTestBase
     _context.FriendRequests.Add(incomingRequest);
     _context.SaveChanges();
 
-    var result = _controller.NotFriends() as ViewResult;
+    var result = _controller.Index() as ViewResult;
     Assert.That(result, Is.Not.Null);
     var pendingRequests = result.ViewData["Pending"] as HashSet<int>;
     
