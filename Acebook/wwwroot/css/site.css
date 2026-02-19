@@ -585,6 +585,11 @@ This might need to be flipped to transparent and then filled on hover?*/
     margin-top: -30px;
 }
 
+.profile-header-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 
 .profile-icon {
     width: 140px;
@@ -689,19 +694,3 @@ This might need to be flipped to transparent and then filled on hover?*/
     margin-bottom: 10px;
 }
 
-/* Post button hover */
-.post-btn {
-    background: #1877f2;
-    color: #fff;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-}
-
-.post-btn:hover {
-    background: #166fe5;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    transform: translateY(-1px);
-}
