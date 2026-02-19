@@ -55,40 +55,45 @@
   {
     <div class="recent-post-card mb-4 p-3">
 
-      <!-- POST HEADER -->
-      <div class="post-header mb-2 d-flex align-items-center">
-        <div class="profile-icon">@post.User?.Name?.FirstOrDefault()</div>
-        <strong class="ms-2">@post.User?.Name</strong>
-      </div>
+            <!-- POST HEADER -->
+            <div class="post-header mb-2 d-flex align-items-center gap-2">
+                <a class="profile-link d-flex align-items-center gap-2" href="/users/@post.UserId">
+                    <div class="profile-icon" title="View profile">
+                        @(post.User?.Name?.FirstOrDefault() ?? '?')
+                    </div>
+                    <span class="profile-name">@post.User?.Name</span>
+                </a>
+            </div>
 
-      @if (Context.Session.GetInt32("user_id") == post.UserId &&
-                      Context.Request.Query["editPostId"].ToString() == post.Id.ToString())
-      {
-        <!-- EDIT MODE -->
-        <form action="/posts/edit" method="post" class="edit-post-form mb-2">
-          <input type="hidden" name="postId" value="@post.Id" />
-          <textarea name="content" class="form-field mb-2">@post.Content</textarea>
-          <button type="submit" class="post-btn small-btn me-2">Save</button>
-          <a href="/feed" class="cancel-link">Cancel</a>
-        </form>
-      }
-      else
-      {
-        <!-- NORMAL MODE -->
-        <p class="card-text mb-2">@post.Content</p>
-        @if (!string.IsNullOrEmpty(post.ImgLink))
-        {
-          <img src="@post.ImgLink" alt="Post image" class="img-fluid mb-2" />
-        }
-        <span class="text-muted small">
-          @TimeAgo(post.CreatedAt)
-
-          @if (post.UpdatedAt != null)
-          {
-            <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
-          }
-        </span>
-      }
+            @if (Context.Session.GetInt32("user_id") == post?.UserId &&
+                Context.Request.Query["editPostId"].ToString() == post?.Id.ToString())
+            {
+                <!-- EDIT MODE -->
+                <form action="/posts/edit" method="post" class="edit-post-form mb-2">
+                    <input type="hidden" name="postId" value="@post.Id" />
+                    <textarea name="content" class="form-field mb-2">@post.Content</textarea>
+                    <button type="submit" class="post-btn small-btn me-2">Save</button>
+                    <a href="/feed" class="cancel-link">Cancel</a>
+                </form>
+            }
+            else
+            {
+                <!-- NORMAL MODE -->
+                <a href="/posts/@post.Id" class="post-permalink">
+                <p class="card-text mb-2">@post.Content</p>
+                @if (!string.IsNullOrEmpty(post.ImgLink))
+                {
+                    <img src="@post.ImgLink" alt="Post image" class="img-fluid mb-2" />
+                }
+                <span class="text-muted small">
+                    @TimeAgo(post.CreatedAt)
+                    @if (post.UpdatedAt != null)
+                    {
+                    <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+                    }
+                </span>
+                </a>
+            }
 
       <!-- POST ACTIONS -->
       @if (Context.Session.GetInt32("user_id") == post.UserId)
@@ -127,10 +132,14 @@
           {
             <div class="comment-line d-flex justify-content-between align-items-center mb-2">
 
-              <!-- LEFT SIDE -->
-              <div class="d-flex align-items-center flex-wrap">
-                <div class="profile-icon">@comment.User?.Name?.FirstOrDefault()</div>
-                <strong class="ms-2">@comment.User?.Name</strong>
+                            <!-- LEFT SIDE -->
+                            <div class="d-flex align-items-center flex-wrap">
+                                <a class="profile-link d-flex align-items-center gap-2" href="/users/@comment.UserId">
+                                    <div class="profile-icon" title="View profile">
+                                        @(comment.User?.Name?.FirstOrDefault() ?? '?')
+                                    </div>
+                                    <span class="profile-name">@comment.User?.Name</span>
+                                </a>
 
                 @if (!(Context.Session.GetInt32("user_id") == comment.UserId &&
                                                     Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))

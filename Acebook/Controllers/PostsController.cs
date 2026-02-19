@@ -22,7 +22,7 @@ public class PostsController : Controller
 
 [Route("/Posts")]
 [HttpPost]
-public RedirectResult Create(string content, IFormFile? imageFile)
+public RedirectResult Create(string content, IFormFile? imageFile=null)
 {
     int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
 
@@ -68,7 +68,7 @@ public RedirectResult Create(string content, IFormFile? imageFile)
     };
 
     // If validation failed, return errors
-    if (!TryValidateModel(post))
+    if (!ModelState.IsValid)
     {
         TempData["InvalidPost"] = JsonSerializer.Serialize(post);
 
@@ -135,6 +135,25 @@ public RedirectResult Create(string content, IFormFile? imageFile)
         _context.SaveChanges();
 
         return Redirect("/feed");
+    }
+    
+    [Route("/posts/{id:int}")]
+    [HttpGet]
+    public IActionResult Show(int id)
+    {
+        var userId = HttpContext.Session.GetInt32("user_id");
+        if (userId == null) return Redirect("/");
+
+        var post = _context.Posts
+            .Include(p => p.User)
+            .Include(p => p.Likes)
+            .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+            .FirstOrDefault(p => p.Id == id);
+
+        if (post == null) return NotFound();
+
+        return View(post);
     }
 
 
