@@ -1,4 +1,3 @@
-
 namespace Acebook.Test.E2E;
 
 public class LandingPageTests : PlaywrightTestBase
@@ -11,7 +10,6 @@ public class LandingPageTests : PlaywrightTestBase
     await Expect(Page).ToHaveTitleAsync("- Acebook");
   }
 
-
   [Test]
   public async Task LandingPage_ShowsLoginForm()
   {
@@ -21,11 +19,9 @@ public class LandingPageTests : PlaywrightTestBase
     await Expect(form).ToBeVisibleAsync();
   }
 
-
-[Test]
-public async Task LandingPage_UserCanNavigateToSignUpPage()
-{
-
+  [Test]
+  public async Task LandingPage_UserCanNavigateToSignUpPage()
+  {
     await Page.GotoAsync(BaseUrl);
 
     await Page.ClickAsync(".new-acc-btn");
@@ -35,6 +31,5 @@ public async Task LandingPage_UserCanNavigateToSignUpPage()
     await Expect(Page.Locator("#email")).ToBeVisibleAsync();
     await Expect(Page.Locator("#password")).ToBeVisibleAsync();
     await Expect(Page.Locator("#name")).ToBeVisibleAsync();
-}
-
+  }
 }
