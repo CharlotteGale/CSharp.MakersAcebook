@@ -674,3 +674,19 @@ This might need to be flipped to transparent and then filled on hover?*/
     margin-bottom: 10px;
 }
 
+.post-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.75rem 1rem; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.post-card .post-header {
+    margin-bottom: 0.35rem; 
+}
+
+.post-card .post-content {
+    margin-top: 0.25rem; 
+    line-height: 1.35;  
+    font-size: 0.95rem; 
+}

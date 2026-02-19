@@ -49,9 +49,55 @@
 
                 <button type="submit" class="post-btn">Post</button>
             </form>
-        </div>
+        </div>  
 
-        
+<!-- Recent Posts (full width row) -->
+
+<div class="profile-card--full">
+
+    <!-- Section title OUTSIDE of any card -->
+    
+    <h1 class="h3 mb-3">Recent posts</h1>
+
+    @if (Model.RecentPosts == null || !Model.RecentPosts.Any())
+    {
+        <div class="post-card mb-3">
+            <div class="card-body text-muted">
+                No posts yet.
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var post in Model.RecentPosts)
+        {
+            <div class="post-card mb-3">
+                <div class="card-body">
+
+                    <!-- Header: user icon + name + timestamp -->
+                    <div class="d-flex align-items-start justify-content-between gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="profile-icon" title="@Model.Name">
+                                @Model.Name.Substring(0,1).ToUpper()
+                            </div>
+                            <div class="fw-semibold">@Model.Name</div>
+                        </div>
+
+                        <div class="text-muted small">
+                            @post.CreatedAt.ToString("dd MMM yyyy")
+                        </div>
+                    </div>
+
+                    <!-- Post content -->
+                    <div class="mt-2">
+                        <div class="text-body">@post.Content</div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+</div>
 
 
 
