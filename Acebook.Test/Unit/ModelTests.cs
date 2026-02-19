@@ -1,4 +1,4 @@
-namespace Acebook.Test;
+namespace Acebook.Test.Unit;
 
 public class ModelTests : NUnitTestBase
 {

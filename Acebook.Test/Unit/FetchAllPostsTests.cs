@@ -1,4 +1,4 @@
-namespace Acebook.Test;
+namespace Acebook.Test.Unit;
 
 
 public class FetchAllPostsTests : NUnitTestBase
@@ -12,3 +12,4 @@ public class FetchAllPostsTests : NUnitTestBase
         Assert.That(posts[0].User.Name, Is.EquivalentTo("test2"));
     }
 }
+

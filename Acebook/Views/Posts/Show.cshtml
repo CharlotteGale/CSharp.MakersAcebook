@@ -1,0 +1,86 @@
+@model Post
+
+@functions {
+    string TimeAgo(DateTime date)
+    {
+        var ts = DateTime.UtcNow - date;
+
+        if (ts.TotalSeconds < 60) return $"{ts.Seconds}s ago";
+        if (ts.TotalMinutes < 60) return $"{ts.Minutes}m ago";
+        if (ts.TotalHours < 24) return $"{ts.Hours}h ago";
+        if (ts.TotalDays < 7) return $"{ts.Days}d ago";
+
+        return date.ToString("dd MMM yyyy");
+    }
+}
+
+<div class="container mt-4">
+
+  <a href="/feed" class="btn btn-outline-secondary btn-sm mb-3">← Back to Feed</a>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+
+      <!-- Author -->
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <a class="profile-link d-flex align-items-center gap-2" href="/users/@Model.UserId">
+          <div class="profile-icon" title="View profile">
+            @(Model.User?.Name?.FirstOrDefault() ?? '?')
+          </div>
+          <span class="profile-name">@Model.User?.Name</span>
+        </a>
+      </div>
+
+      <!-- Content -->
+      <p class="mb-2">@Model.Content</p>
+
+      <!-- Meta -->
+      <div class="text-muted small d-flex flex-wrap gap-3">
+        <span>@Model.Likes.Count like(s)</span>
+        <span>@TimeAgo(Model.CreatedAt)</span>
+
+        @if (Model.UpdatedAt != null)
+        {
+          <span>(edited @TimeAgo(Model.UpdatedAt.Value))</span>
+        }
+      </div>
+
+      <hr />
+
+      <h5 class="mb-2">Comments</h5>
+
+      @if (Model.Comments == null || !Model.Comments.Any())
+      {
+        <div class="text-muted small">No comments yet.</div>
+      }
+      else
+      {
+        <div class="vstack gap-2">
+          @foreach (var c in Model.Comments.OrderByDescending(c => c.CreatedAt))
+          {
+            <div class="d-flex align-items-start gap-2">
+              <a class="profile-link d-flex align-items-center gap-2" href="/users/@c.UserId">
+                <div class="profile-icon" title="View profile">
+                  @(c.User?.Name?.FirstOrDefault() ?? '?')
+                </div>
+                <span class="profile-name">@c.User?.Name</span>
+              </a>
+
+              <div class="ms-2">
+                <div>@c.Content</div>
+                <div class="text-muted small">
+                  @TimeAgo(c.CreatedAt)
+                  @if (c.UpdatedAt != null)
+                  {
+                    <span class="ms-2">(edited @TimeAgo(c.UpdatedAt.Value))</span>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
