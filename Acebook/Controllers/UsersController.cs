@@ -87,12 +87,14 @@ public IActionResult Show(int id)
     {
         UserId = user.Id,
         Name = user.Name,
+        DateOfBirth = user.DateOfBirth,         
         // ProfilePhotoUrl = user.ProfilePhotoUrl
         RecentPosts = recentPosts,
         Friends = user.Friends.ToList()
     };
 
-    return View("Show", vm);
+    return View("/Views/Profile/Index.cshtml", vm);
+
 }
 
 }
