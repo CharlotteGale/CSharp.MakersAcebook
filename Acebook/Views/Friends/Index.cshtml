@@ -1,11 +1,12 @@
 <div class="friends-container">
   <div class="friends-header">
     <h1 class="friends-title">Friends</h1>
-    @* <div class="nav-button-container d-flex flex-wrap">
-      <a class="friend-navigation-btn" asp-action="Index">Friends</a>
-      <a class="friend-navigation-btn" asp-action="requests">Requests</a>
-      <a class="friend-navigation-btn" asp-action="not_friends_yet">Find Friends</a>
-    </div> *@
+    <div class="friends-sticky-nav d-flex flex-wrap justify-content-center">
+      <a href="#received-requests" class="friend-navigation-btn">Received</a>
+      <a href="#suggested-friends" class="friend-navigation-btn">Suggested</a>
+      <a href="#sent-requests" class="friend-navigation-btn">Sent</a>
+      <a href="#your-friends" class="friend-navigation-btn">Your Friends</a>
+    </div>
   </div>
 
   <!-- ========================= -->
@@ -13,7 +14,7 @@
   <!-- ========================= -->
   @if ((ViewBag.ReceivedRequests as List<acebook.Models.FriendRequest>)?.Any() == true)
   {
-    <h2 class="section-title mt-5">Friend Requests</h2>
+    <h2 id="received-requests" class="section-title mt-5">Friend Requests</h2>
     <div class="friends-grid">
       @foreach (var req in (List<acebook.Models.FriendRequest>)ViewBag.ReceivedRequests)
       {
@@ -53,7 +54,7 @@
   <!-- ========================= -->
   <!-- SUGGESTED FRIENDS -->
   <!-- ========================= -->
-  <h2 class="section-title mt-5">Suggested Friends</h2>
+  <h2 id="suggested-friends" class="section-title mt-5">Suggested Friends</h2>
   <div class="friends-grid">
     @{
       var pending = ViewBag.Pending as HashSet<int> ?? new HashSet<int>();
@@ -97,7 +98,7 @@
   <!-- ========================= -->
   @if ((ViewBag.SentRequests as List<acebook.Models.FriendRequest>)?.Any() == true)
   {
-    <h2 class="section-title mt-5">Sent Requests</h2>
+    <h2 id="sent-requests" class="section-title mt-5">Sent Requests</h2>
     <div class="friends-grid">
       @foreach (var sent in (List<acebook.Models.FriendRequest>)ViewBag.SentRequests)
       {
@@ -128,7 +129,7 @@
   <!-- ========================= -->
   <!-- FRIENDS LIST -->
   <!-- ========================= -->
-  <h2 class="section-title mt-5">Your Friends</h2>
+  <h2 id="your-friends" class="section-title mt-5">Your Friends</h2>
   <div class="friends-grid">
     @if ((ViewBag.Friends as List<acebook.Models.User>)?.Any() == true)
     {
