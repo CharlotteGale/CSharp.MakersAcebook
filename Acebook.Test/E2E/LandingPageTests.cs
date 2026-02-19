@@ -1,4 +1,3 @@
-
 namespace Acebook.Test.E2E;
 
 public class LandingPageTests : PlaywrightTestBase
@@ -11,27 +10,42 @@ public class LandingPageTests : PlaywrightTestBase
         await Expect(Page).ToHaveTitleAsync("- Acebook");
     }
 
+<<<<<<< CG-Playwright-Testing
 
     [Test]
     public async Task LandingPage_ShowsLoginForm()
     {
         await Page.GotoAsync(BaseUrl);
+=======
+  [Test]
+  public async Task LandingPage_ShowsLoginForm()
+  {
+    await Page.GotoAsync(BaseUrl);
+>>>>>>> main
 
         var form = Page.Locator("form.login-card");
         await Expect(form).ToBeVisibleAsync();
     }
 
+<<<<<<< CG-Playwright-Testing
 
     [Test]
     public async Task LandingPage_UserCanNavigateToSignUpPage()
     {
 
         await Page.GotoAsync(BaseUrl);
+=======
+  [Test]
+  public async Task LandingPage_UserCanNavigateToSignUpPage()
+  {
+    await Page.GotoAsync(BaseUrl);
+>>>>>>> main
 
         await Page.ClickAsync(".new-acc-btn");
 
         await Expect(Page).ToHaveURLAsync(new Regex(".*/signup", RegexOptions.IgnoreCase));
 
+<<<<<<< CG-Playwright-Testing
         await Expect(Page.Locator("#email")).ToBeVisibleAsync();
         await Expect(Page.Locator("#password")).ToBeVisibleAsync();
         await Expect(Page.Locator("#name")).ToBeVisibleAsync();
@@ -51,3 +65,10 @@ public class LandingPageTests : PlaywrightTestBase
     }
 
 }
+=======
+    await Expect(Page.Locator("#email")).ToBeVisibleAsync();
+    await Expect(Page.Locator("#password")).ToBeVisibleAsync();
+    await Expect(Page.Locator("#name")).ToBeVisibleAsync();
+  }
+}
+>>>>>>> main

@@ -495,6 +495,54 @@ body {
     margin-top: 20px;
 }
 
+/* profilecss */
+.profile-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.profile-link:hover .profile-name {
+  text-decoration: underline;
+}
+
+.profile-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  background: rgba(0,0,0,0.06);
+}
+
+.profile-name {
+  font-weight: 600;
+}
+
+/* feed  */
+.post-permalink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.recent-post-card {
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.recent-post-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+.post-permalink,
+.post-permalink:visited,
+.post-permalink:hover,
+.post-permalink:active {
+  color: inherit;
+  text-decoration: none !important;
+}
 
 .like-btn {
     background: none;
