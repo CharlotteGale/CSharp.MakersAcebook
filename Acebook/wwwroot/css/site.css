@@ -475,3 +475,18 @@ This might need to be flipped to transparent and then filled on hover?*/
   font-weight: 700;
   margin-top: 20px;
 }
+
+
+.like-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.like-btn:focus,
+.like-btn:active {
+    outline: none;
+    box-shadow: none;
+}

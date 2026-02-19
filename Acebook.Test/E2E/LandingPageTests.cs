@@ -1,21 +1,21 @@
-namespace Acebook.Test;
-using System.Text.RegularExpressions;
+
+namespace Acebook.Test.E2E;
 
 public class LandingPageTests : PlaywrightTestBase
 {
   [Test]
   public async Task LandingPage_ShowsWelcomeMessage()
   {
-    await Page.GotoAsync("http://127.0.0.1:5287");
+    await Page.GotoAsync(BaseUrl);
 
     await Expect(Page).ToHaveTitleAsync("- Acebook");
   }
 
 
   [Test]
-  public async Task LandingPage_Show_Login_Form()
+  public async Task LandingPage_ShowsLoginForm()
   {
-    await Page.GotoAsync("http://127.0.0.1:5287");
+    await Page.GotoAsync(BaseUrl);
 
     var form = Page.Locator("form.login-card");
     await Expect(form).ToBeVisibleAsync();
@@ -23,10 +23,10 @@ public class LandingPageTests : PlaywrightTestBase
 
 
 [Test]
-public async Task User_Can_Navigate_To_SignUp_Page()
+public async Task LandingPage_UserCanNavigateToSignUpPage()
 {
 
-    await Page.GotoAsync("http://127.0.0.1:5287");
+    await Page.GotoAsync(BaseUrl);
 
     await Page.ClickAsync(".new-acc-btn");
 

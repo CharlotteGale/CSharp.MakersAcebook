@@ -15,6 +15,7 @@ global using System.Text.Json;
 global using Microsoft.AspNetCore.Mvc.Abstractions;
 global using Microsoft.AspNetCore.Mvc.Filters;
 global using Microsoft.AspNetCore.Routing;
+global using System.Text.RegularExpressions;
 
 global using Acebook.Test.Base;
 global using acebook.Models;
