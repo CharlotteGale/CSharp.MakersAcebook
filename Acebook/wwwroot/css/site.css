@@ -467,6 +467,19 @@ This might need to be flipped to transparent and then filled on hover?*/
     box-shadow: none;
 }
 
+<<<<<<< HEAD
+.profile-icon-nav {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #1877f2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+=======
 
 /* Nav Buttons for Friends Page*/
 .friends-header {

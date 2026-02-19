@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using System.ComponentModel
+@inject AcebookDbContext _context
+
+<!DOCTYPE html>
 <html lang="en-GB">
 <head>
     <meta charset="utf-8" />
@@ -22,6 +25,8 @@
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                    <!-- LEFT NAV -->
                     <ul class="navbar-nav flex-grow-1">
                         @if (Context.Session.GetInt32("user_id") != null)
                         {
@@ -40,25 +45,45 @@
                         }
                     </ul>
 
+                    <!-- RIGHT NAV -->
                     <div class="text-end">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                @if (Context.Session.GetInt32("user_id") != null)
-                                {
-                                    <form action="/logout" method="post" style="display: inline;">
-                                        <button type="Submit" title="Log out and end your session on Acebook."
-                                                class="btn btn-link nav-link text-dark">Log Me Out</button>
-                                    </form>
+
+                                @* Fetch current user *@
+                                @{
+                                    var userId = Context.Session.GetInt32("user_id");
+                                    var currentUser = userId != null
+                                        ? _context.Users.FirstOrDefault(u => u.Id == userId)
+                                        : null;
                                 }
+
+                                @if (currentUser != null)
+                                {
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div class="profile-icon-nav">
+                                            @currentUser.Name.FirstOrDefault()
+                                        </div>
+
+                                        <form action="/logout" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn-link nav-link text-dark">
+                                                Log Me Out
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+
                             </li>
                         </ul>
                     </div>
+
+
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- ⭐ ALL PAGE CONTENT MUST LIVE INSIDE THIS WRAPPER -->
+    <!-- PAGE CONTENT -->
     <div class="flex-grow-1">
 
         @if (TempData["ErrorMessage"] != null)
@@ -91,15 +116,13 @@
             @RenderBody()
         </main>
 
-
     </div>
-    <!-- END FLEX-GROW WRAPPER -->
 
     <!-- FOOTER -->
     <footer class="border-top footer text-muted mt-4">
         <div class="container">
             &copy; 2026 - Acebook - Created by Moonbeam
-            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
 
