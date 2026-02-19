@@ -1,5 +1,27 @@
 @model acebook.Models.UserProfileViewModel
 
+@functions {
+    string TimeAgo(DateTime date)
+    {
+        var ts = DateTime.UtcNow - date;
+
+        if (ts.TotalSeconds < 60)
+            return $"{ts.Seconds}s ago";
+
+        if (ts.TotalMinutes < 60)
+            return $"{ts.Minutes}m ago";
+
+        if (ts.TotalHours < 24)
+            return $"{ts.Hours}h ago";
+
+        if (ts.TotalDays < 7)
+            return $"{ts.Days}d ago";
+
+        return date.ToString("dd MMM yyyy");
+    }
+}
+
+
 <div class="profile-header">
     <div class="container profile-header-inner">
         <div class="profile-left">
@@ -9,8 +31,6 @@
             <h1 class="profile-name">@Model.Name</h1>
             <p class="profile-friends"><a href="/friends">@Model.Friends.Count friends</a>
 </p>
-
-
         </div>
     </div>
 
@@ -89,9 +109,12 @@
                             </div>
                             <div class="fw-semibold">@Model.Name</div>
                         </div>
-
                         <div class="text-muted small">
-                            @post.CreatedAt.ToString("dd MMM yyyy")
+                            @TimeAgo(post.CreatedAt)
+                            @if (post.UpdatedAt != null)
+                            {
+                                <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+                            }
                         </div>
                     </div>
 
