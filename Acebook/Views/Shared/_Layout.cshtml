@@ -31,12 +31,6 @@
                         @if (Context.Session.GetInt32("user_id") != null)
                         {
                             <li class="nav-item">
-<<<<<<< HEAD
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">My Feed</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Friends" asp-action="Index">My Friends</a>
-=======
                                 <a title="Takes you to your feed." class="nav-link text-dark" asp-area=""
                                     asp-controller="Home" asp-action="Index">My Feed</a>
                             </li>
@@ -47,7 +41,6 @@
                             <li class="nav-item">
                                 <a title="Takes you to your Profile." class="nav-link text-dark" asp-area=""
                                     asp-controller="Profile" asp-action="Index">My Profile</a>
->>>>>>> 79fe4ba3b952453219103d8ae3b77f904aed392f
                             </li>
                         }
                     </ul>
