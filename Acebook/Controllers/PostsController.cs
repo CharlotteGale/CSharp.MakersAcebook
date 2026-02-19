@@ -22,7 +22,7 @@ public class PostsController : Controller
 
 [Route("/Posts")]
 [HttpPost]
-public RedirectResult Create(string content, IFormFile? imageFile=null)
+public RedirectResult Create(string content, string returnUrl, IFormFile? imageFile = null)
 {
     int currentUserId = HttpContext.Session.GetInt32("user_id").Value;
 
@@ -80,18 +80,17 @@ public RedirectResult Create(string content, IFormFile? imageFile=null)
                 )
         );
 
-        return new RedirectResult("/Feed");
+        return new RedirectResult(returnUrl ?? "/feed");
+
     }
 
     // Save post
     _context.Posts.Add(post);
     _context.SaveChanges();
 
-    return new RedirectResult("/Feed");
+    return new RedirectResult(returnUrl ?? "/feed");
+
 }
-
-
-
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

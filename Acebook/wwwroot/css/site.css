@@ -598,6 +598,17 @@ This might need to be flipped to transparent and then filled on hover?*/
     background: #ccc;
 }
 
+.profile-friends a {
+    color: #1877f2;            
+    text-decoration: none;       
+    font-weight: 500;          
+    font-size: 0.95rem;         
+}
+
+.profile-friends a:hover {
+    text-decoration: underline;  
+}
+
 .profile-left {
     margin-right: 20px;
 }

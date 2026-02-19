@@ -5,10 +5,11 @@
         <div class="profile-left">
             <div class="profile-pg-icon"></div>
         </div>
-
         <div class="profile-right">
             <h1 class="profile-name">@Model.Name</h1>
-            <p class="profile-friends">@Model.Friends.Count friends</p>
+            <p class="profile-friends"><a href="/friends">@Model.Friends.Count friends</a>
+</p>
+
 
         </div>
     </div>
@@ -40,16 +41,21 @@
         <div class="profile-card profile-card--full">
             <h2>Make a Post</h2>
 
-            <form action="/posts" method="post">
-                <div class="mb-3">
-                    <textarea 
-                        name="content"
-                        class="post-box"
-                        placeholder="What's on your mind?"></textarea>
-                </div>
+        <form action="/posts" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="returnUrl" value="/profile/index" />
 
-                <button type="submit" class="post-btn">Post</button>
-            </form>
+            <div class="mb-3">
+                <input type="text" name="content" class="form-field" placeholder="What's on your mind?" />
+            </div>
+
+            <div class="mb-3">
+                <input type="file" name="imageFile" class="form-field" />
+            </div>
+
+            <button type="submit" class="post-btn">Submit</button>
+        </form>
+
+
         </div>  
 
 <!-- Recent Posts (full width row) -->
