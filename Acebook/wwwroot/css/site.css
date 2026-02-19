@@ -3,40 +3,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* MOBILE STYLING*/
-
-@media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
-
-  .login-page {
-    flex-direction: column;
-    text-align: center;
-    gap: 2rem;
-    padding: 2rem;
-  }
-
-  .login-left {
-    padding-right: 0;
-    max-width: 100%;
-  }
-
-  .brand-title {
-    font-size: 2.5rem;
-  }
-  .friends-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-  
-  .friends-grid {
-    grid-template-columns: 1fr; 
-  }
-}
-
-
 html {
   position: relative;
   min-height: 100%;
@@ -274,18 +240,28 @@ body {
 /* FRIENDS */
 /* ========================================================================== */
 
+.friends-layout-wrapper {
+  position: relative;
+  display: block;
+  overflow: visible !important;
+  min-height: 100vh;
+}
+
 .friends-container {
   max-width: 1300px;
   margin: 0 auto;
   padding: 20px;
+  position: relative;
+  overflow: visible;
 }
 
 .friends-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 20px;
-  margin-bottom: 40px;
-  align-items: start;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .friend-card {
@@ -296,6 +272,7 @@ body {
   border: 1px solid rgba(189, 189, 189, 0.3);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   min-height: 120px;
+  overflow: hidden;
 }
 
 .friend-card-icon-sidebar {
@@ -338,26 +315,6 @@ body {
 
 .friend-card-action-row form {
   flex-grow: 1;
-}
-
-.friends-header {
-  position: sticky;
-  height: 100%;
-  top: 10px;
-  z-index: 1100;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  pointer-events: none; 
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px; 
-}
-
-.friends-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
 }
 
 .friend-item {
@@ -509,27 +466,55 @@ This might need to be flipped to transparent and then filled on hover?*/
     box-shadow: none;
 }
 
+.profile-icon-nav {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #1877f2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
 
 /* Nav Buttons for Friends Page*/
-.friends-sticky-nav {
+.friends-header {
+  position: -webkit-sticky;
   position: sticky;
-  top: 20px;
-  z-index: 1000;
-  background: #ffffff;
+  top: 10px;
+  z-index: 5000;
+  width: 100%;
+  max-width: calc(33.33% - 14px); 
+  height: 180px;   
+  margin-bottom: -160px; 
+  pointer-events: none;
+}
+
+.friends-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.friends-sticky-nav {
+  position: relative;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 12px;
-  border: 1px solid rgba(189, 189, 189, 0.4);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column; 
-  width: 100%;
   overflow: hidden;
-  pointer-events: auto !important;
-  cursor: pointer;
+  height: 100%;
 }
 
 .nav-card-header {
-  background-color: #f8f9fa;
-  padding: 15px 20px;
+  background-color: rgba(248, 249, 250, 0.3); 
+  padding: 15px 15px;
   border-bottom: 1px solid rgba(189, 189, 189, 0.2);
 }
 
@@ -700,4 +685,55 @@ This might need to be flipped to transparent and then filled on hover?*/
     margin-top: 0.25rem; 
     line-height: 1.35;  
     font-size: 0.95rem; 
+}
+ #received-requests {
+  padding-top: 180px;
+}
+
+
+/* MOBILE STYLING*/
+@media (max-width: 1129px) {
+  .friends-header {
+    max-width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  .login-page {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+    padding: 2rem;
+  }
+
+  .login-left {
+    padding-right: 0;
+    max-width: 100%;
+  }
+
+  .brand-title {
+    font-size: 2.5rem;
+  }
+  .friends-header {
+    max-width: 100%;
+    height: auto; 
+    margin-bottom: 20px; 
+    position: sticky; 
+    top: 0;
+  }
+
+  .friends-sticky-nav {
+    height: auto; 
+  }
+  
+  .friends-grid {
+    grid-template-columns: 1fr; 
+  }
+  #received-requests {
+    padding-top: 20px !important; 
+  }
 }
