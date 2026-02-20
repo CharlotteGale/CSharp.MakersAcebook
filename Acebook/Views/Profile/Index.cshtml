@@ -1,5 +1,6 @@
 @model acebook.Models.UserProfileViewModel
 
+
 @functions {
     string TimeAgo(DateTime date)
     {
@@ -25,24 +26,30 @@
 <div class="profile-header">
     <div class="container profile-header-inner">
         <div class="profile-left">
-            <div class="profile-pg-icon"></div>
+            @if (Model.ProfileImg == null){
+                <div class="profile-pg-icon"></div>
+            }else {
+                <img src="@Model.ProfileImg" alt="Profile image" class="profile-image" />
+            }
+            
+                <div class="mt-3">
+                <form action="/Profile/UploadImage" method="post" enctype="multipart/form-data">
+                    <div class="friend-card-action-row">
+                    <label for="imageFile" class="post-btn">Upload</label>
+                        <input id="imageFile" class="profile-img-form-field " type="file" name="imageFile" />
+                        <button type="submit" class="post-btn">Submit</button>
+                    </div>
+                </form>
+                </div>
         </div>
         <div class="profile-right">
             <h1 class="profile-name">@Model.Name</h1>
             <p class="profile-friends"><a href="/friends">@Model.Friends.Count friends</a>
-</p>
+            </p>
         </div>
     </div>
 
 </div>
-@* 
-<div class="profile-nav-strip">
-    <button class="profile-tab active">Posts</button>
-    <button class="profile-tab">About</button>
-    <button class="profile-tab">Friends</button>
-    <button class="profile-tab">Photos</button>
-</div>
- *@
 
 <div class="container">
     <div class="profile-content-grid">
@@ -104,9 +111,18 @@
                     <!-- Header: user icon + name + timestamp -->
                     <div class="d-flex align-items-start justify-content-between gap-3">
                         <div class="d-flex align-items-center gap-2">
-                            <div class="profile-icon" title="@Model.Name">
-                                @Model.Name.Substring(0,1).ToUpper()
-                            </div>
+                            @if (!string.IsNullOrEmpty(Model.ProfileImg))
+                                {
+                                    <img src="@Model.ProfileImg"
+                                        alt="Profile image"
+                                        class="post-profile-image" />
+                                }
+                                else
+                                {
+                                    <div class="profile-icon" title="@Model.Name">
+                                        @Model.Name.Substring(0,1).ToUpper()
+                                    </div>
+                                }
                             <div class="fw-semibold">@Model.Name</div>
                         </div>
                         <div class="text-muted small">
@@ -117,12 +133,24 @@
                             }
                         </div>
                     </div>
-
                     <!-- Post content -->
                     <div class="mt-2">
                         <div class="text-body">@post.Content</div>
-                    </div>
-
+                        @if (!string.IsNullOrEmpty(post.ImgLink))
+                        {
+                            <img src="@post.ImgLink" alt="Post image" class="img-fluid mb-2" />
+                        }
+                            </div>
+                            @if (Context.Session.GetInt32("user_id") == post.UserId)
+                        {
+                            <div class="post-actions mt-1">
+                                <a href="/feed?editPostId=@post.Id" class="action-link me-2">Edit</a>
+                                <form action="/posts/delete" method="post" class="d-inline">
+                                <input type="hidden" name="postId" value="@post.Id" />
+                                <button type="submit" class="action-link delete">Delete</button>
+                                </form>
+                            </div>
+                        }
                 </div>
             </div>
         }

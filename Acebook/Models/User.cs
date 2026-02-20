@@ -20,6 +20,7 @@ public class User
 
   [Required (ErrorMessage = "The Date of Birth field is required.")]
   public DateTime? DateOfBirth { get; set; }
+  public string? ProfileImg {get; set; } = null!;
   public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
   public virtual ICollection<User> Friends { get; set; } = new List<User>();
   public ICollection<Comment> Comments { get; set; } = new List<Comment>();
