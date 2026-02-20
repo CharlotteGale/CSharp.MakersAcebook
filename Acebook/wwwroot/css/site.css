@@ -69,6 +69,10 @@ body {
   font-size: 1rem;
 }
 
+.profile-img-form-field {
+  display: none;
+}
+
 .submit-btn {
   width: 100%;
   padding: 0.75rem;
@@ -581,6 +585,15 @@ This might need to be flipped to transparent and then filled on hover?*/
     height: 140px;
     border-radius: 50%;
     background: #ccc;
+}
+
+.profile-image {
+    width: 140px;
+    height: 140px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+    box-sizing: border-box;
 }
 
 .profile-friends a {
