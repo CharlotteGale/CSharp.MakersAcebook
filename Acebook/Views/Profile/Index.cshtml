@@ -111,9 +111,18 @@
                     <!-- Header: user icon + name + timestamp -->
                     <div class="d-flex align-items-start justify-content-between gap-3">
                         <div class="d-flex align-items-center gap-2">
-                            <div class="profile-icon" title="@Model.Name">
-                                @Model.Name.Substring(0,1).ToUpper()
-                            </div>
+                            @if (!string.IsNullOrEmpty(Model.ProfileImg))
+                                {
+                                    <img src="@Model.ProfileImg"
+                                        alt="Profile image"
+                                        class="post-profile-image" />
+                                }
+                                else
+                                {
+                                    <div class="profile-icon" title="@Model.Name">
+                                        @Model.Name.Substring(0,1).ToUpper()
+                                    </div>
+                                }
                             <div class="fw-semibold">@Model.Name</div>
                         </div>
                         <div class="text-muted small">
@@ -134,13 +143,13 @@
                             </div>
                             @if (Context.Session.GetInt32("user_id") == post.UserId)
                         {
-                          <div class="post-actions mt-1">
-                            <a href="/feed?editPostId=@post.Id" class="action-link me-2">Edit</a>
-                            <form action="/posts/delete" method="post" class="d-inline">
-                              <input type="hidden" name="postId" value="@post.Id" />
-                              <button type="submit" class="action-link delete">Delete</button>
-                            </form>
-                          </div>
+                            <div class="post-actions mt-1">
+                                <a href="/feed?editPostId=@post.Id" class="action-link me-2">Edit</a>
+                                <form action="/posts/delete" method="post" class="d-inline">
+                                <input type="hidden" name="postId" value="@post.Id" />
+                                <button type="submit" class="action-link delete">Delete</button>
+                                </form>
+                            </div>
                         }
                 </div>
             </div>
