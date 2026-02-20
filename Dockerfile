@@ -14,4 +14,5 @@ WORKDIR /app
 
 COPY --from=build /app/out ./
 
-CMD ["sh", "-c", "ASPNETCORE_URLS=http://+:10000 dotnet acebook.dll"]
+ENV ASPNETCORE_URLS=http://+:${PORT:-8080}
+ENTRYPOINT ["dotnet", "acebook.dll"]

@@ -59,10 +59,10 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<AcebookDbContext>();
     context.Database.Migrate();
 
-    if (!app.Environment.IsProduction())
-    {
+    // if (!app.Environment.IsProduction())
+    // {
         DbSeeder.Seed(context);
-    }
+    // }
     
 }
 
