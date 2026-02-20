@@ -5,131 +5,187 @@
     {
         var ts = DateTime.UtcNow - date;
 
-        if (ts.TotalSeconds < 60)
-            return $"{ts.Seconds}s ago";
-
-        if (ts.TotalMinutes < 60)
-            return $"{ts.Minutes}m ago";
-
-        if (ts.TotalHours < 24)
-            return $"{ts.Hours}h ago";
-
-        if (ts.TotalDays < 7)
-            return $"{ts.Days}d ago";
+        if (ts.TotalSeconds < 60) return $"{ts.Seconds}s ago";
+        if (ts.TotalMinutes < 60) return $"{ts.Minutes}m ago";
+        if (ts.TotalHours < 24) return $"{ts.Hours}h ago";
+        if (ts.TotalDays < 7) return $"{ts.Days}d ago";
 
         return date.ToString("dd MMM yyyy");
     }
 }
 
+@{
+    // Own profile vs guest profile
+    var currentUserId = Context.Session.GetInt32("user_id");
+    var isOwnProfile = currentUserId != null && Model.UserId == currentUserId.Value;
+    var displayName = string.IsNullOrWhiteSpace(Model.Name) ? "User" : Model.Name;
+}
 
 <div class="profile-header">
     <div class="container profile-header-inner">
         <div class="profile-left">
             <div class="profile-pg-icon"></div>
         </div>
+
         <div class="profile-right">
-            <h1 class="profile-name">@Model.Name</h1>
-            <p class="profile-friends"><a href="/friends">@Model.Friends.Count friends</a>
-</p>
+            <h1 class="profile-name">@displayName</h1>
+
+            <p class="profile-friends">
+                <a href="/friends">@Model.Friends.Count friends</a>
+                @if (!isOwnProfile)
+                {
+                    <span class="text-muted"> · </span>
+                    <span class="text-muted small">Viewing profile</span>
+                }
+                else
+                {
+                    <span class="text-muted"> · </span>
+                    <span class="text-muted small">Your profile</span>
+                }
+            </p>
         </div>
     </div>
-
 </div>
-@* 
-<div class="profile-nav-strip">
-    <button class="profile-tab active">Posts</button>
-    <button class="profile-tab">About</button>
-    <button class="profile-tab">Friends</button>
-    <button class="profile-tab">Photos</button>
-</div>
- *@
 
 <div class="container">
     <div class="profile-content-grid">
 
+        <!-- LEFT COLUMN: Personal details -->
         <div class="profile-card">
             <h2>Personal Details</h2>
-            <p><strong>Location:</strong> London (placeholder)</p>
-            <p><strong>Date of Birth:</strong> @Model.DateOfBirth?.ToShortDateString()</p>
+
+            <p><strong>Location:</strong> London</p>
+
+            @* Privacy-ish: only show DOB on your own profile *@
+            @if (isOwnProfile)
+            {
+                <p>
+                    <strong>Date of Birth:</strong>
+                    @(Model.DateOfBirth?.ToShortDateString() ?? "Not set")
+                </p>
+            }
         </div>
 
+        <!-- RIGHT COLUMN: Highlights / Actions -->
         <div class="profile-card">
-            <h2>Highlights</h2>
-            <p>Nothing to show yet.</p>
-        </div>
+            @if (isOwnProfile)
+            {
+                <h2>Highlights</h2>
+                <p class="text-muted">Nothing to show yet.</p>
+                <p class="text-muted small">Future idea: pinned post, bio, featured photos.</p>
+            }
+            else
+            {
+                <h2>Actions</h2>
 
-        <div class="profile-card profile-card--full">
-            <h2>Make a Post</h2>
+                @* Placeholder actions for future sprints *@
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="post-btn small-btn" disabled title="Future sprint">
+                        Add Friend
+                    </button>
 
-        <form action="/posts" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="returnUrl" value="/profile/index" />
+                    <button type="button" class="post-btn small-btn" disabled title="Future sprint">
+                        Message
+                    </button>
 
-            <div class="mb-3">
-                <input type="text" name="content" class="form-field" placeholder="What's on your mind?" />
-            </div>
-
-            <div class="mb-3">
-                <input type="file" name="imageFile" class="form-field" />
-            </div>
-
-            <button type="submit" class="post-btn">Submit</button>
-        </form>
-
-
-        </div>  
-
-<!-- Recent Posts (full width row) -->
-
-<div class="profile-card--full">
-
-    <!-- Section title OUTSIDE of any card -->
-    
-    <h1 class="h3 mb-3">Recent posts</h1>
-
-    @if (Model.RecentPosts == null || !Model.RecentPosts.Any())
-    {
-        <div class="post-card mb-3">
-            <div class="card-body text-muted">
-                No posts yet.
-            </div>
-        </div>
-    }
-    else
-    {
-        @foreach (var post in Model.RecentPosts)
-        {
-            <div class="post-card mb-3">
-                <div class="card-body">
-
-                    <!-- Header: user icon + name + timestamp -->
-                    <div class="d-flex align-items-start justify-content-between gap-3">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="profile-icon" title="@Model.Name">
-                                @Model.Name.Substring(0,1).ToUpper()
-                            </div>
-                            <div class="fw-semibold">@Model.Name</div>
-                        </div>
-                        <div class="text-muted small">
-                            @TimeAgo(post.CreatedAt)
-                            @if (post.UpdatedAt != null)
-                            {
-                                <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
-                            }
-                        </div>
-                    </div>
-
-                    <!-- Post content -->
-                    <div class="mt-2">
-                        <div class="text-body">@post.Content</div>
-                    </div>
-
+                    <button type="button" class="post-btn small-btn" disabled title="Just jokes">
+                        Poke
+                    </button>
                 </div>
-            </div>
-        }
-    }
-</div>
+            }
+        </div>
 
+        <!-- FULL WIDTH: Composer -->
+        <div class="profile-card profile-card--full">
+            @if (isOwnProfile)
+            {
+                <h2>Make a Post</h2>
 
+                <form action="/posts" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="returnUrl" value="/profile/index" />
+
+                    <div class="mb-3">
+                        <input type="text" name="content" class="form-field" placeholder="What's on your mind?" />
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="file" name="imageFile" class="form-field" />
+                    </div>
+
+                    <button type="submit" class="post-btn">Submit</button>
+                </form>
+            }
+            else
+            {
+                <h2>Write on @displayName’s wall</h2>
+
+                @* Placeholder composer (future sprint) *@
+                <form>
+                    <div class="mb-3">
+                        <input type="text"
+                               class="form-field"
+                               placeholder="Say something nice… (coming soon)"
+                               disabled />
+                    </div>
+
+                    <button type="button" class="post-btn" disabled>
+                        Post to wall
+                    </button>
+
+                    <div class="text-muted small mt-2">
+                        Wall posts aren’t implemented yet - future sprint feature.
+                    </div>
+                </form>
+            }
+        </div>
+
+        <!-- FULL WIDTH: Recent Posts -->
+        <div class="profile-card--full">
+            <h1 class="h3 mb-3">
+                @(isOwnProfile ? "Recent posts" : $"{displayName}'s posts")
+            </h1>
+
+            @if (Model.RecentPosts == null || !Model.RecentPosts.Any())
+            {
+                <div class="post-card mb-3">
+                    <div class="card-body text-muted">
+                        No posts yet.
+                    </div>
+                </div>
+            }
+            else
+            {
+                @foreach (var post in Model.RecentPosts)
+                {
+                    <div class="post-card mb-3">
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-start justify-content-between gap-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="profile-icon" title="@displayName">
+                                        @displayName.Substring(0,1).ToUpper()
+                                    </div>
+                                    <div class="fw-semibold">@displayName</div>
+                                </div>
+
+                                <div class="text-muted small">
+                                    @TimeAgo(post.CreatedAt)
+                                    @if (post.UpdatedAt != null)
+                                    {
+                                        <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="mt-2">
+                                <div class="text-body">@post.Content</div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+        </div>
 
     </div>
 </div>

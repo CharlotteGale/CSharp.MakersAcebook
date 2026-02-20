@@ -34,7 +34,11 @@
 
           <div class="friend-card-content">
             <div class="friend-card-user-details">
-              <h5 class="friend-name">@user?.Name</h5>
+              <h5 class="friend-name">
+                  <a href="/users/@req.UserId" class="profile-link">
+                    @req.User?.Name
+                  </a>  
+                </h5>
               <p class="friend-email text-primary">Wants to be friends!</p>
             </div>
 
@@ -42,7 +46,7 @@
               <form asp-action="AcceptRequest" method="post">
                 <input type="hidden" name="requestSenderId" value="@user?.Id" />
                 <input type="hidden" name="requestId" value="@req.Id" />
-                <button class="friend-add-btn" type="submit">Accept</button>
+                <button class="friend-add-btn" type="submit">Accept </button>
               </form>
 
               <form asp-action="RejectRequest" method="post">
@@ -78,7 +82,11 @@
             </div>
             <div class="friend-card-content">
               <div class="friend-card-user-details">
-                <h5 class="friend-name">@nf.Name</h5>
+                <h5 class="friend-name">
+                  <a href="/users/@nf.Id" class="profile-link">
+                      @nf.Name
+                  </a>
+                </h5>
                 <p class="friend-email">@nf.Email</p>
               </div>
               <div class="friend-card-action-row">

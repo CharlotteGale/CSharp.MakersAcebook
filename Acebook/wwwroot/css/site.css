@@ -477,11 +477,13 @@ input[type="file"].form-field {
   position: relative;
 }
 
-.comment-line .profile-icon {
+.comment-line .profile-icon .profile-link {
   position: absolute;
   left: 0;
   top: 10px;
 }
+
+
 
 /* Bubble effect (kept exactly as your file had it) */
 .comment-line .ms-2 {
@@ -1011,4 +1013,14 @@ input[type="file"].form-field {
   .nav-logo { height: 30px; max-width: 150px; }
   .navbar-collapse { padding-top: 10px; }
   .navbar-nav .nav-link { padding: 10px 12px !important; }
+}
+
+.post-action-btn.liked {
+  background: rgba(24, 119, 242, 0.15);
+  color: #1877f2;
+  font-weight: 700;
+}
+
+.post-action-btn.liked:hover {
+  background: rgba(24, 119, 242, 0.25);
 }
