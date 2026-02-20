@@ -612,7 +612,6 @@ This might need to be flipped to transparent and then filled on hover?*/
     height: 140px;
     border-radius: 50%;
     background: #ccc;
-    al
 }
 
 .profile-image {
@@ -705,9 +704,9 @@ This might need to be flipped to transparent and then filled on hover?*/
     line-height: 1.35;  
     font-size: 0.95rem; 
 }
- #received-requests {
-  padding-top: 180px;
-}
+.sticky-padder {
+    padding-top: 180px;
+  }
 
 
 /* MOBILE STYLING*/
@@ -752,7 +751,8 @@ This might need to be flipped to transparent and then filled on hover?*/
   .friends-grid {
     grid-template-columns: 1fr; 
   }
-  #received-requests {
+  .sticky-padder {
     padding-top: 20px !important; 
   }
 }
+
