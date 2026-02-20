@@ -699,10 +699,9 @@ This might need to be flipped to transparent and then filled on hover?*/
     line-height: 1.35;  
     font-size: 0.95rem; 
 }
- #received-requests {
+.sticky-padder {
   padding-top: 180px;
 }
-
 
 /* MOBILE STYLING*/
 @media (max-width: 1129px) {
@@ -746,7 +745,7 @@ This might need to be flipped to transparent and then filled on hover?*/
   .friends-grid {
     grid-template-columns: 1fr; 
   }
-  #received-requests {
+  .sticky-padder {
     padding-top: 20px !important; 
   }
 }

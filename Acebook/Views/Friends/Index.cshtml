@@ -17,6 +17,8 @@
   <!-- ========================= -->
   <!-- RECEIVED REQUESTS -->
   <!-- ========================= -->
+  <div class="sticky-padder"></div>
+
   @if ((ViewBag.ReceivedRequests as List<acebook.Models.FriendRequest>)?.Any() == true)
   {
     <h2 id="received-requests" class="section-title mt-5">Friend Requests</h2>
@@ -94,7 +96,7 @@
     }
     else
     {
-      <li class="no-friends-placeholder">No suggestions right now.</li>
+      <p class="no-friends-placeholder">No suggestions right now.</p>
     }
   </div>
 
