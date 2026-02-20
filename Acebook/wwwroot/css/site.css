@@ -567,6 +567,7 @@ This might need to be flipped to transparent and then filled on hover?*/
 .profile-header {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 50px 30px 30px 95px;
     background: #fff;
     border-bottom: 1px solid #ddd;
@@ -585,6 +586,7 @@ This might need to be flipped to transparent and then filled on hover?*/
     height: 140px;
     border-radius: 50%;
     background: #ccc;
+    al
 }
 
 .profile-image {
@@ -608,8 +610,11 @@ This might need to be flipped to transparent and then filled on hover?*/
 }
 
 .profile-left {
-    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centers the upload buttons under the icon */
 }
+
 
 .profile-right {
     flex-grow: 1;
@@ -620,31 +625,6 @@ This might need to be flipped to transparent and then filled on hover?*/
     margin-top: 5px;
 }
 
-/* --- NAV STRIP --- 
-.profile-nav-strip {
-    display: flex;
-    gap: 20px;
-    padding: 15px 60px;
-    background: #fff;
-    border-bottom: 1px solid #ddd;
-}
-
-.profile-tab {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    padding: 8px 12px;
-    cursor: pointer;
-    color: #555;
-}
-
-.profile-tab.active {
-    border-bottom: 3px solid #1877f2;
-    color: #1877f2;
-    font-weight: 600;
-}
-
-*/
 
 /* --- CONTENT GRID --- */
 .profile-content-grid {

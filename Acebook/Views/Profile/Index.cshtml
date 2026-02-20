@@ -26,19 +26,21 @@
 <div class="profile-header">
     <div class="container profile-header-inner">
         <div class="profile-left">
-          @if (Model.ProfileImg == null){
-            <div class="profile-pg-icon"></div>
-          }else {
-            <img src="@Model.ProfileImg" alt="Profile image" class="profile-image" />
-          }
+            @if (Model.ProfileImg == null){
+                <div class="profile-pg-icon"></div>
+            }else {
+                <img src="@Model.ProfileImg" alt="Profile image" class="profile-image" />
+            }
             
-            <div class="mt-3">
-              <form action="/Profile/UploadImage" method="post" enctype="multipart/form-data">
-              <label for="imageFile" class="friend-add-btn">Upload Profile Image</label>
-                  <input id="imageFile" class="profile-img-form-field " type="file" name="imageFile" />
-                  <button type="submit" class="post-btn">Submit</button>
-              </form>
-            </div>
+                <div class="mt-3">
+                <form action="/Profile/UploadImage" method="post" enctype="multipart/form-data">
+                    <div class="friend-card-action-row">
+                    <label for="imageFile" class="post-btn">Upload</label>
+                        <input id="imageFile" class="profile-img-form-field " type="file" name="imageFile" />
+                        <button type="submit" class="post-btn">Submit</button>
+                    </div>
+                </form>
+                </div>
         </div>
         <div class="profile-right">
             <h1 class="profile-name">@Model.Name</h1>
