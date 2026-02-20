@@ -69,6 +69,10 @@ body {
   font-size: 1rem;
 }
 
+.profile-img-form-field {
+  display: none;
+}
+
 .submit-btn {
   width: 100%;
   padding: 0.75rem;
@@ -135,6 +139,14 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   border: 1px solid #e6e6e6;
 }
+
+.post-profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 
 /* ========================================================================== */
 /* COMMENTS */
@@ -466,7 +478,7 @@ This might need to be flipped to transparent and then filled on hover?*/
     box-shadow: none;
 }
 
-.profile-icon-nav {
+.profile-icon-nav { /* THIS IS DEFAULT */
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -477,6 +489,16 @@ This might need to be flipped to transparent and then filled on hover?*/
     justify-content: center;
     font-weight: bold;
 }
+
+.nav-profile-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+
 
 /* Nav Buttons for Friends Page*/
 .friends-header {
@@ -496,6 +518,14 @@ This might need to be flipped to transparent and then filled on hover?*/
   font-weight: 700;
   margin: 0;
 }
+
+.friend-profile-image {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 
 .friends-sticky-nav {
   position: relative;
@@ -563,6 +593,7 @@ This might need to be flipped to transparent and then filled on hover?*/
 .profile-header {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 50px 30px 30px 95px;
     background: #fff;
     border-bottom: 1px solid #ddd;
@@ -581,6 +612,16 @@ This might need to be flipped to transparent and then filled on hover?*/
     height: 140px;
     border-radius: 50%;
     background: #ccc;
+    al
+}
+
+.profile-image {
+    width: 140px;
+    height: 140px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+    box-sizing: border-box;
 }
 
 .profile-friends a {
@@ -595,8 +636,11 @@ This might need to be flipped to transparent and then filled on hover?*/
 }
 
 .profile-left {
-    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centers the upload buttons under the icon */
 }
+
 
 .profile-right {
     flex-grow: 1;
@@ -607,31 +651,6 @@ This might need to be flipped to transparent and then filled on hover?*/
     margin-top: 5px;
 }
 
-/* --- NAV STRIP --- 
-.profile-nav-strip {
-    display: flex;
-    gap: 20px;
-    padding: 15px 60px;
-    background: #fff;
-    border-bottom: 1px solid #ddd;
-}
-
-.profile-tab {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    padding: 8px 12px;
-    cursor: pointer;
-    color: #555;
-}
-
-.profile-tab.active {
-    border-bottom: 3px solid #1877f2;
-    color: #1877f2;
-    font-weight: 600;
-}
-
-*/
 
 /* --- CONTENT GRID --- */
 .profile-content-grid {
