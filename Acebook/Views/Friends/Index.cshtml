@@ -146,11 +146,11 @@
             <div class="friend-card-content">
               <div class="friend-card-user-details">
                 <h5 class="friend-name">
-                  <a href="/users/@nf.Id" class="profile-link">
-                      @nf.Name
+                  <a href="/users/@sent.Id" class="profile-link">
+                      @sent.User.Name
                   </a>
                 </h5>
-                <p class="friend-email">@nf.Email</p>
+                <p class="friend-email">@sent.User.Email</p>
               </div>
               <div class="friend-card-action-row">
                 <form asp-action="RejectRequest" method="post">

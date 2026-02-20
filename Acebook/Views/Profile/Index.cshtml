@@ -41,7 +41,7 @@
                         <div class="friend-card-action-row">
                             <label for="imageFile" class="post-btn">Upload</label>
                             <input id="imageFile" class="profile-img-form-field" type="file" name="imageFile" />
-                            <button type="submit" class="post-btn">Submit</button>
+                            @* <button type="submit" class="post-btn">Submit</button> *@
                         </div>
                     </form>
                 </div>
@@ -130,12 +130,14 @@
                                class="form-field"
                                placeholder="What's on your mind?" />
                     </div>
+        <div class="composer-actions">
+          <label class="composer-pill">
+            <input type="file" name="imageFile" class="file-input" id="imageFile" />
+            🖼️ Photo
+          </label>
 
-                    <div class="mb-3">
-                        <input type="file" name="imageFile" class="form-field" />
-                    </div>
-
-                    <button type="submit" class="post-btn">Submit</button>
+          <button type="submit" class="post-btn">Submit</button>
+        </div>
                 </form>
             }
             else

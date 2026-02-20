@@ -899,7 +899,7 @@ input[type="file"].form-field {
   padding-top: 30px;
 }
 .sticky-padder {
-    padding-top: 180px;
+    padding-top: 20px;
   }
 
 /* ==========================================================================
@@ -966,7 +966,7 @@ input[type="file"].form-field {
 .sticky-padder {
   padding-top: 20px !important;
 }
-
+}
 /* ----- Everything below should be OUTSIDE the 768px media query ----- */
 
 .navbar {
