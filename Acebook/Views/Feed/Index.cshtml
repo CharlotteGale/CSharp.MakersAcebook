@@ -6,17 +6,10 @@
   {
     var ts = DateTime.UtcNow - date;
 
-    if (ts.TotalSeconds < 60)
-      return $"{ts.Seconds}s ago";
-
-    if (ts.TotalMinutes < 60)
-      return $"{ts.Minutes}m ago";
-
-    if (ts.TotalHours < 24)
-      return $"{ts.Hours}h ago";
-
-    if (ts.TotalDays < 7)
-      return $"{ts.Days}d ago";
+    if (ts.TotalSeconds < 60) return $"{ts.Seconds}s ago";
+    if (ts.TotalMinutes < 60) return $"{ts.Minutes}m ago";
+    if (ts.TotalHours < 24) return $"{ts.Hours}h ago";
+    if (ts.TotalDays < 7) return $"{ts.Days}d ago";
 
     return date.ToString("dd MMM yyyy");
   }
@@ -27,216 +20,252 @@
 }
 
 <div class="container mt-4">
+  <div class="feed-shell">
 
-  <h1 class="mb-4">Feed</h1>
+    <h1 class="mb-4">Feed</h1>
 
-  <!-- Write a Post -->
-<div class="new-post-card mb-3">
-  <h5 class="card-title">Write a Post</h5>
+    <!-- Write a Post -->
+    <div class="new-post-card mb-3">
+      <h5 class="card-title">Write a Post</h5>
 
-  <form action="/posts" method="post" enctype="multipart/form-data">
-    <!-- Tell the controller to return to the profile page -->
-    <input type="hidden" name="returnUrl" value="/Feed" />
+      <form action="/posts" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="returnUrl" value="/Feed" />
 
-    <div class="mb-3">
-      <input type="text"   
-              name="content"      
-              class="form-field"          
-              placeholder="What's on your mind?" />
+        <div class="mb-3">
+          <input type="text"
+                 name="content"
+                 class="form-field"
+                 placeholder="What's on your mind?" />
+        </div>
+
+        <div class="composer-actions">
+          <label class="composer-pill">
+            <input type="file" name="imageFile" class="file-input" id="imageFile" />
+            🖼️ Photo
+          </label>
+
+          <button type="submit" class="post-btn">Submit</button>
+        </div>
+
+        <div class="file-name text-muted small mt-1" id="file-name"></div>
+      </form>
     </div>
 
-    <div class="mb-3">
-      <input type="file" 
-              name="imageFile" 
-              class="form-field" />
-    </div>
+    <!-- Recent Posts -->
+    <h3 class="mb-3">Recent Posts</h3>
 
-    <button type="submit" class="post-btn">Submit</button>
-  </form>
-</div>
+    @foreach (var post in Model)
+    {
+      <div id="post-@post.Id" class="recent-post-card mb-4 p-3">
 
-
-  <!-- Recent Posts -->
-  <h3 class="mb-3">Recent Posts</h3>
-
-  @foreach (var post in Model)
-  {
-    <div class="recent-post-card mb-4 p-3">
-
-            <!-- POST HEADER -->
-            <div class="post-header mb-2 d-flex align-items-center gap-2">
-                <a class="profile-link d-flex align-items-center gap-2" href="/users/@post.UserId">
-                    @if (!string.IsNullOrEmpty(post.User?.ProfileImg))
-                      {
-                          <img src="@post.User.ProfileImg"
-                              alt="Profile image"
-                              class="post-profile-image" />
-                      }
-                      else
-                      {
-                          <div class="profile-icon" title="View profile">
-                              @(post.User?.Name?.FirstOrDefault() ?? '?')
-                          </div>
-                      }
-                    <span class="profile-name">@post.User?.Name</span>
-                </a>
-            </div>
-
-            @if (Context.Session.GetInt32("user_id") == post?.UserId &&
-                Context.Request.Query["editPostId"].ToString() == post?.Id.ToString())
+        <!-- POST HEADER -->
+        <div class="post-header mb-2 d-flex align-items-center gap-2">
+          <a class="profile-link d-flex align-items-center gap-2" href="/users/@post.UserId">
+            @if (!string.IsNullOrEmpty(post.User?.ProfileImg))
             {
-                <!-- EDIT MODE -->
-                <form action="/posts/edit" method="post" class="edit-post-form mb-2">
-                    <input type="hidden" name="postId" value="@post.Id" />
-                    <textarea name="content" class="form-field mb-2">@post.Content</textarea>
-                    <button type="submit" class="post-btn small-btn me-2">Save</button>
-                    <a href="/feed" class="cancel-link">Cancel</a>
-                </form>
+              <img src="@post.User.ProfileImg" alt="Profile image" class="post-profile-image" />
             }
             else
             {
-                <!-- NORMAL MODE -->
-                <a href="/posts/@post.Id" class="post-permalink">
-                <p class="card-text mb-2">@post.Content</p>
-                @if (!string.IsNullOrEmpty(post.ImgLink))
-                {
-                    <img src="@post.ImgLink" alt="Post image" class="img-fluid mb-2" />
-                }
-                <span class="text-muted small">
-                    @TimeAgo(post.CreatedAt)
-                    @if (post.UpdatedAt != null)
-                    {
-                    <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
-                    }
-                </span>
-                </a>
+              <div class="profile-icon" title="View profile">
+                @(post.User?.Name?.FirstOrDefault() ?? '?')
+              </div>
+            }
+            <span class="profile-name">@post.User?.Name</span>
+          </a>
+        </div>
+
+        @if (Context.Session.GetInt32("user_id") == post.UserId &&
+             Context.Request.Query["editPostId"].ToString() == post.Id.ToString())
+        {
+          <!-- EDIT MODE -->
+          <form action="/posts/edit" method="post" class="edit-post-form mb-2">
+            <input type="hidden" name="postId" value="@post.Id" />
+            <textarea name="content" class="form-field mb-2">@post.Content</textarea>
+            <button type="submit" class="post-btn small-btn me-2">Save</button>
+            <a href="/feed#post-@post.Id" class="cancel-link">Cancel</a>
+          </form>
+        }
+        else
+        {
+          <!-- NORMAL MODE -->
+          <a href="/posts/@post.Id" class="post-permalink">
+            <p class="card-text mb-2">@post.Content</p>
+
+            @if (!string.IsNullOrEmpty(post.ImgLink))
+            {
+              <img src="@post.ImgLink" alt="Post image" class="img-fluid mb-2" />
             }
 
-      <!-- POST ACTIONS -->
-      @if (Context.Session.GetInt32("user_id") == post.UserId)
-      {
-        <div class="post-actions mt-1">
-          <a href="/feed?editPostId=@post.Id" class="action-link me-2">Edit</a>
-          <form action="/posts/delete" method="post" class="d-inline">
-            <input type="hidden" name="postId" value="@post.Id" />
-            <button type="submit" class="action-link delete">Delete</button>
-          </form>
-        </div>
-      }
-
-      <!-- LIKES -->
-      <form action="/likes/toggle" method="post" class="mt-1 like-container">
-        <input type="hidden" name="postId" value="@post.Id" />
-        @{
-          var userId = Context.Session.GetInt32("user_id");
-          var userHasLiked = post.Likes.Any(l => l.UserId == userId);
+            <span class="text-muted small">
+              @TimeAgo(post.CreatedAt)
+              @if (post.UpdatedAt != null)
+              {
+                <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+              }
+            </span>
+          </a>
         }
 
-        <button type="submit" class="like-btn">
-          👍
-        </button>
-
-        <span>@post.Likes.Count</span>
-      </form>
-
-
-      <!-- COMMENTS -->
-      <div class="mt-2">
-
-        @if (post.Comments != null && post.Comments.Any())
+        <!-- POST ACTIONS (owner only) -->
+        @if (Context.Session.GetInt32("user_id") == post.UserId)
         {
-          @foreach (var comment in post.Comments)
+          <div class="post-actions mt-1">
+            <a href="/feed?editPostId=@post.Id#post-@post.Id" class="action-link me-2">Edit</a>
+            <form action="/posts/delete" method="post" class="d-inline">
+              <input type="hidden" name="postId" value="@post.Id" />
+              <button type="submit" class="action-link delete">Delete</button>
+            </form>
+          </div>
+        }
+
+        <!-- LIKE / COMMENT / VIEW -->
+        @{
+          var currentUserId = Context.Session.GetInt32("user_id");
+          var userHasLiked = post.Likes != null && post.Likes.Any(l => l.UserId == currentUserId);
+        }
+
+        <div class="post-actions-row">
+          <form action="/likes/toggle" method="post" class="d-inline">
+            <input type="hidden" name="postId" value="@post.Id" />
+            <button type="submit" class="post-action-btn @(userHasLiked ? "liked" : "")">
+              👍 @(userHasLiked ? "Liked" : "Like")
+              <span class="count">@post.Likes?.Count</span>
+            </button>
+          </form>
+
+          <button type="button"
+                  class="post-action-btn"
+                  onclick="document.getElementById('c-@post.Id').focus()">
+            💬 Comment
+          </button>
+
+          <a href="/posts/@post.Id" class="post-action-btn linkish">
+            ↗ View
+          </a>
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="mt-2">
+          @if (post.Comments != null && post.Comments.Any())
           {
-            <div class="comment-line d-flex justify-content-between align-items-center mb-2">
+            @foreach (var comment in post.Comments)
+            {
+              var isEditing = Context.Session.GetInt32("user_id") == comment.UserId &&
+                              Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString();
 
-                            <!-- LEFT SIDE -->
-                            <div class="d-flex align-items-center flex-wrap">
-                                <a class="profile-link d-flex align-items-center gap-2" href="/users/@comment.UserId">
-                                    @if (!string.IsNullOrEmpty(comment.User?.ProfileImg))
-                                      {
-                                          <img src="@comment.User.ProfileImg"
-                                              alt="Profile image"
-                                              class="post-profile-image" />
-                                      }
-                                      else
-                                      {
-                                          <div class="profile-icon" title="View profile">
-                                              @(comment.User?.Name?.FirstOrDefault() ?? '?')
-                                          </div>
-                                      }
-                                    <span class="profile-name">@comment.User?.Name</span>
-                                </a>
+              <div id="comment-@comment.Id" class="comment-line d-flex justify-content-between align-items-start mb-2">
 
-                @if (!(Context.Session.GetInt32("user_id") == comment.UserId &&
-                                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString()))
-                {
+                <!-- LEFT SIDE -->
+                <div class="d-flex align-items-start flex-wrap">
+
+                  <a class="profile-link d-flex align-items-center gap-2" href="/users/@comment.UserId">
+                    @if (!string.IsNullOrEmpty(comment.User?.ProfileImg))
+                    {
+                      <img src="@comment.User.ProfileImg" alt="Profile image" class="post-profile-image" />
+                    }
+                    else
+                    {
+                      <div class="profile-icon" title="View profile">
+                        @(comment.User?.Name?.FirstOrDefault() ?? '?')
+                      </div>
+                    }
+                    <span class="profile-name">@comment.User?.Name</span>
+                  </a>
+
                   <div class="ms-2">
-                    <span class="ms-2">@comment.Content</span>
-                    <span class="text-muted small ms-2">
-                      @TimeAgo(comment.CreatedAt)
-                      @if (comment.UpdatedAt != null)
-                      {
-                        <span class="ms-2">(edited @TimeAgo(comment.UpdatedAt.Value))</span>
-                      }
-                    </span>
+                    @if (isEditing)
+                    {
+                      <form action="/comments/edit" method="post" class="edit-comment-form d-flex align-items-center">
+                        <input type="hidden" name="commentId" value="@comment.Id" />
+                        <input type="text" name="content" value="@comment.Content" class="form-field me-2 edit-field" />
+                        <button type="submit" class="post-btn small-btn me-2">Save</button>
+                        <a href="/feed#comment-@comment.Id" class="cancel-link">Cancel</a>
+                      </form>
+                    }
+                    else
+                    {
+                      <span>@comment.Content</span>
+                      <span class="text-muted small ms-2">
+                        @TimeAgo(comment.CreatedAt)
+                        @if (comment.UpdatedAt != null)
+                        {
+                          <span class="ms-2">(edited @TimeAgo(comment.UpdatedAt.Value))</span>
+                        }
+                      </span>
+                    }
                   </div>
-                }
-              </div>
 
-              <!-- RIGHT SIDE -->
-              <div class="comment-actions">
+                </div>
 
-                @if (Context.Session.GetInt32("user_id") == comment.UserId &&
-                                                    Context.Request.Query["editCommentId"].ToString() == comment.Id.ToString())
+                <!-- RIGHT SIDE (buttons only when NOT editing) -->
+                @if (!isEditing && Context.Session.GetInt32("user_id") == comment.UserId)
                 {
-                  <form action="/comments/edit" method="post" class="edit-comment-form d-flex align-items-center">
-                    <input type="hidden" name="commentId" value="@comment.Id" />
-                    <input type="text" name="content" value="@comment.Content" class="form-field me-2 edit-field" />
-                    <button type="submit" class="post-btn small-btn me-2">Save</button>
-                    <a href="/feed" class="cancel-link">Cancel</a>
-                  </form>
-                }
-                else
-                {
-                  @if (Context.Session.GetInt32("user_id") == comment.UserId)
-                  {
-                    <a href="/feed?editCommentId=@comment.Id" class="action-link">Edit</a>
+                  <div class="comment-actions">
+                    <a href="/feed?editCommentId=@comment.Id#comment-@comment.Id" class="action-link">Edit</a>
 
                     <form action="/comments/delete" method="post" class="delete-form">
                       <input type="hidden" name="commentId" value="@comment.Id" />
                       <button type="submit" class="action-link delete">Delete</button>
                     </form>
-                  }
+                  </div>
                 }
 
               </div>
-
-            </div>
+            }
           }
-        }
-        else
-        {
-          <div class="text-muted small">No comments yet.</div>
-        }
-
-      </div>
-
-      <form asp-controller="Comments" asp-action="Create" method="post" class="comment-form mt-3">
-
-        <input type="hidden" 
-        name="postId" value="@post.Id" />
-
-        <div class="comment-input-wrapper">
-          <input type="text"
-          name="content"
-          class="form-field"
-          placeholder="Write a comment..." />
+          else
+          {
+            <div class="text-muted small">No comments yet.</div>
+          }
         </div>
 
-        <button type="submit" 
-        class="post-btn mt-2">Comment</button>
-      </form>
+        <!-- Add comment -->
+        <form asp-controller="Comments" asp-action="Create" method="post" class="comment-form mt-3">
+          <input type="hidden" name="postId" value="@post.Id" />
 
-    </div>
-  }
+          <div class="comment-input-wrapper">
+            <input type="text"
+                   id="c-@post.Id"
+                   name="content"
+                   class="form-field"
+                   placeholder="Write a comment..." />
+          </div>
+
+          <button type="submit" class="post-btn mt-2">Comment</button>
+        </form>
+
+      </div>
+    }
+
+  </div>
 </div>
+
+<script>
+  // Show selected image filename in composer
+  (function () {
+    const input = document.getElementById("imageFile");
+    const label = document.getElementById("file-name");
+    if (!input || !label) return;
+
+    input.addEventListener("change", function () {
+      label.textContent = input.files && input.files.length ? input.files[0].name : "";
+    });
+  })();
+
+  // If URL has #comment-123 (or #post-123), scroll nicely and focus edit input if present
+  (function () {
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    const el = document.querySelector(hash);
+    if (!el) return;
+
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      const input = el.querySelector("input.edit-field");
+      if (input) input.focus();
+    });
+  })();
+</script>

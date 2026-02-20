@@ -40,18 +40,22 @@
               }
             </div>
 
-            <div class="friend-card-content">
-              <div class="friend-card-user-details">
-                <h5 class="friend-name">@user?.Name</h5>
-                <p class="friend-email text-primary">Wants to be friends!</p>
-              </div>
+          <div class="friend-card-content">
+            <div class="friend-card-user-details">
+              <h5 class="friend-name">
+                  <a href="/users/@req.UserId" class="profile-link">
+                    @req.User?.Name
+                  </a>  
+                </h5>
+              <p class="friend-email text-primary">Wants to be friends!</p>
+            </div>
 
-              <div class="friend-card-action-row">
-                <form asp-action="AcceptRequest" method="post">
-                  <input type="hidden" name="requestSenderId" value="@user?.Id" />
-                  <input type="hidden" name="requestId" value="@req.Id" />
-                  <button class="friend-add-btn" type="submit">Accept</button>
-                </form>
+            <div class="friend-card-action-row">
+              <form asp-action="AcceptRequest" method="post">
+                <input type="hidden" name="requestSenderId" value="@user?.Id" />
+                <input type="hidden" name="requestId" value="@req.Id" />
+                <button class="friend-add-btn" type="submit">Accept </button>
+              </form>
 
                 <form asp-action="RejectRequest" method="post">
                   <input type="hidden" name="requestId" value="@req.Id" />
@@ -141,8 +145,12 @@
 
             <div class="friend-card-content">
               <div class="friend-card-user-details">
-                <h5 class="friend-name">@friend?.Name</h5>
-                <p class="friend-email">@friend?.Email</p>
+                <h5 class="friend-name">
+                  <a href="/users/@sent.Id" class="profile-link">
+                      @sent.User.Name
+                  </a>
+                </h5>
+                <p class="friend-email">@sent.User.Email</p>
               </div>
               <div class="friend-card-action-row">
                 <form asp-action="RejectRequest" method="post">
