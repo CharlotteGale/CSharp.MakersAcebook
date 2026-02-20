@@ -478,7 +478,7 @@ This might need to be flipped to transparent and then filled on hover?*/
     box-shadow: none;
 }
 
-.profile-icon-nav {
+.profile-icon-nav { /* THIS IS DEFAULT */
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -489,6 +489,14 @@ This might need to be flipped to transparent and then filled on hover?*/
     justify-content: center;
     font-weight: bold;
 }
+
+.nav-profile-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 
 /* Nav Buttons for Friends Page*/
 .friends-header {
