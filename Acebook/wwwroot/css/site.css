@@ -498,6 +498,8 @@ This might need to be flipped to transparent and then filled on hover?*/
 }
 
 
+
+
 /* Nav Buttons for Friends Page*/
 .friends-header {
   position: -webkit-sticky;
@@ -516,6 +518,14 @@ This might need to be flipped to transparent and then filled on hover?*/
   font-weight: 700;
   margin: 0;
 }
+
+.friend-profile-image {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 
 .friends-sticky-nav {
   position: relative;
