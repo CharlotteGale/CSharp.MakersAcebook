@@ -898,6 +898,9 @@ input[type="file"].form-field {
 #received-requests {
   padding-top: 30px;
 }
+.sticky-padder {
+    padding-top: 180px;
+  }
 
 /* ==========================================================================
    RESPONSIVE
@@ -954,10 +957,17 @@ input[type="file"].form-field {
     grid-template-columns: 1fr;
   }
 
-  #received-requests {
-    padding-top: 20px !important;
-  }
+  /* Keep this INSIDE your existing @media (max-width: 768px) { ... } block */
+#received-requests {
+  padding-top: 20px !important;
 }
+
+/* Optional: only keep this if you actually use .sticky-padder anywhere */
+.sticky-padder {
+  padding-top: 20px !important;
+}
+
+/* ----- Everything below should be OUTSIDE the 768px media query ----- */
 
 .navbar {
   position: sticky;
@@ -984,16 +994,16 @@ input[type="file"].form-field {
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 60px;           
+  height: 60px;
   padding: 0;
   margin-right: 18px;
 }
 
-/* ✅ THIS is the key: constrain the logo */
+/* ✅ Constrain the logo */
 .nav-logo {
   height: 48px;
   width: auto;
-  max-width: 170px;        /* prevents huge wide image */
+  max-width: 170px;
   display: block;
   object-fit: contain;
   transition: transform 150ms ease;
@@ -1067,3 +1077,4 @@ input[type="file"].form-field {
 .post-action-btn.liked:hover {
   background: rgba(24, 119, 242, 0.25);
 }
+
