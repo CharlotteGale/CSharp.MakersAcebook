@@ -78,6 +78,11 @@ body {
   box-shadow: 0 0 0 4px rgba(24, 119, 242, 0.12);
 }
 
+/* profile image upload input hidden (you click the label) */
+.profile-img-form-field {
+  display: none;
+}
+
 /* Improves default file input a bit (kept from your latest rules) */
 input[type="file"].form-field {
   padding: 10px 12px;
@@ -152,6 +157,19 @@ input[type="file"].form-field {
 .profile-name {
   font-weight: 700;
 }
+
+/* round avatar image for posts/comments */
+.post-profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+/* ========================================================================== */
+/* COMMENTS */
+/* ========================================================================== */
 
 /* Base icon used across the app */
 .profile-icon {
@@ -684,8 +702,14 @@ input[type="file"].form-field {
   margin-top: 20px;
 }
 
-/* Nav Buttons for Friends Page */
-/* Friends header should scroll normally */
+.nav-profile-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Nav Buttons for Friends Page*/
 .friends-header {
   position: static;
   margin: 18px auto 14px;
@@ -701,6 +725,13 @@ input[type="file"].form-field {
 }
 
 /* The actual toolbar container */
+.friend-profile-image {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .friends-sticky-nav {
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(10px);
@@ -775,6 +806,25 @@ input[type="file"].form-field {
   background: #ccc;
 }
 
+.profile-image {
+  width: 140px;
+  height: 140px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.profile-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-right {
+  flex-grow: 1;
+}
+
 .profile-friends {
   color: #666;
   margin-top: 5px;
@@ -791,15 +841,8 @@ input[type="file"].form-field {
   text-decoration: underline;
 }
 
-.profile-left {
-  margin-right: 20px;
-}
 
-.profile-right {
-  flex-grow: 1;
-}
-
-/* Content grid */
+/* --- CONTENT GRID --- */
 .profile-content-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

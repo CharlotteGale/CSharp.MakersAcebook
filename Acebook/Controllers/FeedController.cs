@@ -68,11 +68,11 @@ public class FeedController : Controller
             .ToList();
 
 
-        // Sort comments newest-first
+        // Sort comments oldest-first
         foreach (var post in posts)
         {
             post.Comments = post.Comments
-                .OrderByDescending(c => c.CreatedAt)
+                .OrderBy(c => c.CreatedAt)
                 .ToList();
         }
 

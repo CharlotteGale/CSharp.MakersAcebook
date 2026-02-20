@@ -65,9 +65,20 @@
                                 @if (currentUser != null)
                                 {
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div class="profile-icon-nav">
-                                            @currentUser.Name.FirstOrDefault()
-                                        </div>
+                                        <a href="/profile" class="nav-profile-link">
+                                            @if (!string.IsNullOrEmpty(currentUser?.ProfileImg))
+                                            {
+                                                <img src="@currentUser.ProfileImg"
+                                                    alt="Profile image"
+                                                    class="nav-profile-image" />
+                                            }
+                                            else
+                                            {
+                                                <div class="profile-icon-nav">
+                                                    @currentUser.Name.FirstOrDefault()
+                                                </div>
+                                            }
+                                        </a>
 
                                         <form action="/logout" method="post" style="display: inline;">
                                             <button type="submit" class="btn btn-link nav-link text-dark">

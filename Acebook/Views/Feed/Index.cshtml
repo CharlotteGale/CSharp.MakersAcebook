@@ -61,15 +61,22 @@
         <!-- POST HEADER -->
         <div class="post-header mb-2 d-flex align-items-center gap-2">
           <a class="profile-link d-flex align-items-center gap-2" href="/users/@post.UserId">
-            <div class="profile-icon" title="View profile">
-              @(post.User?.Name?.FirstOrDefault() ?? '?')
-            </div>
+            @if (!string.IsNullOrEmpty(post.User?.ProfileImg))
+            {
+              <img src="@post.User.ProfileImg" alt="Profile image" class="post-profile-image" />
+            }
+            else
+            {
+              <div class="profile-icon" title="View profile">
+                @(post.User?.Name?.FirstOrDefault() ?? '?')
+              </div>
+            }
             <span class="profile-name">@post.User?.Name</span>
           </a>
         </div>
 
-        @if (Context.Session.GetInt32("user_id") == post?.UserId &&
-             Context.Request.Query["editPostId"].ToString() == post?.Id.ToString())
+        @if (Context.Session.GetInt32("user_id") == post.UserId &&
+             Context.Request.Query["editPostId"].ToString() == post.Id.ToString())
         {
           <!-- EDIT MODE -->
           <form action="/posts/edit" method="post" class="edit-post-form mb-2">
@@ -151,10 +158,18 @@
 
                 <!-- LEFT SIDE -->
                 <div class="d-flex align-items-start flex-wrap">
+
                   <a class="profile-link d-flex align-items-center gap-2" href="/users/@comment.UserId">
-                    <div class="profile-icon" title="View profile">
-                      @(comment.User?.Name?.FirstOrDefault() ?? '?')
-                    </div>
+                    @if (!string.IsNullOrEmpty(comment.User?.ProfileImg))
+                    {
+                      <img src="@comment.User.ProfileImg" alt="Profile image" class="post-profile-image" />
+                    }
+                    else
+                    {
+                      <div class="profile-icon" title="View profile">
+                        @(comment.User?.Name?.FirstOrDefault() ?? '?')
+                      </div>
+                    }
                     <span class="profile-name">@comment.User?.Name</span>
                   </a>
 
@@ -180,6 +195,7 @@
                       </span>
                     }
                   </div>
+
                 </div>
 
                 <!-- RIGHT SIDE (buttons only when NOT editing) -->
