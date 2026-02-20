@@ -47,14 +47,9 @@ public class PostsControllerTests : NUnitTestBase
     }
 
     [Test]
-    public void Create_ShouldSavePost_WhenPostIsValid()
+    public void Create_ShouldSavePost_WhenContentIsValid()
     {
-        var post = new Post
-        {
-            Content = "This is a valid post"
-        };
-
-        var result = _controller.Create(post);
+        var result = _controller.Create("This is a valid post", null);
 
         var savedPost = _context.Posts.FirstOrDefault(post => post.Content == "This is a valid post");
         Assert.That(savedPost, Is.Not.Null, 
@@ -67,16 +62,30 @@ public class PostsControllerTests : NUnitTestBase
     }
 
     [Test]
-    public void Create_ShouldNotSavePost_WhenContentIsInvalid()
+    public void Create_ShouldSavePost_WhenImageIsProvided()
     {
-        var post = new Post
+        var imageContent = new byte[] { 0xFF, 0xD8, 0xFF };
+        var stream = new MemoryStream(imageContent);
+        var imageFile = new FormFile(stream, 0, imageContent.Length, "imageFile", "test.jpg")
         {
-            Content = ""
+            Headers = new HeaderDictionary(),
+            ContentType = "image/jepg"
         };
 
-        _controller.ModelState.AddModelError("Message", "Content field is required");
+        var result = _controller.Create("", imageFile);
 
-        var result = _controller.Create(post);
+        var savedPost = _context.Posts.FirstOrDefault(p => p.ImgLink != null);
+        Assert.That(savedPost, Is.Not.Null,
+                    "Post of image should be saved to database");
+        Assert.That(savedPost.UserId, Is.EqualTo(_testUser.Id),
+                    "Post should be assigned to logged in user");
+        Assert.That(result.Url, Is.EqualTo("/Feed"));
+    }
+
+    [Test]
+    public void Create_ShouldNotSavePost_WhenContentAndImageAreBothMissing()
+    {
+        var result = _controller.Create("", null);
 
         var savedPost = _context.Posts.FirstOrDefault(post => post.Content == "");
         Assert.That(savedPost, Is.Null,

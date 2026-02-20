@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using acebook.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace acebook.Controllers;
 
@@ -31,6 +32,15 @@ public class UsersController : Controller
         {
             return View("New", user);
         }
+        
+        var email = user.Email.Trim().ToLower();
+        if (_context.Users.Any(u => u.Email.ToLower() == email))
+        {
+            ModelState.AddModelError("Email", "An account with this email already exists.");
+            return View("New", user);
+        }
+        user.Email = email;
+
 
         user.DateOfBirth = DateTime.SpecifyKind(user.DateOfBirth!.Value, DateTimeKind.Utc);
         int age = user.GetAge();
@@ -53,4 +63,38 @@ public class UsersController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+[Route("/users/{id:int}")]
+[HttpGet]
+public IActionResult Show(int id)
+{
+    // Require login
+    var currentUserId = HttpContext.Session.GetInt32("user_id");
+    if (currentUserId == null) return Redirect("/");
+
+    var user = _context.Users
+        .Include(u => u.Posts)
+        .Include(u => u.Friends)
+        .FirstOrDefault(u => u.Id == id);
+
+    if (user == null) return NotFound();
+
+    var recentPosts = user.Posts
+        .OrderByDescending(p => p.CreatedAt) 
+        .Take(10)
+        .ToList();
+
+    var vm = new UserProfileViewModel
+    {
+        UserId = user.Id,
+        Name = user.Name,
+        DateOfBirth = user.DateOfBirth,         
+        // ProfilePhotoUrl = user.ProfilePhotoUrl
+        RecentPosts = recentPosts,
+        Friends = user.Friends.ToList()
+    };
+
+    return View("/Views/Profile/Index.cshtml", vm);
+
+}
+
 }

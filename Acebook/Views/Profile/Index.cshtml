@@ -1,23 +1,48 @@
-@model acebook.Models.User
+@model acebook.Models.UserProfileViewModel
+
+@functions {
+    string TimeAgo(DateTime date)
+    {
+        var ts = DateTime.UtcNow - date;
+
+        if (ts.TotalSeconds < 60)
+            return $"{ts.Seconds}s ago";
+
+        if (ts.TotalMinutes < 60)
+            return $"{ts.Minutes}m ago";
+
+        if (ts.TotalHours < 24)
+            return $"{ts.Hours}h ago";
+
+        if (ts.TotalDays < 7)
+            return $"{ts.Days}d ago";
+
+        return date.ToString("dd MMM yyyy");
+    }
+}
+
 
 <div class="profile-header">
-    <div class="profile-left">
-        <div class="profile-pg-icon"></div>
+    <div class="container profile-header-inner">
+        <div class="profile-left">
+            <div class="profile-pg-icon"></div>
+        </div>
+        <div class="profile-right">
+            <h1 class="profile-name">@Model.Name</h1>
+            <p class="profile-friends"><a href="/friends">@Model.Friends.Count friends</a>
+</p>
+        </div>
     </div>
 
-    <div class="profile-right">
-        <h1 class="profile-name">@Model.Name</h1>
-        <p class="profile-friends">123 friends</p>
-    </div>
 </div>
-
+@* 
 <div class="profile-nav-strip">
     <button class="profile-tab active">Posts</button>
     <button class="profile-tab">About</button>
     <button class="profile-tab">Friends</button>
     <button class="profile-tab">Photos</button>
 </div>
-
+ *@
 
 <div class="container">
     <div class="profile-content-grid">
@@ -36,16 +61,75 @@
         <div class="profile-card profile-card--full">
             <h2>Make a Post</h2>
 
-            <form action="/posts" method="post">
-                <div class="mb-3">
-                    <textarea 
-                        name="content"
-                        class="post-box"
-                        placeholder="What's on your mind?"></textarea>
-                </div>
-                <button type="submit" class="post-btn">Post</button>
-            </form>
+        <form action="/posts" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="returnUrl" value="/profile/index" />
+
+            <div class="mb-3">
+                <input type="text" name="content" class="form-field" placeholder="What's on your mind?" />
+            </div>
+
+            <div class="mb-3">
+                <input type="file" name="imageFile" class="form-field" />
+            </div>
+
+            <button type="submit" class="post-btn">Submit</button>
+        </form>
+
+
+        </div>  
+
+<!-- Recent Posts (full width row) -->
+
+<div class="profile-card--full">
+
+    <!-- Section title OUTSIDE of any card -->
+    
+    <h1 class="h3 mb-3">Recent posts</h1>
+
+    @if (Model.RecentPosts == null || !Model.RecentPosts.Any())
+    {
+        <div class="post-card mb-3">
+            <div class="card-body text-muted">
+                No posts yet.
+            </div>
         </div>
+    }
+    else
+    {
+        @foreach (var post in Model.RecentPosts)
+        {
+            <div class="post-card mb-3">
+                <div class="card-body">
+
+                    <!-- Header: user icon + name + timestamp -->
+                    <div class="d-flex align-items-start justify-content-between gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="profile-icon" title="@Model.Name">
+                                @Model.Name.Substring(0,1).ToUpper()
+                            </div>
+                            <div class="fw-semibold">@Model.Name</div>
+                        </div>
+                        <div class="text-muted small">
+                            @TimeAgo(post.CreatedAt)
+                            @if (post.UpdatedAt != null)
+                            {
+                                <span class="ms-2">(edited @TimeAgo(post.UpdatedAt.Value))</span>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Post content -->
+                    <div class="mt-2">
+                        <div class="text-body">@post.Content</div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+</div>
+
+
 
     </div>
 </div>
